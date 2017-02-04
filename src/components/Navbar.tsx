@@ -26,7 +26,7 @@ export class Navbar extends React.Component<void, void>{
                         </Menu.Item>
                     </Menu>
                 </Col>
-                <Col span={6}>
+                <Col span={6} style={{marginTop: "28px"}}>
                     <Indicator />
                 </Col>
             </Row>

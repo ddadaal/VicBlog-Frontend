@@ -48,18 +48,27 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
     }
 
     render() {
+        var alertMessage = "";
 
+        switch(this.props.errorInfo){
+            case LoginError.Forbid:
+                alertMessage = "Credentials are invalid. Please check.";
+                break;
+            case LoginError.Others:
+                alertMessage = "Internal Error. Please wait for a fix.";
+                break;
+            default:
+                alertMessage = "";
+        }
+
+        const alert  = alertMessage ? <Alert message={alertMessage} type="error"/> : [];
+        
 
         return <Modal title="Log In" visible={this.props.loginModalVisible}
             onOk={() => this.handleLogin()}
             confirmLoading={this.props.isLoggingIn}
             onCancel={this.props.closeLoginModal}>
-            {this.props.errorInfo != LoginError.None ? (
-                this.props.errorInfo == LoginError.Others ? <Alert message="Internal Error. Please wait for fix." type="error" /> : (
-                    this.props.errorInfo == LoginError.UserNotExist ? <Alert message="User not exists! Check your username or register one" type="error" /> : (
-                        this.props.errorInfo == LoginError.WrongPassword ? <Alert message="Wrong Password! Please check your password." type="error" /> : [])
-                )
-            ) : []}
+            {alert}
             <Input addonBefore={<Icon type="user" />} placeholder="Username" value={this.state.username} onChange={(e) => this.handleUsernameChange(e)} />
             <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.handlePasswordChange(e)} />
             <Checkbox onChange={(e)=>this.handleRememberToggle(e)}>Remember me!</Checkbox>

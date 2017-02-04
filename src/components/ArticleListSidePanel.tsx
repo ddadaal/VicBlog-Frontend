@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { actionCreators, ArticleFilter, ArticleListState } from '../store/ArticleList';
-import { Input, Checkbox, Button } from 'antd';
+import { Input, Checkbox, Button, Card } from 'antd';
 import { connect }from 'react-redux';
 import { ApplicationState } from '../store';
+import moment from 'moment';
 
 const Search = Input.Search;
 
@@ -59,7 +60,8 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
         return (
             <div>
-                <Input placeholder="Search Text" onChange={e=>this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
+            <Card title="Search">
+                <Input placeholder="Text in Title " onChange={e=>this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
                 <br />
                 <p>Select Tags</p>
                 <Checkbox.Group options={this.props.tags.content} value={this.props.filter.tags} onChange={e=>this.handleTagsChange(e)}/>
@@ -69,6 +71,11 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                 <br />
                 <Button type="primary" onClick={() => this.startSearch()}>Search</Button>
                 <Button type="ghost" onClick={() => this.reset()}>Reset</Button>
+            </Card>
+            <br/>
+            Last updated in {moment(this.props.lastUpdatedTime).format("HH:mm:ss")}.
+            <br/>
+            <a onClick={()=>this.props.requestArticleList(this.props.filter)}>Click this to refresh</a>
             </div>
         );
     }

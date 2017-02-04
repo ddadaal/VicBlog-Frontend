@@ -10,7 +10,6 @@ export enum UserRole {
 
 export interface User {
     username: string,
-    registerTime: string,
     role: UserRole,
     token: string
 }
@@ -29,8 +28,7 @@ export interface LoginInfo {
 }
 
 export enum LoginError {
-    WrongPassword,
-    UserNotExist,
+    Forbid,
     Others,
     None
 }
@@ -60,18 +58,15 @@ export const actionCreators = {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
-                        dispatch({ type: "SUCCESS_LOGIN", user: json as User });
+                        dispatch({ type: "SUCCESS_LOGIN", user: json as User});
                         dispatch({ type: "CLOSE_LOGIN_MODAL" });
                         if (info.remember) {
                             localStorage.setItem("user", JSON.stringify(getState().user));
                         }
                     });
                     break;
-                case 401:
-                    dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.WrongPassword });
-                    break;
-                case 404:
-                    dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.UserNotExist });
+                case 403:
+                    dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.Forbid });
                     break;
                 default:
                     dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.Others });

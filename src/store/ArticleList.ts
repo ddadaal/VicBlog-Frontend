@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs } from '../Utils';
+import moment from 'moment';
 import { actionCreators as listActionCreators } from './ArticleList';
 
 interface SectionState<ContentType> {
@@ -15,14 +16,14 @@ export interface ArticleListState {
     articleList: SectionState<ArticleBrief>
     searching: boolean,
     filter: ArticleFilter,
-    lastUpdated: Date
+    lastUpdatedTime: number
 }
 
 export interface ArticleBrief {
     id: number,
     username: number,
-    submitTime: Date,
-    lastEditedTime: Date,
+    submitTime: number,
+    lastEditedTime: number,
     category: string,
     tags: string[]
     title: string
@@ -48,7 +49,7 @@ interface ReceiveTags { type: "RECEIVE_TAGS", tags: string[] }
 interface RequestCategories { type: "REQUEST_CATEGORIES" }
 interface ReceiveCategories { type: "RECEIVE_CATEGORIES", categories: string[] }
 interface RequestAllArticle{type: "REQUEST_ALL_ARTICLES" }
-interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[]}
+interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[], updatedTime: number}
 interface RequestSearch { type: "REQUEST_SEARCH", filter: ArticleFilter }
 interface ChangeFilter { type: "CHANGE_FILTER", filter: ArticleFilter}
 
@@ -72,13 +73,13 @@ export const actionCreators = {
             filter.tags.map(item=>{
                 url += `Tag=${item}&`;
             });
-            url+= `titleText=${filter.titleText}`;
+            url+= filter.titleText ? `titleText=${filter.titleText}` : "";
             dispatch({type: "REQUEST_SEARCH", filter: filter});
         }else{
             dispatch({type: "REQUEST_ALL_ARTICLES"});
         }
         fetch(url).then(res => res.json().then(res => {
-            dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[] });
+            dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now()  });
         })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", errorInfo: ErrorType.Others }))
     },
     requestAllCategories: ():AppThunkAction<KnownAction> => (dispatch, getState)=>{
@@ -96,7 +97,7 @@ export const actionCreators = {
 
         }).catch(res=>dispatch({type:"ERROR_CATEGORIES", errorInfo: ErrorType.Others}));
     },
-    changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter})
+    changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter}),
 }
 
 export const initialState : ArticleListState = {
@@ -121,7 +122,7 @@ export const initialState : ArticleListState = {
         titleText:""
     },
     searching: false,
-    lastUpdated: null
+    lastUpdatedTime: 0
     
 };
 
@@ -138,7 +139,7 @@ export const reducer: Reducer<ArticleListState> = (state: ArticleListState, acti
         case "REQUEST_ALL_ARTICLES":
             return {...state, articleList:{requesting: true, error: ErrorType.None, content: state.articleList.content}};
         case "RECEIVE_ARTICLE_LIST":
-            return {...state, lastUpdated: new Date( Date.now()),  articleList:{requesting: true, error:ErrorType.None, content: action.articleList}};
+            return {...state, lastUpdatedTime: action.updatedTime ,  articleList:{requesting: true, error:ErrorType.None, content: action.articleList}};
         case "ERROR_CATEGORIES":
             return { ...state, categories:{requesting: false, error: action.errorInfo, content: state.categories.content}};
         case "ERROR_TAGS":

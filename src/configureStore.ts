@@ -25,12 +25,12 @@ export default function configureStore(initialState) {
         applyMiddleware(...middleware),
     )) as Redux.Store<Store.ApplicationState>;
 
-    if (module.hot) {
-        module.hot.accept('./store', () => {
-            const nextRootReducer = require<typeof Store>('./store');
-            store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
-        });
-    }
+    // if (module.hot) {
+    //     module.hot.accept('./store', () => {
+    //         const nextRootReducer = require<typeof Store>('./store');
+    //         store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
+    //     });
+    // }
 
     return store;
 };

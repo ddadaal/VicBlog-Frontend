@@ -37,7 +37,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
             </Menu>;
 
             return <Dropdown overlay={dropdownMenu} trigger={["click"]}>
-                <a style={{ marginTop: "29px" }} className="ant-dropdown-link" href="#">
+                <a className="ant-dropdown-link" href="#">
                     Welcome, {this.props.user.username} <Icon type="down" />
                 </a></Dropdown>;
         }
@@ -45,7 +45,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
 
 
             return <div>
-                <Button style={{ marginTop: "29px" }} onClick={this.props.openLoginModal}>Log in</Button>
+                <Button onClick={this.props.openLoginModal}>Log in</Button>
                 <LoginModal />
             </div>
         }

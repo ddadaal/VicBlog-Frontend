@@ -5,9 +5,9 @@ import { ArticleBrief  } from './ArticleList';
 
 export type Article = ArticleBrief & { content: string }
 
-export interface ArticlePanelState {
+export interface ArticlePageState {
     article: Article
-    lastUpdatedTime: Date,
+    lastUpdatedTime: number,
     errorInfo: ErrorType,
     isRequesting: boolean
 }
@@ -19,18 +19,18 @@ enum ErrorType{
 }
 
 interface RequestArticleAction { type:"REQUEST_ARTICLE", id: number }
-interface ReceiveArticleAction { type: "RECEIVE_ARTICLE", article: Article}
+interface ReceiveArticleAction { type: "RECEIVE_ARTICLE", article: Article, updatedTime: number}
 interface ErrorAction { type: "ERROR", errorInfo: ErrorType }
 
 type KnownAction = RequestArticleAction | ReceiveArticleAction | ErrorAction;
 
 export const actionCreators = {
     requestArticle : (id: number):AppThunkAction<KnownAction> => (dispatch, getState)=>{
-        fetch(`${APIs.article}+${id}`).then(res=>{
+        fetch(`${APIs.article}${id}`).then(res=>{
             switch(res.status){
                 case 200:
                     res.json().then(json=>{
-                        dispatch({type: "RECEIVE_ARTICLE", article: json as Article});
+                        dispatch({type: "RECEIVE_ARTICLE", article: json as Article, updatedTime: Date.now()});
                     });
                     break;
                 case 404:
@@ -44,19 +44,19 @@ export const actionCreators = {
     }
 };
 
-export const initialState : ArticlePanelState = {
+export const initialState : ArticlePageState = {
     article: null,
     lastUpdatedTime: null,
     errorInfo: ErrorType.None,
     isRequesting: false
 };
 
-export const reducer: Reducer<ArticlePanelState> = (state: ArticlePanelState, action: KnownAction)=>{
+export const reducer: Reducer<ArticlePageState> = (state: ArticlePageState, action: KnownAction)=>{
     switch(action.type){
         case "REQUEST_ARTICLE":
             return { isRequesting: true, errorInfo: ErrorType.None, ...state };
         case "RECEIVE_ARTICLE":
-            return {  isRequesting: false, errorInfo: ErrorType.None, article: action.article, lastUpdatedTime:new Date( Date.now()) };
+            return {  isRequesting: false, errorInfo: ErrorType.None, article: action.article, lastUpdatedTime:action.updatedTime };
         case "ERROR":
             return { isRequesting: true, errorInfo: action.errorInfo, ...state };
         default:

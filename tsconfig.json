@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "jsx": "preserve",
+        "module": "es6",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "outDir": "./dist/",
+        "target": "es6",
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}

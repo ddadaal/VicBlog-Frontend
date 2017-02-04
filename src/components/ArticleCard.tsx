@@ -11,10 +11,11 @@ interface ArticleCardProps {
 export class ArticleCard extends React.Component<ArticleCardProps, void>{
     render() {
         const url = APIs.article + this.props.brief.id;
-        const tags = this.props.brief.categories.map(item => <Tag key={item}>{item}</Tag>);
+        const tags = this.props.brief.tags.map(item => <Tag key={item}>{item}</Tag>);
         return <Card title={<a href={url}>{this.props.brief.title}</a>}>
             <div>
-                <p>{tags}</p>
+                <div>{tags}</div>
+                <p>Category {this.props.brief.category}</p>
                 <br />
                 <p>Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY")}</p>
                 <p>Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY")}</p>

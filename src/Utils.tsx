@@ -5,8 +5,11 @@ export const APIs = {
     login: APIRoot + "login",
     regsiter: APIRoot + "register",
     articles: APIRoot + "articles",
-    article: APIRoot + "articles/"
+    article: APIRoot + "articles/",
+    tags: APIRoot + "tags",
+    categories: APIRoot+ "categories"
 };
+
 export const ArticleListUpdateMinutesSpan = 30;
 
 export const attachQueryString = (url: String, params: Object): String => {

@@ -7,7 +7,7 @@ import { actionCreators as listActionCreators } from './ArticleList';
 interface SectionState<ContentType> {
     requesting: boolean,
     content: ContentType[],
-    error: ErrorType
+    errorInfo: ErrorType
 }
 
 export interface ArticleListState {
@@ -38,6 +38,7 @@ export interface ArticleFilter {
 
 export enum ErrorType {
     None,
+    Network,
     Others
 }
 
@@ -68,10 +69,10 @@ export const actionCreators = {
         if (filter) {
             url += "?";
             filter.categories.map(item => {
-                url += `Categories=${item}&`;
+                url += `category=${item}&`;
             });
             filter.tags.map(item=>{
-                url += `Tag=${item}&`;
+                url += `tag=${item}&`;
             });
             url+= filter.titleText ? `titleText=${filter.titleText}` : "";
             dispatch({type: "REQUEST_SEARCH", filter: filter});
@@ -80,7 +81,8 @@ export const actionCreators = {
         }
         fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now()  });
-        })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", errorInfo: ErrorType.Others }))
+            localStorage.setItem("articleList",JSON.stringify(getState().articleList));
+        })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", errorInfo: ErrorType.Network }))
     },
     requestAllCategories: ():AppThunkAction<KnownAction> => (dispatch, getState)=>{
         dispatch({type:"REQUEST_CATEGORIES"});
@@ -95,26 +97,26 @@ export const actionCreators = {
                 dispatch({ type: "ERROR_CATEGORIES", errorInfo: ErrorType.Others });
             }
 
-        }).catch(res=>dispatch({type:"ERROR_CATEGORIES", errorInfo: ErrorType.Others}));
+        }).catch(res=>dispatch({type:"ERROR_CATEGORIES", errorInfo: ErrorType.Network}));
     },
-    changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter}),
+    changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter})
 }
 
 export const initialState : ArticleListState = {
     tags: {
         requesting: false,
         content: [],
-        error: ErrorType.None
+        errorInfo: ErrorType.None
     },
     categories:{
         requesting: false,
         content: [],
-        error: ErrorType.None
+        errorInfo: ErrorType.None
     },
     articleList:{
         requesting: false,
         content: [],
-        error: ErrorType.None
+        errorInfo: ErrorType.None
     },
     filter: {
         categories: [],
@@ -129,25 +131,25 @@ export const initialState : ArticleListState = {
 export const reducer: Reducer<ArticleListState> = (state: ArticleListState, action: KnownAction)=>{
     switch(action.type){
         case "REQUEST_CATEGORIES":
-            return {...state, categories: { requesting: true, error: ErrorType.None, content: state.categories.content  }};
+            return {...state, categories: { requesting: true, errorInfo: ErrorType.None, content: state.categories.content  }};
         case "REQUEST_TAGS":
-            return {...state, tags: { requesting: true, error: ErrorType.None, content: state.tags.content  }};
+            return {...state, tags: { requesting: true, errorInfo: ErrorType.None, content: state.tags.content  }};
         case "RECEIVE_CATEGORIES":
-            return { ...state, categories: { requesting: false, error: ErrorType.None, content: action.categories  } };
+            return { ...state, categories: { requesting: false, errorInfo: ErrorType.None, content: action.categories  } };
         case "RECEIVE_TAGS":
-            return { ...state, tags: { requesting: false, error: ErrorType.None, content: action.tags  } };
+            return { ...state, tags: { requesting: false, errorInfo: ErrorType.None, content: action.tags  } };
         case "REQUEST_ALL_ARTICLES":
-            return {...state, articleList:{requesting: true, error: ErrorType.None, content: state.articleList.content}};
+            return {...state, articleList:{requesting: true, errorInfo: ErrorType.None, content: state.articleList.content}};
         case "RECEIVE_ARTICLE_LIST":
-            return {...state, lastUpdatedTime: action.updatedTime ,  articleList:{requesting: true, error:ErrorType.None, content: action.articleList}};
+            return {...state, searching: false, lastUpdatedTime: action.updatedTime ,  articleList:{requesting: false, errorInfo:ErrorType.None, content: action.articleList}};
         case "ERROR_CATEGORIES":
-            return { ...state, categories:{requesting: false, error: action.errorInfo, content: state.categories.content}};
+            return { ...state, categories:{requesting: false, errorInfo: action.errorInfo, content: state.categories.content}};
         case "ERROR_TAGS":
-            return { ...state, tags:{requesting: false, error: action.errorInfo, content: state.tags.content}};
+            return { ...state, tags:{requesting: false, errorInfo: action.errorInfo, content: state.tags.content}};
         case "ERROR_ARTICLE_LIST":
-            return { ...state, articleList:{requesting: false, error: action.errorInfo, content: state.articleList.content}};
+            return { ...state, searching: false, articleList:{requesting: false, errorInfo: action.errorInfo, content: state.articleList.content}};
         case "REQUEST_SEARCH":
-            return {...state, searching: true, articleList:{requesting: true, error:ErrorType.None, content: state.articleList.content}};
+            return {...state, searching: true, articleList:{ requesting: false, errorInfo:ErrorType.None, content: state.articleList.content}};
         case "CHANGE_FILTER":
             return {...state, filter: action.filter};
         default:

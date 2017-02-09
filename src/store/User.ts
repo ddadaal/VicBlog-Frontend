@@ -30,7 +30,8 @@ export interface LoginInfo {
 export enum LoginError {
     Forbid,
     Others,
-    None
+    None,
+    Network
 }
 
 
@@ -71,7 +72,7 @@ export const actionCreators = {
                 default:
                     dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.Others });
             }
-        }).catch(res => dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.Others }));
+        }).catch(res => dispatch({ type: "ERROR_LOGIN", errorInfo: LoginError.Network }));
 
 
     },

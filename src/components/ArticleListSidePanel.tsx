@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { actionCreators, ArticleFilter, ArticleListState } from '../store/ArticleList';
-import { Input, Checkbox, Button, Card } from 'antd';
-import { connect }from 'react-redux';
+import { actionCreators, ArticleFilter, ArticleListState, ErrorType } from '../store/ArticleList';
+import { Input, Checkbox, Button, Card,Icon, Alert } from 'antd';
+import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import moment from 'moment';
 
@@ -10,10 +10,13 @@ const Search = Input.Search;
 type ArticleListSiderProps = typeof actionCreators & ArticleListState;
 
 class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
-    componentDidMount(){
-        this.props.requestAllTags();
-        this.props.requestAllCategories();
-        this.props.requestArticleList();
+    componentDidMount() {
+        if (  Date.now() - this.props.lastUpdatedTime> 60 * 60 * 60) {
+            this.props.requestAllTags();
+            this.props.requestAllCategories();
+            this.props.requestArticleList();
+        }
+
     }
 
     handleTagsChange(checkedValues) {
@@ -29,7 +32,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
         });
     }
 
-    handleTitleTextChange(e){
+    handleTitleTextChange(e) {
         this.props.changeFilter({
             ...this.props.filter,
             titleText: e.target.value
@@ -38,13 +41,13 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
     reset() {
         this.props.changeFilter({
-           titleText: "",
-           categories: [],
-           tags: [] 
+            titleText: "",
+            categories: [],
+            tags: []
         });
     }
 
-    startSearch(){
+    startSearch() {
         this.props.requestArticleList(this.props.filter);
     }
 
@@ -60,22 +63,26 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
         return (
             <div>
-            <Card title="Search">
-                <Input placeholder="Text in Title " onChange={e=>this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
+                 {this.props.articleList.errorInfo == ErrorType.Network ? <Alert type="error" message="Network error. Please check your network connection. "/> :[]}
+                {this.props.articleList.errorInfo == ErrorType.Others ? <Alert type="error" message="Something bad happened. Please retry."/> : []}
+                <Card title={<span><Icon type="filter" /> Filter</span>}>
+                    <Input placeholder="Text in Title " onChange={e => this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
+                    <br />
+                    <div><Icon type="tags" /> Tags</div>
+                    <Checkbox.Group options={this.props.tags.content} value={this.props.filter.tags} onChange={e => this.handleTagsChange(e)} />
+                    <div><Icon type="tag-o" /> Categories</div>
+                    <Checkbox.Group options={this.props.categories.content} value={this.props.filter.categories} onChange={e => this.handleCategoriesChange(e)} />
+                    <br />
+                    <Button type="primary" onClick={() => this.startSearch()} loading={this.props.searching}><Icon type="check" /> Search</Button>
+                    <Button type="ghost" onClick={() => this.reset()}><Icon type="close" /> Reset</Button>
+                </Card>
                 <br />
-                <p>Select Tags</p>
-                <Checkbox.Group options={this.props.tags.content} value={this.props.filter.tags} onChange={e=>this.handleTagsChange(e)}/>
-                <br />
-                <p>Select Categories</p>
-                <Checkbox.Group options={this.props.categories.content} value={this.props.filter.categories} onChange={e=>this.handleCategoriesChange(e)}/>
-                <br />
-                <Button type="primary" onClick={() => this.startSearch()}>Search</Button>
-                <Button type="ghost" onClick={() => this.reset()}>Reset</Button>
-            </Card>
-            <br/>
-            Last updated in {moment(this.props.lastUpdatedTime).format("HH:mm:ss")}.
-            <br/>
-            <a onClick={()=>this.props.requestArticleList(this.props.filter)}>Click this to refresh</a>
+                Last updated in {moment(this.props.lastUpdatedTime).format("HH:mm:ss")}.
+            <br />
+                {!this.props.articleList.requesting 
+                ? <a onClick={() => this.props.requestArticleList()}><Icon type="reload" /> Click this to perform a full reload</a>
+                : <a disabled> <Icon type="reload" spin /> Refreshing</a>}
+               
             </div>
         );
     }
@@ -84,6 +91,6 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 }
 
 export default connect(
-    (state:ApplicationState)=>state.articleList,
+    (state: ApplicationState) => state.articleList,
     actionCreators
 )(ArticleListSider);

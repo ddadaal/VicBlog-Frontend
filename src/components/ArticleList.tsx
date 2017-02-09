@@ -10,6 +10,7 @@ type ArticleListProps = ArticleListState;
 
 class ArticleList extends React.Component<ArticleListProps, void>{
 
+
     render() {
         const cards = this.props.articleList.content.map(item=>{
             return <ArticleCard key={item.id} brief={item}/>;

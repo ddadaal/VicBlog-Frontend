@@ -37,7 +37,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
             </Menu>;
 
             return <Dropdown overlay={dropdownMenu} trigger={["click"]}>
-                <a className="ant-dropdown-link" href="#">
+                <a className="ant-dropdown-link">
                     Welcome, {this.props.user.username} <Icon type="down" />
                 </a></Dropdown>;
         }

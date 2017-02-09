@@ -3,22 +3,36 @@ import { ArticlePageState, Article } from '../store/ArticlePage';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Card,Tag } from 'antd';
+import "highlight.js/styles/default.css";
+import { Card, Tag } from 'antd';
+const hljs = require('highlight.js');
+var md = require('markdown-it')({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (__) {}
+    }
+    try {
+      return hljs.highlightAuto(str).value;
+    } catch (err) {}
 
+    return ''; // use external default escaping
+  }
+});
 interface ArticlePanelProps {
     article: Article
 }
 
 export class ArticlePanel extends React.Component<ArticlePanelProps, void>{
-
-
-    render(){
+    render() {
 
         return (
             <div>
-            <h2>{this.props.article.title}</h2>
-            <br/>
-            {this.props.article.content}
+                {this.props.article.title ? <h1>{this.props.article.title}</h1> :[]}
+                <br />
+                <article dangerouslySetInnerHTML={{ __html:md.render(this.props.article.content) }}>
+                </article>
             </div>
         )
     }

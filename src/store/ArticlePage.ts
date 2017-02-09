@@ -12,17 +12,19 @@ export interface ArticlePageState {
     isRequesting: boolean
 }
 
-enum ErrorType{
+export enum ErrorType{
     None,
     NotFound,
-    Others
+    Others,
+    Network
 }
 
 interface RequestArticleAction { type:"REQUEST_ARTICLE", id: number }
 interface ReceiveArticleAction { type: "RECEIVE_ARTICLE", article: Article, updatedTime: number}
-interface ErrorAction { type: "ERROR", errorInfo: ErrorType }
+interface ClearArticleAction { type: "CLEAR_ARTICLE" }
+interface ErrorAction { type: "ERROR_ARTICLE", errorInfo: ErrorType }
 
-type KnownAction = RequestArticleAction | ReceiveArticleAction | ErrorAction;
+type KnownAction = RequestArticleAction | ReceiveArticleAction | ErrorAction |ClearArticleAction;
 
 export const actionCreators = {
     requestArticle : (id: number):AppThunkAction<KnownAction> => (dispatch, getState)=>{
@@ -34,14 +36,17 @@ export const actionCreators = {
                     });
                     break;
                 case 404:
-                    dispatch({type:"ERROR", errorInfo: ErrorType.NotFound});
+                    dispatch({type:"ERROR_ARTICLE", errorInfo: ErrorType.NotFound});
                     break;
                 default:
-                    dispatch({type:"ERROR", errorInfo: ErrorType.Others});
+                    dispatch({type:"ERROR_ARTICLE", errorInfo: ErrorType.Others});
             }
+        }).catch(res=>{
+            dispatch({type:"ERROR_ARTICLE",errorInfo: ErrorType.Network});
         });
         dispatch({type:"REQUEST_ARTICLE", id: id});
-    }
+    },
+    clearArticle: ()=>({type: "CLEAR_ARTICLE"})
 };
 
 export const initialState : ArticlePageState = {
@@ -54,11 +59,13 @@ export const initialState : ArticlePageState = {
 export const reducer: Reducer<ArticlePageState> = (state: ArticlePageState, action: KnownAction)=>{
     switch(action.type){
         case "REQUEST_ARTICLE":
-            return { isRequesting: true, errorInfo: ErrorType.None, ...state };
+            return {...state , isRequesting: true, errorInfo: ErrorType.None, };
         case "RECEIVE_ARTICLE":
             return {  isRequesting: false, errorInfo: ErrorType.None, article: action.article, lastUpdatedTime:action.updatedTime };
-        case "ERROR":
-            return { isRequesting: true, errorInfo: action.errorInfo, ...state };
+        case "ERROR_ARTICLE":
+            return {...state , isRequesting: false, errorInfo: action.errorInfo };
+        case "CLEAR_ARTICLE":
+            return initialState;
         default:
             const exhausiveCheck: never = action;
     };

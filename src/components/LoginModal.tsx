@@ -48,7 +48,7 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
     }
 
     render() {
-        var alertMessage = "";
+        let alertMessage = "";
 
         switch(this.props.errorInfo){
             case LoginError.Forbid:
@@ -56,6 +56,9 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
                 break;
             case LoginError.Others:
                 alertMessage = "Internal Error. Please wait for a fix.";
+                break;
+            case LoginError.Network:
+                alertMessage = "Network error. Please check your network connection and try again.";
                 break;
             default:
                 alertMessage = "";

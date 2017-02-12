@@ -16,24 +16,20 @@ var md = require('markdown-it')({
     return ''; // use external default escaping
   }
 });
-
-interface MarkdownEditorStates{
+interface MarkdownEditorProps {
     content: string
+    onContentChange : (content:string)=>any
 }
 
 
-export class MarkdownEditor extends React.Component<void, MarkdownEditorStates>{
+
+export class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
     constructor(){
         super();
-        this.state = {
-            content: ""
-        };
     }
 
     handleInputChange(e:any){
-        this.setState({
-            content: e.target.value
-        });
+        this.props.onContentChange(e.target.value);
     }
     render(){
         return (
@@ -41,11 +37,11 @@ export class MarkdownEditor extends React.Component<void, MarkdownEditorStates>{
                 <Row gutter={16}>
                     <Col md={12} lg={12} sm={24} xs={0}>
                     <div >
-                        <Input type="textarea" autosize={{minRows: 4}} placeholder="Input your comment here..." value={this.state.content} onChange={(e)=>this.handleInputChange(e)}/>
+                        <Input type="textarea" autosize={{minRows: 4}} placeholder="Input your comment here..." value={this.props.content} onChange={(e)=>this.handleInputChange(e)}/>
                     </div>
                     </Col>
                     <Col md={12} lg={12} sm={24} xs={0}>
-                        <div dangerouslySetInnerHTML={{__html: md.render(this.state.content)}}/>
+                        <div dangerouslySetInnerHTML={{__html: md.render(this.props.content)}}/>
                     </Col>
                 </Row>
             </div>

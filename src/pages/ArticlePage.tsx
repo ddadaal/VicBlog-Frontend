@@ -4,7 +4,7 @@ import { ArticlePanel } from '../components/ArticlePanel';
 import { ArticleSidePanel } from '../components/ArticleSidePanel';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
-import { actionCreators, ArticlePageState, ErrorType } from '../store/ArticlePage';
+import { actionCreators, ArticlePageState, Status } from '../store/ArticlePage';
 import CommentPanel from '../components/CommentPanel';
 
 type ArticlePageProps = typeof actionCreators & ArticlePageState & { params: { ID: number } };
@@ -22,18 +22,22 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
     render() {
         const padding = { padding: "8px 8px 8px 8px" };
         let message = "";
-        switch (this.props.errorInfo) {
-            case ErrorType.Network:
+        switch (this.props.status) {
+            case Status.Network:
                 message = "Network error. Please check your network connection.";
                 break;
-            case ErrorType.NotFound:
+            case Status.NotFound:
                 message = `Article ${this.props.params.ID} is not found.`;
                 break;
             default:
                 message = "Internal Error. Please retry.";
         };
-        const error = <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div>;
-        return this.props.article ?
+        let indicator = <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div>;
+        if (this.props.status == Status.Requesting){
+            indicator = <Alert type="info" message="Loading..." />;
+        }
+
+        return this.props.status == Status.Received ?
             (<div>
                 <Row type="flex">
                     <Col style={padding} lg={{ span: 6, order: 1 }} md={{ span: 6, order: 1 }} sm={{ span: 24, order: 2 }} xs={{ span: 24, order: 2 }}>
@@ -44,12 +48,7 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
                         <CommentPanel articleID={this.props.params.ID} />
                     </Col>
                 </Row>
-            </div>) : (
-                this.props.isRequesting ?
-                    <div>
-                        <Spin />Loading
-                    </div> : error
-            )
+            </div>) : indicator;
     }
 }
 

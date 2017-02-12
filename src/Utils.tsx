@@ -11,6 +11,15 @@ export const APIs = {
     comments: APIRoot+"comments"
 };
 
+export const JSONRequestInit = (payload)=>({
+    method: "POST",
+    //mode: "cors",
+    body: JSON.stringify(payload),
+    headers:{
+        "Content-Type":"application/json"
+    }
+} as RequestInit);
+
 export const ArticleListUpdateMinutesSpan = 30;
 
 export const attachQueryString = (url: string, params: Object): string => {

@@ -1,7 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs } from '../Utils';
-
 export enum UserRole {
     User,
     Admin,
@@ -59,7 +58,7 @@ export const actionCreators = {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
-                        dispatch({ type: "SUCCESS_LOGIN", user: json as User});
+                        dispatch({ type: "SUCCESS_LOGIN", user: json as User });
                         dispatch({ type: "CLOSE_LOGIN_MODAL" });
                         if (info.remember) {
                             localStorage.setItem("user", JSON.stringify(getState().user));

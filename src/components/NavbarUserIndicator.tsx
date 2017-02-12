@@ -32,7 +32,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
                 </Menu.Item> : []}
                 <Menu.Divider />
                 <Menu.Item key="3">
-                    <Link onClick={this.props.logout} to="#">Log out</Link>
+                    <a onClick={this.props.logout}>Log out</a>
                 </Menu.Item>
             </Menu>;
 

@@ -1,28 +1,28 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
-import { APIs } from '../Utils';
+import { APIs, JSONRequestInit } from '../Utils';
 import { ArticleBrief  } from './ArticleList';
-
 export type Article = ArticleBrief & { content: string }
 
 export interface ArticlePageState {
     article: Article
     lastUpdatedTime: number,
-    errorInfo: ErrorType,
-    isRequesting: boolean
+    status: Status
 }
 
-export enum ErrorType{
-    None,
+export enum Status {
+    Initial,
+    Received,
+    Requesting,
     NotFound,
-    Others,
-    Network
+    Network,
+    Others
 }
 
 interface RequestArticleAction { type:"REQUEST_ARTICLE", id: number }
 interface ReceiveArticleAction { type: "RECEIVE_ARTICLE", article: Article, updatedTime: number}
 interface ClearArticleAction { type: "CLEAR_ARTICLE" }
-interface ErrorAction { type: "ERROR_ARTICLE", errorInfo: ErrorType }
+interface ErrorAction { type: "ERROR_ARTICLE", status : Status}
 
 type KnownAction = RequestArticleAction | ReceiveArticleAction | ErrorAction |ClearArticleAction;
 
@@ -36,13 +36,13 @@ export const actionCreators = {
                     });
                     break;
                 case 404:
-                    dispatch({type:"ERROR_ARTICLE", errorInfo: ErrorType.NotFound});
+                    dispatch({type:"ERROR_ARTICLE", status: Status.NotFound});
                     break;
                 default:
-                    dispatch({type:"ERROR_ARTICLE", errorInfo: ErrorType.Others});
+                    dispatch({type:"ERROR_ARTICLE", status: Status.Others});
             }
         }).catch(res=>{
-            dispatch({type:"ERROR_ARTICLE",errorInfo: ErrorType.Network});
+            dispatch({type:"ERROR_ARTICLE",status: Status.Network});
         });
         dispatch({type:"REQUEST_ARTICLE", id: id});
     },
@@ -52,18 +52,17 @@ export const actionCreators = {
 export const initialState : ArticlePageState = {
     article: null,
     lastUpdatedTime: null,
-    errorInfo: ErrorType.None,
-    isRequesting: false
+    status: Status.Initial
 };
 
 export const reducer: Reducer<ArticlePageState> = (state: ArticlePageState, action: KnownAction)=>{
     switch(action.type){
         case "REQUEST_ARTICLE":
-            return {...state , isRequesting: true, errorInfo: ErrorType.None, };
+            return {...state , status: Status.Requesting };
         case "RECEIVE_ARTICLE":
-            return {  isRequesting: false, errorInfo: ErrorType.None, article: action.article, lastUpdatedTime:action.updatedTime };
+            return { status: Status.Received, article: action.article, lastUpdatedTime:action.updatedTime };
         case "ERROR_ARTICLE":
-            return {...state , isRequesting: false, errorInfo: action.errorInfo };
+            return {...state , status: action.status};
         case "CLEAR_ARTICLE":
             return initialState;
         default:

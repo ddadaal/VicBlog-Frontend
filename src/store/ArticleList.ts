@@ -5,18 +5,16 @@ import moment from 'moment';
 import { actionCreators as listActionCreators } from './ArticleList';
 
 interface SectionState<ContentType> {
-    requesting: boolean,
     content: ContentType[],
-    errorInfo: ErrorType
+    status: Status
 }
 
 export interface ArticleListState {
     tags: SectionState<string>,
     categories: SectionState<string>,
-    articleList: SectionState<ArticleBrief>
+    articleList: SectionState<ArticleBrief> & {lastUpdatedTime : number}
     searching: boolean,
     filter: ArticleFilter,
-    lastUpdatedTime: number
 }
 
 export interface ArticleBrief {
@@ -36,15 +34,17 @@ export interface ArticleFilter {
 }
 
 
-export enum ErrorType {
-    None,
+export enum Status {
+    Initial, 
+    Requesting,
+    Received, 
     Network,
     Others
 }
 
-interface ErrorTags { type: "ERROR_TAGS", errorInfo: ErrorType }
-interface ErrorCategories { type: "ERROR_CATEGORIES", errorInfo: ErrorType }
-interface ErrorArticleList { type: "ERROR_ARTICLE_LIST", errorInfo: ErrorType }
+interface ErrorTags { type: "ERROR_TAGS", status: Status }
+interface ErrorCategories { type: "ERROR_CATEGORIES", status: Status }
+interface ErrorArticleList { type: "ERROR_ARTICLE_LIST", status: Status }
 interface RequestTags { type: "REQUEST_TAGS" }
 interface ReceiveTags { type: "RECEIVE_TAGS", tags: string[] }
 interface RequestCategories { type: "REQUEST_CATEGORIES" }
@@ -62,7 +62,7 @@ export const actionCreators = {
         let url = APIs.tags;
         fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_TAGS", tags: res as string[] });
-        })).catch(res => dispatch({ type: "ERROR_TAGS", errorInfo: ErrorType.Others }))
+        })).catch(res => dispatch({ type: "ERROR_TAGS", status: Status.Others }))
     },
     requestArticleList: (filter?: ArticleFilter): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let url = APIs.articles;
@@ -82,7 +82,7 @@ export const actionCreators = {
         fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now()  });
             localStorage.setItem("articleList",JSON.stringify(getState().articleList));
-        })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", errorInfo: ErrorType.Network }))
+        })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: Status.Network }))
     },
     requestAllCategories: ():AppThunkAction<KnownAction> => (dispatch, getState)=>{
         dispatch({type:"REQUEST_CATEGORIES"});
@@ -94,29 +94,27 @@ export const actionCreators = {
                 });
             }
             else {
-                dispatch({ type: "ERROR_CATEGORIES", errorInfo: ErrorType.Others });
+                dispatch({ type: "ERROR_CATEGORIES", status: Status.Others });
             }
 
-        }).catch(res=>dispatch({type:"ERROR_CATEGORIES", errorInfo: ErrorType.Network}));
+        }).catch(res=>dispatch({type:"ERROR_CATEGORIES", status: Status.Network}));
     },
     changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter})
 }
 
 export const initialState : ArticleListState = {
     tags: {
-        requesting: false,
         content: [],
-        errorInfo: ErrorType.None
+        status: Status.Initial
     },
     categories:{
-        requesting: false,
         content: [],
-        errorInfo: ErrorType.None
+        status: Status.Initial
     },
     articleList:{
-        requesting: false,
         content: [],
-        errorInfo: ErrorType.None
+        status: Status.Initial,
+        lastUpdatedTime: 0
     },
     filter: {
         categories: [],
@@ -124,32 +122,30 @@ export const initialState : ArticleListState = {
         titleText:""
     },
     searching: false,
-    lastUpdatedTime: 0
-    
 };
 
 export const reducer: Reducer<ArticleListState> = (state: ArticleListState, action: KnownAction)=>{
     switch(action.type){
         case "REQUEST_CATEGORIES":
-            return {...state, categories: { requesting: true, errorInfo: ErrorType.None, content: state.categories.content  }};
+            return {...state, categories: { status: Status.Received, content: state.categories.content  }};
         case "REQUEST_TAGS":
-            return {...state, tags: { requesting: true, errorInfo: ErrorType.None, content: state.tags.content  }};
+            return {...state, tags: { status: Status.Requesting, content: state.tags.content  }};
         case "RECEIVE_CATEGORIES":
-            return { ...state, categories: { requesting: false, errorInfo: ErrorType.None, content: action.categories  } };
+            return { ...state, categories: { status: Status.Received, content: action.categories  } };
         case "RECEIVE_TAGS":
-            return { ...state, tags: { requesting: false, errorInfo: ErrorType.None, content: action.tags  } };
+            return { ...state, tags: {status: Status.Received, content: action.tags  } };
         case "REQUEST_ALL_ARTICLES":
-            return {...state, articleList:{requesting: true, errorInfo: ErrorType.None, content: state.articleList.content}};
+            return {...state, articleList:{...state.articleList,status: Status.Requesting, content: state.articleList.content}};
         case "RECEIVE_ARTICLE_LIST":
-            return {...state, searching: false, lastUpdatedTime: action.updatedTime ,  articleList:{requesting: false, errorInfo:ErrorType.None, content: action.articleList}};
+            return {...state, searching: false, articleList:{status:Status.Received, content: action.articleList, lastUpdatedTime: action.updatedTime}};
         case "ERROR_CATEGORIES":
-            return { ...state, categories:{requesting: false, errorInfo: action.errorInfo, content: state.categories.content}};
+            return { ...state, categories:{ status: action.status, content: state.categories.content}};
         case "ERROR_TAGS":
-            return { ...state, tags:{requesting: false, errorInfo: action.errorInfo, content: state.tags.content}};
+            return { ...state, tags:{status: action.status, content: state.tags.content}};
         case "ERROR_ARTICLE_LIST":
-            return { ...state, searching: false, articleList:{requesting: false, errorInfo: action.errorInfo, content: state.articleList.content}};
+            return { ...state, searching: false, articleList:{ ...state.articleList, status: action.status, content: state.articleList.content}};
         case "REQUEST_SEARCH":
-            return {...state, searching: true, articleList:{ requesting: false, errorInfo:ErrorType.None, content: state.articleList.content}};
+            return {...state, searching: true, articleList:{...state.articleList, status:Status.Requesting, content: state.articleList.content}};
         case "CHANGE_FILTER":
             return {...state, filter: action.filter};
         default:

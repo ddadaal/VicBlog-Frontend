@@ -18,8 +18,8 @@ export interface ArticleListState {
 }
 
 export interface ArticleBrief {
-    id: number,
-    username: number,
+    id: string,
+    username: string,
     submitTime: number,
     lastEditedTime: number,
     category: string,
@@ -60,7 +60,7 @@ export const actionCreators = {
     requestAllTags: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "REQUEST_TAGS" });
         let url = APIs.tags;
-        fetch(url).then(res => res.json().then(res => {
+        return fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_TAGS", tags: res as string[] });
         })).catch(res => dispatch({ type: "ERROR_TAGS", status: Status.Others }))
     },
@@ -79,7 +79,7 @@ export const actionCreators = {
         }else{
             dispatch({type: "REQUEST_ALL_ARTICLES"});
         }
-        fetch(url).then(res => res.json().then(res => {
+        return fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now()  });
             localStorage.setItem("articleList",JSON.stringify(getState().articleList));
         })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: Status.Network }))

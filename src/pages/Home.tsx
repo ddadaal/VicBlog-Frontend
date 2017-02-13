@@ -4,7 +4,7 @@ import { DatePicker } from 'antd';
 const Home: React.StatelessComponent<{}> = function (props) {
     return (
         <div>
-        asdasdasdasd
+        af2
         
         </div>
     );

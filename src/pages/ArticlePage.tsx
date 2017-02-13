@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { actionCreators, ArticlePageState, Status } from '../store/ArticlePage';
 import CommentPanel from '../components/CommentPanel';
 
-type ArticlePageProps = typeof actionCreators & ArticlePageState & { params: { ID: number } };
+type ArticlePageProps = typeof actionCreators & ArticlePageState & { params: { ID: string } };
 
 class ArticlePage extends React.Component<ArticlePageProps, void>{
 

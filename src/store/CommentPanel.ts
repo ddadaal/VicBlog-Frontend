@@ -7,22 +7,22 @@ export interface CommentPanelState {
     contentStatus: ContentStatus,
     sendStatus: SendStatus,
     deleteStatus: DeleteStatus,
-    articleID: number,
+    articleID: string,
 }
 
 export interface Comment {
-    id: number,
-    articleID: number,
+    id: string,
+    articleID: string,
     username: string,
     submitTime: number,
     content: string,
-    replyTo: number
+    replyTo: string
 }
 
 export interface SendCommentModel {
-    articleID: number,
+    articleID: string,
     content: string,
-    replyTo: number,
+    replyTo: string,
     token: string
 }
 
@@ -57,23 +57,23 @@ export enum DeleteStatus {
 }
 
 
-interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articleID: number }
+interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articleID: string }
 interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus }
-interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: number }
+interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string }
 interface SendCommentAction { type: "SEND_COMMENT", model: SendCommentModel }
 interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus }
 interface SuccessSendingCommentAction { type: "SUCCESS_SENDING_COMMENT", comment: Comment }
-interface DeleteComment { type:"DELETE_COMMENT", commentID: number, token: string}
+interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token: string}
 interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
 interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
 
 type KnownAction =ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction;
 
 export const actionCreators = {
-    requestAllComments: (articleID: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    requestAllComments: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({type:"REQUEST_ALL_COMMENTS",articleID: articleID});
         const url = attachQueryString(APIs.comments, { articleID: articleID });
-        fetch(url).then(res => {
+        return fetch(url).then(res => {
             if (res.ok) {
                 res.json().then(json => {
                     dispatch({ type: "RECEIVE_ALL_COMMENTS", comments: json as Comment[], articleID: articleID });
@@ -87,7 +87,7 @@ export const actionCreators = {
     sendComment: (model: SendCommentModel, callback: ()=>any): AppThunkAction<KnownAction> => (dispatch, getState)=>{
         dispatch({type: "SEND_COMMENT", model: model});
         const url = APIs.comments;
-        fetch(url, JSONRequestInit(model)).then(res=>{
+        return fetch(url, JSONRequestInit(model)).then(res=>{
             switch(res.status){
                 case 201:
                     res.json().then(json=>{
@@ -106,10 +106,10 @@ export const actionCreators = {
             }           
         }).catch(res=>dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.Network}));
     },
-    deleteComment: (commentID: number, token: string, callback: ()=>any ) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
+    deleteComment: (commentID: string, token: string, callback: ()=>any ) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
         dispatch({type:"DELETE_COMMENT", commentID: commentID, token: token});
         const url = attachQueryString(APIs.comments,{commentID: commentID, token: token});
-        fetch(url,{
+        return fetch(url,{
             method: "DELETE"
         }).then(res=>{
             switch(res.status){
@@ -118,7 +118,6 @@ export const actionCreators = {
                         dispatch({type: "SUCCESS_DELETING_COMMENT",comment: json as Comment });
                         callback();
                     });
-
                     break;
                 case 401:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.NotAuthorized});
@@ -135,7 +134,7 @@ export const actionCreators = {
 }
 
 export const initialState:CommentPanelState = {
-    articleID: -1,
+    articleID: "",
     comments: [],
     contentStatus: ContentStatus.Initial,
     deleteStatus: DeleteStatus.Initial,

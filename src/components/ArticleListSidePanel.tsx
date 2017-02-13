@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { actionCreators, ArticleFilter, ArticleListState, Status } from '../store/ArticleList';
-import { Input, Checkbox, Button, Card,Icon, Alert } from 'antd';
+import { Input, Checkbox, Button, Card, Icon, Alert } from 'antd';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import moment from 'moment';
@@ -11,7 +11,7 @@ type ArticleListSiderProps = typeof actionCreators & ArticleListState;
 
 class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
     componentDidMount() {
-        if (Date.now() - this.props.articleList.lastUpdatedTime> 60 * 60 * 60) {
+        if (Date.now() - this.props.articleList.lastUpdatedTime > 60 * 60 * 60) {
             this.props.requestAllTags();
             this.props.requestAllCategories();
             this.props.requestArticleList();
@@ -64,8 +64,8 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
         return (
             <div>
-                 {this.props.articleList.status == Status.Network ? <Alert type="error" message="Network error. Please check your network connection. "/> :[]}
-                {this.props.articleList.status == Status.Others ? <Alert type="error" message="Something bad happened. Please retry."/> : []}
+                {this.props.articleList.status == Status.Network ? <Alert type="error" message="Network error. Please check your network connection. " /> : []}
+                {this.props.articleList.status == Status.Others ? <Alert type="error" message="Something bad happened. Please retry." /> : []}
                 <Card title={<span><Icon type="filter" /> Filter</span>}>
                     <Input placeholder="Text in Title " onChange={e => this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
                     <br />
@@ -81,9 +81,13 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                 Last updated in {moment(this.props.articleList.lastUpdatedTime).format("MMM Do, YYYY, HH:mm:ss")}.
             <br />
                 {this.props.articleList.status != Status.Requesting
-                ? <a onClick={() => this.props.requestArticleList()}><Icon type="reload" /> Click this to perform a full reload</a>
-                : <a disabled> <Icon type="reload" spin /> Refreshing</a>}
-               
+                    ? <a onClick={() => {
+                        this.props.requestAllCategories();
+                        this.props.requestAllTags();
+                        this.props.requestArticleList();
+                    }}><Icon type="reload" /> Click this to perform a full reload</a>
+                    : <a disabled> <Icon type="reload" spin /> Refreshing</a>}
+
             </div>
         );
     }

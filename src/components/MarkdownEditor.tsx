@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Row, Col, Input} from 'antd';
 import "highlight.js/styles/default.css";
+import "../assets/github-markdown.css";
 const hljs = require('highlight.js');
 var md = require('markdown-it')({
   highlight: function (str, lang) {
@@ -41,7 +42,7 @@ export class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
                     </div>
                     </Col>
                     <Col md={12} lg={12} sm={24} xs={0}>
-                        <div dangerouslySetInnerHTML={{__html: md.render(this.props.content)}}/>
+                        <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(this.props.content)}}/>
                     </Col>
                 </Row>
             </div>

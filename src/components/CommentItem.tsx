@@ -4,8 +4,9 @@ import { User } from '../store/User';
 import { Link } from 'react-router';
 import moment from 'moment';
 import { Popconfirm, Icon } from 'antd';
+import "../assets/github-markdown.css";
 const hljs = require('highlight.js');
-var md = require('markdown-it')({
+const md = require('markdown-it')({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -23,7 +24,7 @@ var md = require('markdown-it')({
 interface CommentItemProps {
   comment: Comment,
   currentUser: User,
-  deleteComment: (commentID: number) => any
+  deleteComment: (commentID: string) => any
 };
 
 export class CommentItem extends React.Component<CommentItemProps, void>{
@@ -35,7 +36,7 @@ export class CommentItem extends React.Component<CommentItemProps, void>{
       <Link to={`/users/${this.props.comment.username}`}>
         {this.props.comment.username}
       </Link>:<br />
-      <div dangerouslySetInnerHTML={{ __html: md.render(this.props.comment.content) }} />
+      <div className="markdown-body"  dangerouslySetInnerHTML={{ __html: md.render(this.props.comment.content) }} />
       <p>
         <small>at {moment.utc(this.props.comment.submitTime).local().format("MMM Do, YYYY, HH:mm:ss")}</small>
         <span style={floatRight}>

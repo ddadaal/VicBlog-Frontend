@@ -4,6 +4,7 @@ import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import "highlight.js/styles/default.css";
+import '../assets/github-markdown.css';
 import { Card, Tag } from 'antd';
 const hljs = require('highlight.js');
 var md = require('markdown-it')({
@@ -31,7 +32,7 @@ export class ArticlePanel extends React.Component<ArticlePanelProps, void>{
             <div>
                 {this.props.article.title ? <h1>{this.props.article.title}</h1> :[]}
                 <br />
-                <article dangerouslySetInnerHTML={{ __html:md.render(this.props.article.content) }}>
+                <article className="markdown-body" dangerouslySetInnerHTML={{ __html:md.render(this.props.article.content) }}>
                 </article>
             </div>
         )

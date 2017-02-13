@@ -4,6 +4,7 @@ import { APIs, JSONRequestInit } from '../Utils';
 import { ArticleBrief  } from './ArticleList';
 export type Article = ArticleBrief & { content: string }
 
+
 export interface ArticlePageState {
     article: Article
     lastUpdatedTime: number,
@@ -19,7 +20,7 @@ export enum Status {
     Others
 }
 
-interface RequestArticleAction { type:"REQUEST_ARTICLE", id: number }
+interface RequestArticleAction { type:"REQUEST_ARTICLE", articleID: string }
 interface ReceiveArticleAction { type: "RECEIVE_ARTICLE", article: Article, updatedTime: number}
 interface ClearArticleAction { type: "CLEAR_ARTICLE" }
 interface ErrorAction { type: "ERROR_ARTICLE", status : Status}
@@ -27,8 +28,9 @@ interface ErrorAction { type: "ERROR_ARTICLE", status : Status}
 type KnownAction = RequestArticleAction | ReceiveArticleAction | ErrorAction |ClearArticleAction;
 
 export const actionCreators = {
-    requestArticle : (id: number):AppThunkAction<KnownAction> => (dispatch, getState)=>{
-        fetch(`${APIs.article}${id}`).then(res=>{
+    requestArticle : (articleID: string):AppThunkAction<KnownAction> => (dispatch, getState)=>{
+        dispatch({type:"REQUEST_ARTICLE", articleID: articleID});
+        return fetch(`${APIs.article}${articleID}`).then(res=>{
             switch(res.status){
                 case 200:
                     res.json().then(json=>{
@@ -44,7 +46,7 @@ export const actionCreators = {
         }).catch(res=>{
             dispatch({type:"ERROR_ARTICLE",status: Status.Network});
         });
-        dispatch({type:"REQUEST_ARTICLE", id: id});
+
     },
     clearArticle: ()=>({type: "CLEAR_ARTICLE"})
 };

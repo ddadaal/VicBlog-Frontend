@@ -8,7 +8,7 @@ import { CommentItem } from './CommentItem';
 import { Button, Icon } from 'antd';
 
 
-type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: number };
+type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: string};
 interface CommentPanelStates {
     content: string
 }
@@ -39,7 +39,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
         });
     }
 
-    deleteComment(commentID: number){
+    deleteComment(commentID: string){
         this.props.deleteComment(commentID,this.props.user.token,()=>{this.props.requestAllComments(this.props.articleID)});
     }
 
@@ -48,9 +48,9 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
             articleID: this.props.articleID,
             content: this.state.content,
             token: this.props.user.token,
-            replyTo: -1
+            replyTo: ""
         };
-        this.props.sendComment(payload, () => {
+        this.props.sendComment(payload,()=>{
             this.props.requestAllComments(this.props.articleID);
             this.clearContent();
         });
@@ -80,7 +80,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
                 </p>
                 {items}
                 <br /><hr />
-                {this.props.user
+                {this.props.status == UserState.Status.LoggedIn
                     ? commenteditor
                     : <div>Wanna comment on this article? <a onClick={e => this.props.openLoginModal()}>Click to login! </a></div>}
             </div>
@@ -89,6 +89,6 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
 }
 
 export default connect(
-    (s: ApplicationState) => ({ ...s.currentComments, ...s.user }),
-    { ...UserState.actionCreators, ...CommentState.actionCreators },
+    (s: ApplicationState) => ({ ... s.currentComments, ...s.user }),
+    { ...UserState.actionCreators, ...CommentState.actionCreators} ,
     (stateProps, dispatchProps, ownProps: any) => ({ ...stateProps, ...dispatchProps, articleID: ownProps.articleID }))(CommentPanel);

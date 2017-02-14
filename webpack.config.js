@@ -2,10 +2,12 @@ const webpack= require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const basePlugins = [
     new webpack.DefinePlugin({
         'process.env': {
-            __DEV__: process.env.NODE_ENV !== 'production',
+            __DEV__: isDev,
             NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             BACKEND_URL: JSON.stringify(process.env.BACKEND_URL)
         }
@@ -13,20 +15,27 @@ const basePlugins = [
     new HtmlWebpackPlugin({
         template: './src/index.html',
         inject: 'body'
-    }),
+    })
+];
+
+const devPlugins = [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
 ];
 
-const plugins = basePlugins;
+const prodPlugins = [
+    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
+]
+
+const plugins = basePlugins.concat(isDev ?devPlugins : prodPlugins);
 
 module.exports = {
-    entry: [
+    entry: isDev ?[
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://0.0.0.0:8080',
         'webpack/hot/only-dev-server',
         './src/index'
-    ],
+    ] : './src/index',
 
     plugins: plugins,
 
@@ -35,9 +44,6 @@ module.exports = {
         contentBase: path.resolve(__dirname, 'dist'),
         publicPath: '/',
         historyApiFallback: true
-        // watchOptions: {
-        //     poll: true
-        // }
     },
 
     output: {
@@ -61,8 +67,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use:[
-                    "babel-loader",
-                    "ts-loader"
+                    "awesome-typescript-loader"
                 ]
             },
             // All .js(x) files will be piped through babel

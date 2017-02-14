@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
-import { APIs } from '../Utils';
+import { APIs, JSONRequestInit } from '../Utils';
 
 export enum UserRole {
     User,
@@ -17,7 +17,9 @@ export interface User {
 export interface UserState {
     user: User,
     status: Status,
-    loginModalVisible: boolean
+
+    loginModalVisible: boolean,
+    registerModalVisible: boolean
 }
 
 export interface LoginInfo {
@@ -25,6 +27,12 @@ export interface LoginInfo {
     password: string,
     remember: boolean
 }
+
+export interface RegisterInfo {
+    username: string,
+    password: string,
+}
+
 
 export enum Status {
     Initial,
@@ -44,9 +52,11 @@ interface ErrorLoginAction { type: "ERROR_LOGIN", status: Status }
 interface LogoutAction { type: "LOGOUT" }
 interface OpenLoginModalAction { type: "OPEN_LOGIN_MODAL" }
 interface CloseLoginModalAction { type: "CLOSE_LOGIN_MODAL" }
-interface SetUserStatusAction { type: "SET_USER_STATUS", status: Status}
+interface OpenRegisterModalAction { type: "OPEN_REGISTER_MODAL" }
+interface CloseRegisterModalAction { type: "CLOSE_REGISTER_MODAL" }
+interface SetUserStatusAction { type: "SET_USER_STATUS", status: Status }
 
-type KnownAction = SetUserStatusAction|LogoutAction | RequestLoginAction | SuccessLoginAction | ErrorLoginAction | OpenLoginModalAction | CloseLoginModalAction;
+type KnownAction = CloseRegisterModalAction | OpenRegisterModalAction | SetUserStatusAction | LogoutAction | RequestLoginAction | SuccessLoginAction | ErrorLoginAction | OpenLoginModalAction | CloseLoginModalAction;
 
 export const actionCreators = {
     logout: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -77,15 +87,22 @@ export const actionCreators = {
                     dispatch({ type: "ERROR_LOGIN", status: Status.Others });
             }
         }).catch(res => dispatch({ type: "ERROR_LOGIN", status: Status.Network }));
-
-
+    },
+    directLogin: (user: User, remember: boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: "SUCCESS_LOGIN", user: user });
+        if (remember) {
+            localStorage.setItem("user", JSON.stringify(getState().user));
+        }
     },
     openLoginModal: () => ({ type: "OPEN_LOGIN_MODAL" } as OpenLoginModalAction),
     closeLoginModal: () => ({ type: "CLOSE_LOGIN_MODAL" } as CloseLoginModalAction),
-    setUserStatus: (status: Status)=>({type: "SET_USER_STATUS", status: status} as SetUserStatusAction)
+    openRegisterModal: () => ({ type: "OPEN_REGISTER_MODAL" } as OpenRegisterModalAction),
+    closeRegisterModal: () => ({ type: "CLOSE_REGISTER_MODAL" } as CloseRegisterModalAction),
+    setUserStatus: (status: Status) => ({ type: "SET_USER_STATUS", status: status } as SetUserStatusAction),
+
 }
 
-const initialState: UserState = { user: null, status: Status.Initial, loginModalVisible: false }
+const initialState: UserState = { user: null, status: Status.Initial, loginModalVisible: false, registerModalVisible: false }
 
 export const reducer: Reducer<UserState> = (state: UserState, action: KnownAction) => {
     switch (action.type) {
@@ -102,7 +119,11 @@ export const reducer: Reducer<UserState> = (state: UserState, action: KnownActio
         case "CLOSE_LOGIN_MODAL":
             return { ...state, loginModalVisible: false };
         case "SET_USER_STATUS":
-            return {...state, status: action.status};
+            return { ...state, status: action.status };
+        case "OPEN_REGISTER_MODAL":
+            return { ...state, registerModalVisible: true };
+        case "CLOSE_REGISTER_MODAL":
+            return { ...state, registerModalVisible: false };
         default:
             const exhaustiveCheck: never = action;
     }

@@ -11,7 +11,7 @@ class App extends React.Component<void, void>{
             <div>
                 <Navbar />
                 <div style={{ backgroundColor: "#ECECEC", minHeight: "300px" }}>
-                    <div style={{ margin: "0 16px", padding: "24px 0 24px" }}>
+                    <div style={{ margin: "0 16px", padding: "16px 0 16px" }}>
                         <div style={{ backgroundColor: "white", padding:"8px 16px 8px 16px" }}>
                             {this.props.children}
                         </div>

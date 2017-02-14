@@ -3,9 +3,12 @@
 This is the front-end part of VicBlog.
 
 ## Features
-- React+Redux+React Router
+- React
+- Redux
+- React-router
 - TypeScript
 - Webpack 2
+- Ant design
 - Hot Module Replacement
 
 ## Development
@@ -16,7 +19,9 @@ This is the front-end part of VicBlog.
 4. Now you can enjoy the hot module replacement :)
 
 ## Build
-Currently not configured yet :(
+`webpack -p` or `npm run build`
+
+Compiled files will be placed under `/dist`.
 
 ## License 
 MIT

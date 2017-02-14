@@ -5,6 +5,7 @@ import { UserState, actionCreators, UserRole, LoginInfo } from '../store/User';
 import { Link } from 'react-router';
 import { Dropdown, Menu, Button, Modal, Icon } from 'antd';
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 
 type IndicatorProps = UserState & typeof actionCreators;
 
@@ -47,6 +48,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
             return <div>
                 <Button onClick={this.props.openLoginModal}>Log in</Button>
                 <LoginModal />
+                <RegisterModal/>
             </div>
         }
     }

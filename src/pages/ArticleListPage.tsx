@@ -10,6 +10,7 @@ import { Link } from 'react-router';
 export class ArticleListPage extends React.Component<void, void>{
 
     render() {
+        document.title = "Articles - VicBlog";
         const padding = {padding: "8px 8px 8px 8px"};
         return <div>
         <Row type="flex">

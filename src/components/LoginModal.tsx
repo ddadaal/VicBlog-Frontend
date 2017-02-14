@@ -89,7 +89,9 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
             onCancel={this.props.closeLoginModal}
             footer={[
                 <Button key="return" size="large" onClick={()=>this.props.closeLoginModal()}>Close</Button>,
-                <Button key="register" size="large"><Link to="/register" onClick={()=>this.props.closeLoginModal()}>Register</Link></Button>,
+                <Button key="register" size="large" onClick={()=>{
+                    this.props.closeLoginModal();
+                    this.props.openRegisterModal();}}>Register</Button>,
                 <Button key="login" size="large" type="primary" loading={this.props.status == Status.LoggingIn} onClick={()=>this.handleLogin()}>Login</Button>
             ]}>
             {alert}

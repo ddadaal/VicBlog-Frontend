@@ -10,6 +10,10 @@
         "target": "es6",
         "allowSyntheticDefaultImports": true
     },
+    "awesomeTypescriptLoaderOptions":{
+        "useBabel":true,
+        "useCache":true
+    },
     "exclude": [
         "dist",
         "node_modules"

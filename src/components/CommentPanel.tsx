@@ -30,6 +30,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
     }
 
     componentDidMount() {
+        
         this.props.requestAllComments(this.props.articleID);
     }
 

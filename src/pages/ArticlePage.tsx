@@ -20,6 +20,9 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
     }
 
     render() {
+
+        document.title = "Article - VicBlog";
+        
         const padding = { padding: "8px 8px 8px 8px" };
         let message = "";
         switch (this.props.status) {

@@ -74,8 +74,8 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                     <div><Icon type="tag-o" /> Categories</div>
                     <Checkbox.Group options={this.props.categories.content} value={this.props.filter.categories} onChange={e => this.handleCategoriesChange(e)} />
                     <br />
-                    <Button type="primary" onClick={() => this.startSearch()} loading={this.props.searching}><Icon type="check" /> Search</Button>
-                    <Button type="ghost" onClick={() => this.reset()}><Icon type="close" /> Reset</Button>
+                    <Button icon="check" type="primary" onClick={() => this.startSearch()} loading={this.props.searching}>Search</Button>
+                    <Button icon="close" type="ghost" onClick={() => this.reset()}>Reset</Button>
                 </Card>
                 <br />
                 Last updated in {moment(this.props.articleList.lastUpdatedTime).format("MMM Do, YYYY, HH:mm:ss")}.

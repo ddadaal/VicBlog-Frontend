@@ -3,6 +3,7 @@ import { AppThunkAction } from './';
 import { APIs } from '../Utils';
 import moment from 'moment';
 import { actionCreators as listActionCreators } from './ArticleList';
+import {ArticleFilter} from './ArticleListFilter';
 
 interface SectionState<ContentType> {
     content: ContentType[],
@@ -14,7 +15,7 @@ export interface ArticleListState {
     categories: SectionState<string>,
     articleList: SectionState<ArticleBrief> & {lastUpdatedTime : number}
     searching: boolean,
-    filter: ArticleFilter,
+    expired: boolean
 }
 
 export interface ArticleBrief {
@@ -24,14 +25,11 @@ export interface ArticleBrief {
     lastEditedTime: number,
     category: string,
     tags: string[]
-    title: string
+    title: string,
+    rating: number
 }
 
-export interface ArticleFilter {
-    categories: string[],
-    titleText: string,
-    tags: string[]
-}
+
 
 
 export enum Status {
@@ -52,9 +50,10 @@ interface ReceiveCategories { type: "RECEIVE_CATEGORIES", categories: string[] }
 interface RequestAllArticle{type: "REQUEST_ALL_ARTICLES" }
 interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[], updatedTime: number}
 interface RequestSearch { type: "REQUEST_SEARCH", filter: ArticleFilter }
-interface ChangeFilter { type: "CHANGE_FILTER", filter: ArticleFilter}
 
-type KnownAction = ChangeFilter| RequestSearch|  ErrorTags | ErrorCategories | ErrorArticleList | RequestTags | ReceiveTags | RequestCategories|ReceiveCategories|RequestAllArticle|ReceiveArticleList;
+interface ExpireListAction {type: "EXPIRE_LIST"}
+
+type KnownAction =ExpireListAction| RequestSearch|  ErrorTags | ErrorCategories | ErrorArticleList | RequestTags | ReceiveTags | RequestCategories|ReceiveCategories|RequestAllArticle|ReceiveArticleList;
 
 export const actionCreators = {
     requestAllTags: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -99,7 +98,9 @@ export const actionCreators = {
 
         }).catch(res=>dispatch({type:"ERROR_CATEGORIES", status: Status.Network}));
     },
-    changeFilter:(filter:ArticleFilter) => ({type:"CHANGE_FILTER", filter: filter})
+
+    expireList: ()=>({type: "EXPIRE_LIST"})
+
 }
 
 export const initialState : ArticleListState = {
@@ -116,12 +117,9 @@ export const initialState : ArticleListState = {
         status: Status.Initial,
         lastUpdatedTime: 0
     },
-    filter: {
-        categories: [],
-        tags:[],
-        titleText:""
-    },
+
     searching: false,
+    expired: false
 };
 
 export const reducer: Reducer<ArticleListState> = (state: ArticleListState, action: KnownAction)=>{
@@ -137,7 +135,7 @@ export const reducer: Reducer<ArticleListState> = (state: ArticleListState, acti
         case "REQUEST_ALL_ARTICLES":
             return {...state, articleList:{...state.articleList,status: Status.Requesting, content: state.articleList.content}};
         case "RECEIVE_ARTICLE_LIST":
-            return {...state, searching: false, articleList:{status:Status.Received, content: action.articleList, lastUpdatedTime: action.updatedTime}};
+            return {...state, expired: false, searching: false, articleList:{status:Status.Received, content: action.articleList, lastUpdatedTime: action.updatedTime}};
         case "ERROR_CATEGORIES":
             return { ...state, categories:{ status: action.status, content: state.categories.content}};
         case "ERROR_TAGS":
@@ -146,8 +144,8 @@ export const reducer: Reducer<ArticleListState> = (state: ArticleListState, acti
             return { ...state, searching: false, articleList:{ ...state.articleList, status: action.status, content: state.articleList.content}};
         case "REQUEST_SEARCH":
             return {...state, searching: true, articleList:{...state.articleList, status:Status.Requesting, content: state.articleList.content}};
-        case "CHANGE_FILTER":
-            return {...state, filter: action.filter};
+        case "EXPIRE_LIST":
+            return {...state,expired: true};
         default:
             const exhausiveCheck: never = action;
     };

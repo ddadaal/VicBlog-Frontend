@@ -47,7 +47,7 @@ export enum Status {
 
 
 interface RequestLoginAction { type: "REQUEST_LOGIN", info: LoginInfo }
-export interface SuccessLoginAction { type: "SUCCESS_LOGIN", user: User }
+interface SuccessLoginAction { type: "SUCCESS_LOGIN", user: User }
 interface ErrorLoginAction { type: "ERROR_LOGIN", status: Status }
 interface LogoutAction { type: "LOGOUT" }
 interface OpenLoginModalAction { type: "OPEN_LOGIN_MODAL" }

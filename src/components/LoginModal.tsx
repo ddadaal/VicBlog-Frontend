@@ -27,7 +27,7 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
         this.setState({
             username: e.target.value
         });
-        if (this.props.status == Status.FormUsernameInvalid){
+        if (this.props.status == Status.FormUsernameInvalid) {
             this.props.setUserStatus(Status.Initial);
         }
     }
@@ -35,23 +35,23 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
         this.setState({
             password: e.target.value
         });
-        if (this.props.status == Status.FormPasswordInvalid){
+        if (this.props.status == Status.FormPasswordInvalid) {
             this.props.setUserStatus(Status.Initial);
         }
 
     }
-    handleRememberToggle(e){
+    handleRememberToggle(e) {
         this.setState({
             remember: !e.target.value
         });
     }
 
     handleLogin() {
-        if (!this.state.username){
+        if (!this.state.username) {
             this.props.setUserStatus(Status.FormUsernameInvalid);
             return;
         }
-        if (!this.state.password){
+        if (!this.state.password) {
             this.props.setUserStatus(Status.FormPasswordInvalid);
             return;
         }
@@ -66,7 +66,7 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
     render() {
         let alertMessage = "";
 
-        switch(this.props.status){
+        switch (this.props.status) {
             case Status.CredentialInvalid:
                 alertMessage = "Credentials are invalid. Please check.";
                 break;
@@ -80,37 +80,38 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
                 alertMessage = "";
         }
 
-        const alert  = alertMessage ? <Alert message={alertMessage} type="error"/> : [];
-        
-        const usernameInputProps = this.props.status == Status.FormUsernameInvalid ? {validateStatus: "error", help: "Please input username!"} : {};
-        const passwordInputProps = this.props.status == Status.FormPasswordInvalid ? {validateStatus: "error", help: "Please input password!"} :{}; 
+        const alert = alertMessage ? <Alert message={alertMessage} type="error" /> : [];
+
+        const usernameInputProps = this.props.status == Status.FormUsernameInvalid ? { validateStatus: "error", help: "Please input username!" } : {};
+        const passwordInputProps = this.props.status == Status.FormPasswordInvalid ? { validateStatus: "error", help: "Please input password!" } : {};
 
         return <Modal title="Log In" visible={this.props.loginModalVisible}
             onCancel={this.props.closeLoginModal}
             footer={[
-                <Button key="return" size="large" onClick={()=>this.props.closeLoginModal()}>Close</Button>,
-                <Button key="register" size="large" onClick={()=>{
+                <Button key="return" size="large" onClick={() => this.props.closeLoginModal()}>Close</Button>,
+                <Button key="register" size="large" onClick={() => {
                     this.props.closeLoginModal();
-                    this.props.openRegisterModal();}}>Register</Button>,
-                <Button key="login" size="large" type="primary" loading={this.props.status == Status.LoggingIn} onClick={()=>this.handleLogin()}>Login</Button>
+                    this.props.openRegisterModal();
+                }}>Register</Button>,
+                <Button key="login" size="large" type="primary" loading={this.props.status == Status.LoggingIn} onClick={() => this.handleLogin()}>Login</Button>
             ]}>
             {alert}
             <Form>
-            <Form.Item {...usernameInputProps}>
-            <Input addonBefore={<Icon type="user" />} placeholder="Username" value={this.state.username} onChange={(e) => this.handleUsernameChange(e)} />
-            </Form.Item>
-            <Form.Item {...passwordInputProps}>
-            <Input addonBefore={<Icon type="lock" />} 
-            type="password" placeholder="Password" 
-            value={this.state.password} 
-            onChange={(e) => this.handlePasswordChange(e)} 
-            onKeyDown={e=>{
-                if ((e as any).keyCode == 13 ){
-                    this.handleLogin();
-                }
-            }}/>
-            </Form.Item>
-            <Checkbox onChange={(e)=>this.handleRememberToggle(e)}>Remember me!</Checkbox>
+                <Form.Item {...usernameInputProps}>
+                    <Input addonBefore={<Icon type="user" />} placeholder="Username" value={this.state.username} onChange={(e) => this.handleUsernameChange(e)} />
+                </Form.Item>
+                <Form.Item {...passwordInputProps}>
+                    <Input addonBefore={<Icon type="lock" />}
+                        type="password" placeholder="Password"
+                        value={this.state.password}
+                        onChange={(e) => this.handlePasswordChange(e)}
+                        onKeyDown={e => {
+                            if ((e as any).keyCode == 13) {
+                                this.handleLogin();
+                            }
+                        }} />
+                </Form.Item>
+                <Checkbox onChange={(e) => this.handleRememberToggle(e)}>Remember me!</Checkbox>
             </Form>
         </Modal>
     }

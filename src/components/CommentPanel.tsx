@@ -90,6 +90,6 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
 }
 
 export default connect(
-    (s: ApplicationState) => ({ ... s.currentComments, ...s.user }),
+    (s: ApplicationState) => ({ ... s.comments, ...s.user }),
     { ...UserState.actionCreators, ...CommentState.actionCreators} ,
     (stateProps, dispatchProps, ownProps: any) => ({ ...stateProps, ...dispatchProps, articleID: ownProps.articleID }))(CommentPanel);

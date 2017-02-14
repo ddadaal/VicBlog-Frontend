@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { actionCreators, ArticleFilter, ArticleListState, Status } from '../store/ArticleList';
-import { Input, Checkbox, Button, Card, Icon, Alert } from 'antd';
+import { actionCreators, ArticleListState, Status } from '../store/ArticleList';
+import { ArticleFilterState, actionCreators as filterActions} from '../store/ArticleListFilter';
+import { Input, Checkbox, Button, Card, Icon, Alert, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
+import {ArticleListUpdateMinutesSpan } from '../Utils';
 import moment from 'moment';
+
+const CheckableTag=Tag.CheckableTag;
 
 const Search = Input.Search;
 
-type ArticleListSiderProps = typeof actionCreators & ArticleListState;
+type ArticleListSiderProps = typeof actionCreators & ArticleListState & typeof filterActions & ArticleFilterState;
 
 class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
     componentDidMount() {
-        if (Date.now() - this.props.articleList.lastUpdatedTime > 60 * 60 * 60) {
+        if (Date.now() - this.props.articleList.lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 60 || this.props.expired) {
+            
             this.props.requestAllTags();
             this.props.requestAllCategories();
             this.props.requestArticleList();
@@ -96,6 +101,6 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 }
 
 export default connect(
-    (state: ApplicationState) => state.articleList,
-    actionCreators
+    (state: ApplicationState) => ({...state.articleList,...state.articleFilter}),
+    {...actionCreators,...filterActions}
 )(ArticleListSider);

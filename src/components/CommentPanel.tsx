@@ -8,7 +8,7 @@ import { CommentItem } from './CommentItem';
 import { Button, Icon } from 'antd';
 
 
-type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: string};
+type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: string };
 interface CommentPanelStates {
     content: string
 }
@@ -30,7 +30,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
     }
 
     componentDidMount() {
-        
+
         this.props.requestAllComments(this.props.articleID);
     }
 
@@ -40,8 +40,8 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
         });
     }
 
-    deleteComment(commentID: string){
-        this.props.deleteComment(commentID,this.props.user.token,()=>{this.props.requestAllComments(this.props.articleID)});
+    deleteComment(commentID: string) {
+        this.props.deleteComment(commentID, this.props.user.token, () => { this.props.requestAllComments(this.props.articleID) });
     }
 
     sendComment() {
@@ -51,7 +51,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
             token: this.props.user.token,
             replyTo: ""
         };
-        this.props.sendComment(payload,()=>{
+        this.props.sendComment(payload, () => {
             this.props.requestAllComments(this.props.articleID);
             this.clearContent();
         });
@@ -60,10 +60,10 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
 
     render() {
         const items = this.props.comments.map(item => {
-            return <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID=>this.deleteComment(commentID)} />;
+            return <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />;
         });
         const commenteditor = <div>
-            <MarkdownEditor content={this.state.content} onContentChange={content => this.onContentChange(content)} />
+            <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.state.content} onContentChange={content => this.onContentChange(content)} />
             <Button type="primary" onClick={() => this.sendComment()} loading={this.props.sendStatus == CommentState.SendStatus.Sending}>Send</Button>
         </div>;
         return (
@@ -90,6 +90,6 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
 }
 
 export default connect(
-    (s: ApplicationState) => ({ ... s.comments, ...s.user }),
-    { ...UserState.actionCreators, ...CommentState.actionCreators} ,
+    (s: ApplicationState) => ({ ...s.comments, ...s.user }),
+    { ...UserState.actionCreators, ...CommentState.actionCreators },
     (stateProps, dispatchProps, ownProps: any) => ({ ...stateProps, ...dispatchProps, articleID: ownProps.articleID }))(CommentPanel);

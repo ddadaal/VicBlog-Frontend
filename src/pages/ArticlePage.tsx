@@ -3,7 +3,7 @@ import { Row, Col, Spin, Alert } from 'antd';
 import { ArticlePanel } from '../components/ArticlePanel';
 import { ArticleSidePanel } from '../components/ArticleSidePanel';
 import { ApplicationState } from '../store';
-import {ArticleListUpdateMinutesSpan } from '../Utils';
+import {ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRight } from '../Utils';
 import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
 import { actionCreators, ArticlePageState, Status } from '../store/ArticlePage';
@@ -22,7 +22,7 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 
         document.title = "Article - VicBlog";
 
-        const padding = { padding: "8px 8px 8px 8px" };
+
         let message = "";
         switch (this.props.pageStatus) {
             case Status.Network:
@@ -42,10 +42,10 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
         return this.props.pageStatus == Status.Received ?
             (<div>
                 <Row type="flex">
-                    <Col style={padding} lg={{ span: 6, order: 1 }} md={{ span: 6, order: 1 }} sm={{ span: 24, order: 2 }} xs={{ span: 24, order: 2 }}>
+                    <Col style={ padding} {...twoColStyleLeft} >
                         <ArticleSidePanel article={this.props.article}/>
                     </Col>
-                    <Col style={padding} lg={{ span: 18, order: 2 }} md={{ span: 18, order: 2 }} sm={{ span: 24, order: 1 }} xs={{ span: 24, order: 1 }} >
+                    <Col style={padding} {...twoColStyleRight} >
                         <ArticlePanel article={this.props.article} />
                         <CommentPanel articleID={this.props.params.ID} />
                     </Col>

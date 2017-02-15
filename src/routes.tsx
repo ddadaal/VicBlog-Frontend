@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import { ArticleListPage } from './pages/ArticleListPage';
 import ArticlePage from './pages/ArticlePage';
 import { TestPage} from './pages/Test';
+import ComposePage from './pages/ComposePage';
 
 export const routes = (
     <Route path='/' component={App}>
@@ -13,6 +14,7 @@ export const routes = (
             <IndexRoute component={ArticleListPage}/>
             <Route path=":ID" component={ArticlePage}/>
         </Route>
+        <Route path="compose" component={ComposePage}/>
         <Route path="test" component={TestPage}/>
     </Route>
 );

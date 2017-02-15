@@ -155,7 +155,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                 <Button key="back" type="primary" onClick={() => {
                     this.props.closeRegisterModal();
                     this.props.directLogin(this.state.registeredUser, this.state.remember);
-                }}>Click to direct login and Close this modal!</Button>,
+                }}>Click to login directly and Close this modal!</Button>,
 
             ]
         }

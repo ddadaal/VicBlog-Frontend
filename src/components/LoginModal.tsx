@@ -105,11 +105,7 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
                         type="password" placeholder="Password"
                         value={this.state.password}
                         onChange={(e) => this.handlePasswordChange(e)}
-                        onKeyDown={e => {
-                            if ((e as any).keyCode == 13) {
-                                this.handleLogin();
-                            }
-                        }} />
+                        onPressEnter={()=>this.handleLogin()} />
                 </Form.Item>
                 <Checkbox onChange={(e) => this.handleRememberToggle(e)}>Remember me!</Checkbox>
             </Form>

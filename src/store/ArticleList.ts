@@ -51,7 +51,7 @@ interface RequestAllArticle{type: "REQUEST_ALL_ARTICLES" }
 interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[], updatedTime: number}
 interface RequestSearch { type: "REQUEST_SEARCH", filter: ArticleFilter }
 
-interface ExpireListAction {type: "EXPIRE_LIST"}
+export interface ExpireListAction {type: "EXPIRE_LIST"}
 
 type KnownAction =ExpireListAction| RequestSearch|  ErrorTags | ErrorCategories | ErrorArticleList | RequestTags | ReceiveTags | RequestCategories|ReceiveCategories|RequestAllArticle|ReceiveArticleList;
 

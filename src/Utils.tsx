@@ -10,7 +10,7 @@ export const APIs = {
     categories: APIRoot+ "categories",
     comments: APIRoot+"comments",
     upload: APIRoot+"upload",
-    rate: APIRoot+"rating/"
+    rate: APIRoot+"rating/",
 };
 
 export const JSONRequestInit = (payload)=>({
@@ -49,3 +49,7 @@ But here is something to notice.
 
 That is all.
 `
+export const padding = { padding: "8px 8px 8px 8px" };
+
+export const twoColStyleLeft = {lg:{ span: 6, order: 1 },md:{ span: 6, order: 1 },sm:{ span: 24, order: 2 }, xs:{ span: 24, order: 2 } }
+export const twoColStyleRight = {lg:{ span: 18, order: 2 },md:{ span: 18, order: 2 },sm:{ span: 24, order: 1 }, xs:{ span: 24, order: 1 } }

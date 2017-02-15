@@ -19,7 +19,9 @@ var md = require('markdown-it')({
 });
 interface MarkdownEditorProps {
     content: string
-    onContentChange : (content:string)=>any
+    onContentChange : (content:string)=>any,
+    placeholder: string,
+    minRow?: number
 }
 
 
@@ -38,7 +40,7 @@ export class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
                 <Row gutter={16}>
                     <Col md={12} lg={12} sm={24} xs={0}>
                     <div >
-                        <Input type="textarea" autosize={{minRows: 4}} placeholder="Input your comment here..." value={this.props.content} onChange={(e)=>this.handleInputChange(e)}/>
+                        <Input type="textarea" autosize={{minRows: this.props.minRow ? this.props.minRow : 4}} placeholder={this.props.placeholder} value={this.props.content} onChange={(e)=>this.handleInputChange(e)}/>
                     </div>
                     </Col>
                     <Col md={12} lg={12} sm={24} xs={0}>

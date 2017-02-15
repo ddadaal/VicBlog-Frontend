@@ -1,27 +1,26 @@
 import * as React from 'react';
 import { ArticleBrief } from '../store/ArticleList';
-import { Card, Tag, Rate } from 'antd';
+import { Card, Tag, Rate, Icon } from 'antd';
 import { APIs } from '../Utils';
 import { Link } from 'react-router';
 import moment from 'moment';
 
 type ArticleCardProps = {
     brief: ArticleBrief,
-} 
+}
 
 export class ArticleCard extends React.Component<ArticleCardProps, void>{
     render() {
         const url = APIs.article + this.props.brief.id;
         const tags = this.props.brief.tags.map(item => <Tag key={item} >{item}</Tag>);
-        return <Card title={<Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title}</Link>}>
+        return <Card title={<Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title} <Tag key="category" color="blue">{this.props.brief.category}</Tag></Link>}>
             <div>
-                <div>{tags}</div>
+                <div><Icon type="tags" /> {tags}</div>
+                <div>Rate: <Rate defaultValue={this.props.brief.rating} disabled /> </div>
                 <br />
-                <div>Rate: <Rate defaultValue={this.props.brief.rating} disabled/> </div>
-                <p>Category {this.props.brief.category}</p>
-                <p>Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY")}</p>
-                <p>Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY")}</p>
-                <p>By {this.props.brief.username}</p>
+                <p><Icon type="clock-circle-o" /> Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY")}</p>
+                <p><Icon type="clock-circle" /> Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY")}</p>
+                <p><Icon type="user" /> By {this.props.brief.username}</p>
             </div>
         </Card>
     }

@@ -26,11 +26,12 @@ export class ArticleSidePanel extends React.Component<ArticleSidePanelProps, voi
         const tags = this.props.article.tags.map(item => <Tag key={item}>{item}</Tag>);
         return <Card title={<span><Icon type="info-circle-o" /> Meta info</span>}>
 
-            <div>Click the star to rate this article! <Rating article={this.props.article}/>
+            <div>Click the star to rate this article! <br/>
+                <Rating article={this.props.article}/>
             </div>
 
-            <p>Author: {this.props.article.username}</p>
-            <p>Category: {this.props.article.category}</p>
+            <p><Icon type="user" /> Author: {this.props.article.username}</p>
+            <p>Category: <Tag color="blue" key="category" children={this.props.article.category}/></p>
             <div>Tags: {tags}</div>
             <p>Created in {this.stringify(this.props.article.submitTime)}.</p>
             <p>Last edited in {this.stringify(this.props.article.lastEditedTime)}.</p>

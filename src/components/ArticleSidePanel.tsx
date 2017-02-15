@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Article, actionCreators as articlePageActions, ArticlePageState, RatingStatus } from '../store/ArticlePage';
+import { Article, actionCreators as articlePageActions, ArticlePageState } from '../store/ArticlePage';
 import { UserState, Status, actionCreators as userActions } from '../store/User';
-import { Card, Tag, Collapse, Table, Icon, Rate, notification, Popconfirm } from 'antd';
+import { Card, Tag, Collapse, Table, Icon, Rate, notification, Popconfirm, Button } from 'antd';
 import { errorMessage} from '../Utils';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Rating from './Rating';
 import moment from 'moment';
@@ -10,10 +11,11 @@ const Panel = Collapse.Panel;
 
 type ArticleSidePanelProps = {
     article: Article,
-}
+    userState: UserState
+} & typeof articlePageActions;
 
 
-export class ArticleSidePanel extends React.Component<ArticleSidePanelProps, void>{
+class ArticleSidePanel extends React.Component<ArticleSidePanelProps, void>{
     constructor() {
         super();
     }
@@ -31,10 +33,18 @@ export class ArticleSidePanel extends React.Component<ArticleSidePanelProps, voi
             </div>
 
             <p><Icon type="user" /> Author: {this.props.article.username}</p>
-            <p>Category: <Tag color="blue" key="category" children={this.props.article.category}/></p>
+            <div>Category: <Tag color="blue" key="category" children={this.props.article.category}/></div>
             <div>Tags: {tags}</div>
             <p>Created in {this.stringify(this.props.article.submitTime)}.</p>
             <p>Last edited in {this.stringify(this.props.article.lastEditedTime)}.</p>
+            {this.props.userState.status == Status.LoggedIn && this.props.userState.user.username == this.props.article.username 
+            ? (<div><Link to={`/articles/${this.props.article.id}/edit`}><Icon type="edit"/> Edit</Link>
+            <Popconfirm title="Do you really want to delete this article?" onConfirm={()=>this.props.deleteArticle(this.props.userState.user.token, this.props.article.id)}>
+                <a><Icon type="delete" /> Delele</a>
+                </Popconfirm>
+                </div>
+                )
+            : [] }
         </Card>;
 
         {/*return <Card title="Meta">
@@ -46,3 +56,9 @@ export class ArticleSidePanel extends React.Component<ArticleSidePanelProps, voi
         </Card>*/}
     }
 }
+
+export default connect(
+    s=>({userState: s.user}),
+    articlePageActions,
+    (state,dispatch,ownProps: any)=>({ ...state, ...dispatch, article: ownProps.article})
+)(ArticleSidePanel)

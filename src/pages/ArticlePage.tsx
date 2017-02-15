@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Row, Col, Spin, Alert } from 'antd';
+import { Row, Col, Spin, Alert, notification } from 'antd';
 import { ArticlePanel } from '../components/ArticlePanel';
-import { ArticleSidePanel } from '../components/ArticleSidePanel';
+import ArticleSidePanel from '../components/ArticleSidePanel';
 import { ApplicationState } from '../store';
 import {ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRight } from '../Utils';
 import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { actionCreators, ArticlePageState, Status } from '../store/ArticlePage';
 import CommentPanel from '../components/CommentPanel';
 
-type ArticlePageProps = typeof userActions & typeof actionCreators & ArticlePageState & { params: { ID: string }, userState: UserState, expire:()=>any };
+type ArticlePageProps = typeof userActions & typeof actionCreators & ArticlePageState & { params: { ID: string }, expire:()=>any };
 
 class ArticlePage extends React.Component<ArticlePageProps, void>{
 
@@ -18,7 +19,18 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 
     }
 
+    componentDidUpdate(){
+        if (this.props.pageStatus == Status.Deleting){
+        notification.info({
+            message: "Deleting",
+            description: "This article is being deleted..."
+        });
+        }
+
+    }
+
     render() {
+
 
         document.title = "Article - VicBlog";
 
@@ -31,15 +43,19 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
             case Status.NotFound:
                 message = `Article ${this.props.params.ID} is not found.`;
                 break;
-            default:
+            case Status.Deleted:
+                message = "This article has been deleted.";
+                break;
+            case Status.Others:
                 message = "Internal Error. Please retry.";
+                break;
         };
-        let indicator = <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div>;
+        let indicator = message ?<div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> :<div/>;
         if (this.props.pageStatus == Status.Requesting) {
             indicator = <Alert type="info" message="Loading..." />;
         }
 
-        return this.props.pageStatus == Status.Received ?
+        return this.props.pageStatus == Status.Received || this.props.pageStatus == Status.Deleting ?
             (<div>
                 <Row type="flex">
                     <Col style={ padding} {...twoColStyleLeft} >
@@ -55,6 +71,6 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 }
 
 export default connect(
-    (s: ApplicationState) => ({ ...s.articlePage, userState: { ...s.user } }),
+    (s: ApplicationState) => s.articlePage,
     { ...actionCreators, ...userActions }
 )(ArticlePage);

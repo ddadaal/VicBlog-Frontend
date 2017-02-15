@@ -13,8 +13,8 @@ export const APIs = {
     rate: APIRoot+"rating/",
 };
 
-export const JSONRequestInit = (payload)=>({
-    method: "POST",
+export const JSONRequestInit = (payload,method?:string)=>({
+    method: method ? method : "POST",
     mode: "cors",
     body: JSON.stringify(payload),
     headers:{
@@ -53,3 +53,12 @@ export const padding = { padding: "8px 8px 8px 8px" };
 
 export const twoColStyleLeft = {lg:{ span: 6, order: 1 },md:{ span: 6, order: 1 },sm:{ span: 24, order: 2 }, xs:{ span: 24, order: 2 } }
 export const twoColStyleRight = {lg:{ span: 18, order: 2 },md:{ span: 18, order: 2 },sm:{ span: 24, order: 1 }, xs:{ span: 24, order: 1 } }
+
+export const simpleFormValidator = (values:Object):Array<string>=>{
+    let emptyKeys = [];
+    Object.keys(values).forEach(key=>{
+        if (!values[key]){ emptyKeys.push(key);}
+        if (Array.isArray(values[key]) && values[key].length ==0 ) { emptyKeys.push(key)}
+    });
+    return emptyKeys.length==0 ? undefined : emptyKeys;
+}

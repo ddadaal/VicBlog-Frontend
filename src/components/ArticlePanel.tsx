@@ -30,7 +30,6 @@ export class ArticlePanel extends React.Component<ArticlePanelProps, void>{
 
         return (
             <div>
-                {this.props.article.title ? <h1>{this.props.article.title}</h1> :[]}
                 <br />
                 <article className="markdown-body" dangerouslySetInnerHTML={{ __html:md.render(this.props.article.content) }}>
                 </article>

@@ -5,14 +5,18 @@ import Home from './pages/Home';
 import { ArticleListPage } from './pages/ArticleListPage';
 import ArticlePage from './pages/ArticlePage';
 import { TestPage} from './pages/Test';
-import ComposePage from './pages/ComposePage';
+import {ComposePage} from './pages/ComposePage';
+import EditPage from './pages/EditPage';
 
 export const routes = (
     <Route path='/' component={App}>
         <IndexRoute component={Home} />
         <Route path="articles">
             <IndexRoute component={ArticleListPage}/>
-            <Route path=":ID" component={ArticlePage}/>
+            <Route path=":ID">
+                <IndexRoute component={ArticlePage}/>
+                <Route path="edit" component={EditPage}/>
+                </Route>
         </Route>
         <Route path="compose" component={ComposePage}/>
         <Route path="test" component={TestPage}/>

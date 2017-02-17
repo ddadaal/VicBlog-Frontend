@@ -1,16 +1,5 @@
 # VicBlog Front-End Web App
 
-This is the front-end part of VicBlog.
-
-## Features
-- React
-- Redux
-- React-router
-- TypeScript
-- Webpack 2
-- Ant design
-- Hot Module Replacement
-
 ## Development
 
 1. `npm install`
@@ -20,8 +9,3 @@ This is the front-end part of VicBlog.
 
 ## Build
 `webpack -p` or `npm run build`
-
-Compiled files will be placed under `/dist`.
-
-## License 
-MIT

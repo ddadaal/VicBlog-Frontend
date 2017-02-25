@@ -27,16 +27,16 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
     render() {
         return <div>
             Select a category or input a new one:<br />
-            <Radio.Group onChange={e => { console.log(e.target.value); this.props.changeEditorInfo(e.target.value); }} value={this.props.selectedCategory}>
+            <Radio.Group onChange={e => { console.log(e.target.value); this.props.changeCategory(e.target.value); }} value={this.props.selectedCategory}>
                 {this.props.availableCategories.map(item => <Radio key={item} value={item}>{item}</Radio>)}
             </Radio.Group>
-            <Input placeholder="New category..." value={this.props.selectedCategory} onChange={e => this.props.changeEditorInfo((e.target as any).value)} />
+            <Input placeholder="New category..." value={this.props.selectedCategory} onChange={e => this.props.changeCategory((e.target as any).value)} />
             <hr />
             Select tags or input new ones: <br />
-            <TagSelector availableTags={this.props.availableTags} selectedTags={this.props.selectedTags} onSelectedChanged={values => this.props.changeEditorInfo(null,values)} />
+            <TagSelector availableTags={this.props.availableTags} selectedTags={this.props.selectedTags} onSelectedChanged={values => this.props.changeTags(values)} />
             <hr />
             Set a rate in your opinion:<br />
-            <Rate value={this.props.rate} onChange={value => this.props.changeEditorInfo(null,null,null,null,value)} />
+            <Rate value={this.props.rate} onChange={value => this.props.changeRate(value)} />
         </div>;
     }
 }

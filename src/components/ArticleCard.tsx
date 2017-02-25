@@ -9,7 +9,7 @@ type ArticleCardProps = {
     brief: ArticleBrief,
 }
 
-export class ArticleCard extends React.Component<ArticleCardProps, void>{
+export default class ArticleCard extends React.Component<ArticleCardProps, void>{
     render() {
         const url = APIs.article + this.props.brief.id;
         const tags = this.props.brief.tags.map(item => <Tag key={item} >{item}</Tag>);

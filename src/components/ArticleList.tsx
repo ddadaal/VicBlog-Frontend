@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ApplicationState } from '../store';
 import { actionCreators, ArticleListState, ArticleBrief } from '../store/ArticleList';
 import { Spin } from 'antd';
-import {ArticleCard} from '../components/ArticleCard';
+import ArticleCard from '../components/ArticleCard';
 import { connect} from 'react-redux';
 import moment from 'moment';
 

@@ -16,7 +16,7 @@ export interface ApplicationState {
     comments: Comments.CommentPanelState,
     rate: Rate.RatingState,
     articleFilter: ArticleFilter.ArticleFilterState,
-    composeArticle: ComposeArticle.ComposeArticleState
+    composeArticle: ComposeArticle.ComposeArticleState,
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using

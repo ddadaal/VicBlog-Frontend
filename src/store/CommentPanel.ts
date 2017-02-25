@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
+import fetch from 'isomorphic-fetch';
 
 export interface CommentPanelState {
     comments: Comment[],

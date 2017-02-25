@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Modal, Form, Input, Button, Checkbox, Alert, Icon } from 'antd';
 import { browserHistory } from 'react-router';
 import { APIs, JSONRequestInit, registerTerms, errorMessage } from '../Utils';
+import fetch from 'isomorphic-fetch';
 const FormItem = Form.Item;
 const md = require("markdown-it")();
 
@@ -33,6 +34,7 @@ interface RegisterModalStates {
 class RegisterModal extends React.Component<RegisterModalProps, RegisterModalStates>{
 
     register(info: RegisterInfo) {
+        this.setState({status: Status.Registering});
         const url = APIs.regsiter;
         return fetch(url, JSONRequestInit(info)).then(res => {
             switch (res.status) {
@@ -85,8 +87,6 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
     }
 
     handleUsernameChange(e) {
-
-
         this.setState({
             username: e.target.value
         });
@@ -155,7 +155,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                 <Button key="back" type="primary" onClick={() => {
                     this.props.closeRegisterModal();
                     this.props.directLogin(this.state.registeredUser, this.state.remember);
-                }}>Click to login directly and Close this modal!</Button>,
+                }}>Click to login directly and close this modal!</Button>,
 
             ]
         }

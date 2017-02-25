@@ -71,6 +71,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
             <div>
                 {this.props.articleList.status == Status.Network ? <Alert type="error" message="Network error. Please check your network connection. " /> : []}
                 {this.props.articleList.status == Status.Others ? <Alert type="error" message="Something bad happened. Please retry." /> : []}
+                {this.props.articleList.status == Status.Requesting ? <Alert type="info" message={<div><Icon type="reload" spin />Refreshing... Please wait.</div>}/> : []}
                 <Card title={<span><Icon type="filter" /> Filter</span>}>
                     <Input placeholder="Text in Title " onChange={e => this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
                     <br />

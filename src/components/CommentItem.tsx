@@ -41,7 +41,7 @@ export class CommentItem extends React.Component<CommentItemProps, void>{
         <small>at {moment.utc(this.props.comment.submitTime).local().format("MMM Do, YYYY, HH:mm:ss")}</small>
         <span style={floatRight}>
           {this.props.currentUser && this.props.currentUser.username == this.props.comment.username 
-          ? <Popconfirm title="Are you sure to delete this comment?" onConfirm={() => this.props.deleteComment(this.props.comment.id)}><a><Icon type="delete" />Delete</a></Popconfirm>
+          ? <Popconfirm title="Delete this comment?" onConfirm={() => this.props.deleteComment(this.props.comment.id)}><a><Icon type="delete" />Delete</a></Popconfirm>
           : []}
         </span>
       </p>

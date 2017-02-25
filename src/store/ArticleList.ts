@@ -4,6 +4,7 @@ import { APIs } from '../Utils';
 import moment from 'moment';
 import { actionCreators as listActionCreators } from './ArticleList';
 import {ArticleFilter} from './ArticleListFilter';
+import fetch from 'isomorphic-fetch';
 
 interface SectionState<ContentType> {
     content: ContentType[],

@@ -1,5 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
+import fetch from 'isomorphic-fetch';
 import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
 
 export enum RatingError {
@@ -36,7 +37,7 @@ export const actionCreators = {
                     });
                     break;
                 case 401:
-                    dispatch({ type: "ERROR_RATE_ARTICLE"});
+                    dispatch({ type: "ERROR_RATE_ARTICLE" });
                     error ? error(RatingError.ScoreNotInRange) : {};
                     break;
                 case 404:
@@ -44,8 +45,8 @@ export const actionCreators = {
                     error ? error(RatingError.ArticleNotFound) : {};
                     break;
                 default:
-                    dispatch({ type: "ERROR_RATE_ARTICLE"});
-                error ? error(RatingError.Others) : {};
+                    dispatch({ type: "ERROR_RATE_ARTICLE" });
+                    error ? error(RatingError.Others) : {};
             }
         }).catch(res => {
             dispatch({ type: "ERROR_RATE_ARTICLE" });
@@ -56,7 +57,7 @@ export const actionCreators = {
 }
 
 export const initialState: RatingState = {
-    sending: true,
+    sending: false,
     articleID: "",
     score: 0
 }

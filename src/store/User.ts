@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, JSONRequestInit } from '../Utils';
+import fetch from 'isomorphic-fetch';
 
 export enum UserRole {
     User,
@@ -17,7 +18,6 @@ export interface User {
 export interface UserState {
     user: User,
     status: Status,
-
     loginModalVisible: boolean,
     registerModalVisible: boolean
 }
@@ -117,7 +117,7 @@ export const reducer: Reducer<UserState> = (state: UserState, action: KnownActio
         case "OPEN_LOGIN_MODAL":
             return { ...state, loginModalVisible: true };
         case "CLOSE_LOGIN_MODAL":
-            return { ...state, loginModalVisible: false };
+            return { ...state, loginModalVisible: false, status: Status.Initial };
         case "SET_USER_STATUS":
             return { ...state, status: action.status };
         case "OPEN_REGISTER_MODAL":

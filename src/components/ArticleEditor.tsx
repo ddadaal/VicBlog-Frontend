@@ -34,7 +34,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
             tags: this.props.compose.selectedTags,
             category: this.props.compose.selectedCategory,
             token: this.props.user.user.token,
-            initialRate: this.props.compose.rate
+            rate: this.props.compose.rate
         };
 
         const emptyKeys = simpleFormValidator(payload);
@@ -42,7 +42,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
         if (emptyKeys) {
             notification.error({
                 message: `${this.props.compose.mode == EditorMode.New ? "Submit" :"Patch"} failed`,
-                description: `${emptyKeys.join(",")} is (are) required.`
+                description: `${emptyKeys.join(",")} ${emptyKeys.length >1 ? "are" : "is"} required.`
             });
             return;
         }
@@ -91,10 +91,10 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                     <ArticleEditorSidePanel />
                 </Col>
                 <Col style={padding} {...twoColStyleRight}>
-                    You are currently logged in as {this.props.user.user.username}. Isn't it? <a onClick={this.props.logout}>Log out</a> and <a onClick={this.props.openLoginModal}>relogin</a><br />
+                    You are currently logged in as {this.props.user.user.username}. Isn't it? <a onClick={this.props.logout}>Log out</a> or <a onClick={this.props.openLoginModal}>relogin</a><br />
                     {this.props.compose.mode  == EditorMode.Patch ? `You are now patching Article with title ${this.props.initialArticle.title}.` : ""}
-                    <Input placeholder="Title" value={this.props.compose.title} onChange={e => this.props.changeEditorInfo(null,null,(e.target as any).value )} />
-                    <MarkdownEditor minRow={8} placeholder="Input your content here" content={this.props.compose.content} onContentChange={content => this.props.changeEditorInfo(null,null,null,content)} />
+                    <Input placeholder="Title" value={this.props.compose.title} onChange={e => this.props.changeTitle((e.target as any).value )} />
+                    <MarkdownEditor minRow={8} placeholder="Input your content here" content={this.props.compose.content} onContentChange={content => this.props.changeContent(content)} />
                     <Button type="primary" icon="upload" loading={this.props.compose.submitStatus == ArticleSubmitStatus.Submitting} onClick={() => this.submitArticle()} children="Submit" />
                 </Col>
             </Row>

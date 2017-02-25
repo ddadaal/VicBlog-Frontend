@@ -2,6 +2,7 @@ import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, JSONRequestInit } from '../Utils';
 import { ArticleBrief } from './ArticleList';
+import fetch from 'isomorphic-fetch';
 export type Article = ArticleBrief & { content: string }
 
 
@@ -59,7 +60,7 @@ export const actionCreators = {
     clearArticle: () => ({ type: "CLEAR_ARTICLE" }),
     deleteArticle: (token: string, articleID: string, success?: (article: Article) => any, error?: (errorInfo: Status) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "DELETE_ARTICLE" });
-        return fetch(`${APIs.article}${articleID}?token=${token}`, { method: "DELETE", mode: "cors" }).then(res => {
+        return fetch(`${APIs.article}${articleID}`, { method: "DELETE", mode: "cors", headers:{ token: token} }).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
@@ -78,7 +79,7 @@ export const actionCreators = {
         }).catch(res => {
             dispatch({ type: "ERROR_DELETE_ARTICLE" });
             error ? error(Status.Network) : {};
-        })
+        });
     }
 };
 

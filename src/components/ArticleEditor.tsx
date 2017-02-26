@@ -11,6 +11,8 @@ import { Input, Button, Row, Col, Checkbox, notification, Alert } from 'antd';
 import { padding, twoColStyleLeft, twoColStyleRight, simpleFormValidator } from '../Utils';
 import { actionCreators as composeActions, ComposeArticleState, ArticleSubmitStatus, EditorMode } from '../store/ComposeArticle';
 import ArticleEditorSidePanel from '../components/ArticleEditorSidePanel';
+import UploadPanel, { UploadedFile } from './UploadPanel';
+import fetch from 'isomorphic-fetch';
 
 type ArticleEditorProps = { user: UserState, compose: ComposeArticleState, initialArticle: Article } & typeof userActions & typeof composeActions;
 
@@ -21,7 +23,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
         super();
 
     }
-    componentDidMount(){
+    componentDidMount() {
         this.props.setMode(this.props.initialArticle ? EditorMode.Patch : EditorMode.New);
         this.props.initiateArticleInfo(this.props.initialArticle);
     }
@@ -40,18 +42,18 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
 
         if (emptyKeys) {
             notification.error({
-                message: `${this.props.compose.mode == EditorMode.New ? "Submit" :"Patch"} failed`,
-                description: `${emptyKeys.join(",")} ${emptyKeys.length >1 ? "are" : "is"} required.`
+                message: `${this.props.compose.mode == EditorMode.New ? "Submit" : "Patch"} failed`,
+                description: `${emptyKeys.join(",")} ${emptyKeys.length > 1 ? "are" : "is"} required.`
             });
             return;
         }
 
         notification.info({
-            message: this.props.compose.mode == EditorMode.New ? "Submitting" :"Patching",
+            message: this.props.compose.mode == EditorMode.New ? "Submitting" : "Patching",
             description: `The article is being ${this.props.compose.mode == EditorMode.New ? "submitted" : "patched"}. This won't take long.`,
             duration: null
         });
-        if (this.props.compose.mode  == EditorMode.New) {
+        if (this.props.compose.mode == EditorMode.New) {
             this.props.submitArticle(this.props.user.user.token, payload, (article) => {
                 notification.destroy();
                 notification.success({
@@ -65,14 +67,14 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                     description: `Something goes wrong :(`
                 });
             });
-        }else{
-            this.props.patchArticle(this.props.initialArticle.id, this.props.user.user.token, payload,(result)=>{
+        } else {
+            this.props.patchArticle(this.props.initialArticle.id, this.props.user.user.token, payload, (result) => {
                 notification.destroy();
                 notification.success({
                     message: "Patch successfully!",
                     description: <div>The article has been patched successfully. Click <a onClick={() => browserHistory.push("/articles/" + result.article.id)}>this</a> to see it!</div>
                 })
-            }, (errorInfo)=>{
+            }, (errorInfo) => {
                 notification.destroy();
                 notification.error({
                     message: `Patch failed :(`,
@@ -83,16 +85,35 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
 
     }
 
+    handleUploadedFileClick(file: UploadedFile) {
+
+        const picturePostfixes = [".jpg", ".jpeg", ".png", ".gif"];
+
+        const a = picturePostfixes.map(x => file.filename.endsWith(x)).join(",");
+
+        if (a.includes("true")) {
+            this.props.changeContent(this.props.compose.content + `![${file.filename}](${file.url})`);
+        }else{
+            this.props.changeContent(this.props.compose.content + `[${file.filename}](${file.url})`)
+        }
+    }
+
+    handleRemoveFile(file:UploadedFile){
+        
+    }
+
+
     render() {
         return this.props.user.status == UserStatus.LoggedIn ?
             <Row>
                 <Col style={padding} {...twoColStyleLeft}>
                     <ArticleEditorSidePanel />
+                    <UploadPanel token={this.props.user.user.token} onClick={file=>this.handleUploadedFileClick(file)} />
                 </Col>
                 <Col style={padding} {...twoColStyleRight}>
                     You are currently logged in as {this.props.user.user.username}. Isn't it? <a onClick={this.props.logout}>Log out</a> or <a onClick={this.props.openLoginModal}>relogin</a><br />
-                    {this.props.compose.mode  == EditorMode.Patch ? `You are now patching Article with title ${this.props.initialArticle.title}.` : ""}
-                    <Input placeholder="Title" value={this.props.compose.title} onChange={e => this.props.changeTitle((e.target as any).value )} />
+                    {this.props.compose.mode == EditorMode.Patch ? `You are now patching Article with title ${this.props.initialArticle.title}.` : ""}
+                    <Input placeholder="Title" value={this.props.compose.title} onChange={e => this.props.changeTitle((e.target as any).value)} />
                     <MarkdownEditor minRow={8} placeholder="Input your content here" content={this.props.compose.content} onContentChange={content => this.props.changeContent(content)} />
                     <Button type="primary" icon="upload" loading={this.props.compose.submitStatus == ArticleSubmitStatus.Submitting} onClick={() => this.submitArticle()} children="Submit" />
                 </Col>

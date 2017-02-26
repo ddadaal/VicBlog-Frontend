@@ -48,10 +48,9 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
         const payload: CommentState.SendCommentModel = {
             articleID: this.props.articleID,
             content: this.state.content,
-            token: this.props.user.token,
             replyTo: ""
         };
-        this.props.sendComment(payload, () => {
+        this.props.sendComment(this.props.user.token, payload, () => {
             this.props.requestAllComments(this.props.articleID);
             this.clearContent();
         });

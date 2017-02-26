@@ -19,16 +19,14 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 
     }
 
-    shouldComponentUpdate() {
+    componentDidUpdate() {
         if (this.props.pageStatus == Status.Deleting) {
             notification.info({
                 message: "Deleting",
                 description: "This article is being deleted...",
                 duration: null
             });
-            return false;
         }
-        return true;
 
     }
 

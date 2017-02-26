@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Checkbox, Radio, Input, Rate } from 'antd';
+import { Checkbox, Radio, Input, Rate, Upload } from 'antd';
 import { connect } from 'react-redux';
 import { actionCreators as composeActions } from '../store/ComposeArticle';
 import { actionCreators as listActions, ArticleListState } from '../store/ArticleList';
 import { ApplicationState } from '../store';
 import { TagSelector } from './TagSelector';
+
 
 type ComposeArticleSidePanelProps = {
     selectedTags: string[],
@@ -37,6 +38,7 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
             <hr />
             Set a rate in your opinion:<br />
             <Rate value={this.props.rate} onChange={value => this.props.changeRate(value)} />
+            <hr/>
         </div>;
     }
 }

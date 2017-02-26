@@ -31,6 +31,7 @@ export class ArticlePanel extends React.Component<ArticlePanelProps, void>{
         return (
             <div>
                 <br />
+                <h1>{this.props.article.title}</h1>
                 <article className="markdown-body" dangerouslySetInnerHTML={{ __html:md.render(this.props.article.content) }}>
                 </article>
             </div>

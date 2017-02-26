@@ -24,7 +24,6 @@ export interface SendCommentModel {
     articleID: string,
     content: string,
     replyTo: string,
-    token: string
 }
 
 
@@ -85,10 +84,10 @@ export const actionCreators = {
         }).catch(res => { dispatch({ type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus.Network }); });
 
     },
-    sendComment: (model: SendCommentModel, callback: ()=>any): AppThunkAction<KnownAction> => (dispatch, getState)=>{
+    sendComment: (token:string, model: SendCommentModel, callback: ()=>any): AppThunkAction<KnownAction> => (dispatch, getState)=>{
         dispatch({type: "SEND_COMMENT", model: model});
         const url = APIs.comments;
-        return fetch(url, JSONRequestInit(model, {token: model.token})).then(res=>{
+        return fetch(url, JSONRequestInit(model, {token: token})).then(res=>{
             switch(res.status){
                 case 201:
                     res.json().then(json=>{

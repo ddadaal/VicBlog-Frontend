@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, JSONRequestInit } from '../Utils';
-import { ArticleBrief } from './ArticleList';
+import { ArticleBrief, ExpireListAction } from './ArticleList';
 import fetch from 'isomorphic-fetch';
 export type Article = ArticleBrief & { content: string }
 
@@ -31,7 +31,7 @@ interface DeleteArticleAction { type: "DELETE_ARTICLE" }
 interface SuccessDeleteArticleAction { type: "SUCCESS_DELETE_ARTICLE" }
 interface ErrorDeleteArticleAction { type: "ERROR_DELETE_ARTICLE" }
 
-type KnownAction = ErrorDeleteArticleAction | SuccessDeleteArticleAction | DeleteArticleAction | RequestArticleAction | ReceiveArticleAction | ErrorAction | ClearArticleAction;
+type KnownAction = ExpireListAction | ErrorDeleteArticleAction | SuccessDeleteArticleAction | DeleteArticleAction | RequestArticleAction | ReceiveArticleAction | ErrorAction | ClearArticleAction;
 
 export const actionCreators = {
     requestArticle: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -60,11 +60,12 @@ export const actionCreators = {
     clearArticle: () => ({ type: "CLEAR_ARTICLE" }),
     deleteArticle: (token: string, articleID: string, success?: (article: Article) => any, error?: (errorInfo: Status) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "DELETE_ARTICLE" });
-        return fetch(`${APIs.article}${articleID}`, { method: "DELETE", mode: "cors", headers:{ token: token} }).then(res => {
+        return fetch(`${APIs.article}${articleID}`, { method: "DELETE", mode: "cors", headers: { token: token } }).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
-                        dispatch({ type: "SUCCESS_DELETE_ARTICLE"});
+                        dispatch({ type: "SUCCESS_DELETE_ARTICLE" });
+                        dispatch({ type: "EXPIRE_LIST" });
                         success ? success(json as Article) : {};
                     });
                     break;
@@ -104,7 +105,9 @@ export const reducer: Reducer<ArticlePageState> = (state: ArticlePageState, acti
         case "SUCCESS_DELETE_ARTICLE":
             return { ...state, pageStatus: Status.Deleted };
         case "ERROR_DELETE_ARTICLE":
-            return { ...state, pageStatus: Status.Received }
+            return { ...state, pageStatus: Status.Received };
+        case "EXPIRE_LIST":
+            return state;
         default:
             const exhausiveCheck: never = action;
     };

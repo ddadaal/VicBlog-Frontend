@@ -99,9 +99,9 @@ class Rating extends React.Component<RatingProps, RatingStates>{
                 this.sendRate();
                 this.setState({ popconfirmVisible: false })
             }} onCancel={() => this.setState({ score: this.props.article.rate, popconfirmVisible: false })}>
-            <Rate value={this.state.score} onChange={value => {
+            <Rate value={this.state.score} allowHalf onChange={value => {
                 this.setState({ score: value, popconfirmVisible: true });
-            }} /></Popconfirm>
+            }} /> {this.state.score.toFixed(1)}</Popconfirm>
     }
 }
 

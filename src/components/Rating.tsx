@@ -25,7 +25,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
 
     componentDidMount() {
         this.setState({
-            score: this.props.article.rating
+            score: this.props.article.rate
         });
     }
 
@@ -39,7 +39,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
                 duration: 4
             });
             this.setState({
-                score: this.props.article.rating
+                score: this.props.article.rate
             });
             return;
         }
@@ -52,7 +52,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
                 duration: 3
             });
             this.setState({
-                score: this.props.article.rating
+                score: this.props.article.rate
             });
         };
         this.props.rate(this.props.article.id, this.state.score, this.props.userState.user.token, (newScore) => {
@@ -98,7 +98,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
             onConfirm={() => {
                 this.sendRate();
                 this.setState({ popconfirmVisible: false })
-            }} onCancel={() => this.setState({ score: this.props.article.rating, popconfirmVisible: false })}>
+            }} onCancel={() => this.setState({ score: this.props.article.rate, popconfirmVisible: false })}>
             <Rate value={this.state.score} onChange={value => {
                 this.setState({ score: value, popconfirmVisible: true });
             }} /></Popconfirm>

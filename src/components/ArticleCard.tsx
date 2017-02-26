@@ -16,7 +16,7 @@ export default class ArticleCard extends React.Component<ArticleCardProps, void>
         return <Card title={<Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title} <Tag key="category" color="blue">{this.props.brief.category}</Tag></Link>}>
             <div>
                 <div><Icon type="tags" /> {tags}</div>
-                <div>Rate: <Rate defaultValue={this.props.brief.rating} disabled /> </div>
+                <div>Rate: <Rate defaultValue={this.props.brief.rate} disabled /> </div>
                 <br />
                 <p><Icon type="clock-circle-o" /> Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY")}</p>
                 <p><Icon type="clock-circle" /> Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY")}</p>

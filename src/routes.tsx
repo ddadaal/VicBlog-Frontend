@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import { ArticleListPage } from './pages/ArticleListPage';
 import ArticlePage from './pages/ArticlePage';
 import { TestPage} from './pages/Test';
-import {ComposePage} from './pages/ComposePage';
+import ComposePage from './pages/ComposePage';
 import EditPage from './pages/EditPage';
 import  AboutPage from './pages/AboutPage';
 

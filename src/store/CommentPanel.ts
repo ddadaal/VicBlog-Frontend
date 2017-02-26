@@ -88,7 +88,7 @@ export const actionCreators = {
     sendComment: (model: SendCommentModel, callback: ()=>any): AppThunkAction<KnownAction> => (dispatch, getState)=>{
         dispatch({type: "SEND_COMMENT", model: model});
         const url = APIs.comments;
-        return fetch(url, JSONRequestInit(model)).then(res=>{
+        return fetch(url, JSONRequestInit(model, {token: model.token})).then(res=>{
             switch(res.status){
                 case 201:
                     res.json().then(json=>{
@@ -109,10 +109,8 @@ export const actionCreators = {
     },
     deleteComment: (commentID: string, token: string, callback: ()=>any ) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
         dispatch({type:"DELETE_COMMENT", commentID: commentID, token: token});
-        const url = attachQueryString(APIs.comments,{commentID: commentID, token: token});
-        return fetch(url,{
-            method: "DELETE"
-        }).then(res=>{
+        const url = attachQueryString(APIs.comments,{commentID: commentID});
+        return fetch(url,JSONRequestInit(null,{token: token},"DELETE")).then(res=>{
             switch(res.status){
                 case 200:
                     res.json().then(json=>{

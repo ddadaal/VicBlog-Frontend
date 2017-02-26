@@ -27,7 +27,7 @@ export interface ArticleBrief {
     category: string,
     tags: string[]
     title: string,
-    rating: number
+    rate: number
 }
 
 

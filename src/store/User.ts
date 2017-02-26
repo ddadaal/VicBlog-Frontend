@@ -117,7 +117,7 @@ export const reducer: Reducer<UserState> = (state: UserState, action: KnownActio
         case "OPEN_LOGIN_MODAL":
             return { ...state, loginModalVisible: true };
         case "CLOSE_LOGIN_MODAL":
-            return { ...state, loginModalVisible: false, status: Status.Initial };
+            return { ...state, loginModalVisible: false, status: state.status == Status.LoggedIn ? Status.LoggedIn : Status.Initial };
         case "SET_USER_STATUS":
             return { ...state, status: action.status };
         case "OPEN_REGISTER_MODAL":

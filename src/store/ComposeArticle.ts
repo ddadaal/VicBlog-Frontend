@@ -35,13 +35,11 @@ export enum ArticleSubmitStatus {
 export interface ArticleSubmitModel {
     content: string,
     title: string,
-    token: string,
     tags: string[],
     category: string,
     rate: number
 }
 export interface ArticlePatchModel {
-    token: string,
     title: string,
     content: string,
     category: string,
@@ -72,9 +70,9 @@ interface InitiateArticleInfoAction { type: "INITIATE_ARTICLE_INFO", article: Ar
 type KnownAction = InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction;
 
 export const actionCreators = {
-    submitArticle: (model: ArticleSubmitModel, success?: (article: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    submitArticle: (token: string, model: ArticleSubmitModel, success?: (article: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "SUBMIT_ARTICLE", model: model });
-        return fetch(APIs.articles, JSONRequestInit(model)).then(res => {
+        return fetch(APIs.articles, JSONRequestInit(model, { token: token })).then(res => {
             switch (res.status) {
                 case 201:
                     res.json().then(json => {
@@ -96,9 +94,9 @@ export const actionCreators = {
             error ? error(ArticleSubmitStatus.Network) : {};
         })
     },
-    patchArticle: (articleID: string, model: ArticlePatchModel, success?: (result: ArticlePatchResultModel) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    patchArticle: (articleID: string, token: string, model: ArticlePatchModel, success?: (result: ArticlePatchResultModel) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "PATCH_ARTICLE" });
-        return fetch(`${APIs.article}${articleID}`, JSONRequestInit(model, "PATCH")).then(res => {
+        return fetch(`${APIs.article}${articleID}`, JSONRequestInit(model, { token: token }, "PATCH")).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
@@ -145,7 +143,7 @@ export const initialState: ComposeArticleState = {
 export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState, action: KnownAction) => {
     switch (action.type) {
         case "CHANGE_CATEGORY":
-            return { ...state, category: action.category };
+            return { ...state, selectedCategory: action.category };
         case "CHANGE_TITLE":
             return { ...state, title: action.title };
         case "CHANGE_CONTENT":
@@ -153,7 +151,7 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
         case "CHANGE_RATE":
             return { ...state, rate: action.rate };
         case "CHANGE_TAGS":
-            return { ...state, tags: action.tags };
+            return { ...state, selectedTags: action.tags };
         case "SUBMIT_ARTICLE":
             return { ...state, status: ArticleSubmitStatus.Submitting };
         case "SUCCESS_SUBMITTING":
@@ -174,7 +172,7 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
             return { ...state, mode: action.mode };
         case "INITIATE_ARTICLE_INFO":
             if (action.article) {
-                return { ...state, mode: EditorMode.Patch, selectedCategory: action.article.category, selectedTags: action.article.tags, rate: action.article.rating, title: action.article.title, content: action.article.content };
+                return { ...state, mode: EditorMode.Patch, selectedCategory: action.article.category, selectedTags: action.article.tags, rate: action.article.rate, title: action.article.title, content: action.article.content };
             } else {
                 return state;
             }

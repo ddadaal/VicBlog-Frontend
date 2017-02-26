@@ -1,6 +1,7 @@
-const webpack= require("webpack");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -14,8 +15,14 @@ const basePlugins = [
     }),
     new HtmlWebpackPlugin({
         template: './src/index.html',
-        inject: 'body'
-    })
+    }),
+    new HtmlWebpackPlugin({
+        title: '404 Jump Back - VicBlog',
+        template: './src/404.html',
+        filename: '404.html',
+        chunks: []
+    }),
+    new ExtractTextPlugin("github-markdown.css")
 ];
 
 const devPlugins = [
@@ -24,13 +31,13 @@ const devPlugins = [
 ];
 
 const prodPlugins = [
-    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
+    
 ]
 
-const plugins = basePlugins.concat(isDev ?devPlugins : prodPlugins);
+const plugins = basePlugins.concat(isDev ? devPlugins : prodPlugins);
 
 module.exports = {
-    entry: isDev ?[
+    entry: isDev ? [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://0.0.0.0:8080',
         'webpack/hot/only-dev-server',
@@ -39,7 +46,7 @@ module.exports = {
 
     plugins: plugins,
 
-    devServer:{
+    devServer: {
         hot: true,
         contentBase: path.resolve(__dirname, 'dist'),
         publicPath: '/',
@@ -59,14 +66,14 @@ module.exports = {
         extensions: [
             '.ts', '.tsx',
             '.js', '.jsx',
-        ],
+        ]
     },
     module: {
         loaders: [
             // All .ts(x) files will be piped through ts-loader then babel
             {
                 test: /\.tsx?$/,
-                use:[
+                use: [
                     "awesome-typescript-loader"
                 ]
             },
@@ -90,7 +97,7 @@ module.exports = {
                         name: "images/[name]-[hash].[ext]'"
                     }
                 }]
-            },{
+            }, {
                 test: /\.html$/,
                 loader: "raw-loader"
             }

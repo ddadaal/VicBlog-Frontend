@@ -62,10 +62,6 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
         const items = this.props.comments.map(item => {
             return <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />;
         });
-        const commenteditor = <div>
-            <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.state.content} onContentChange={content => this.onContentChange(content)} />
-            <Button type="primary" onClick={() => this.sendComment()} loading={this.props.sendStatus == CommentState.SendStatus.Sending}>Send</Button>
-        </div>;
         return (
             <div>
                 <br />
@@ -82,7 +78,10 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
                 {items}
                 <br /><hr />
                 {this.props.status == UserState.Status.LoggedIn
-                    ? commenteditor
+                    ? <div>
+                        <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.state.content} onContentChange={content => this.onContentChange(content)} />
+                        <Button type="primary" onClick={() => this.sendComment()} loading={this.props.sendStatus == CommentState.SendStatus.Sending}>Send</Button>
+                    </div>
                     : <div>Wanna comment on this article? <a onClick={e => this.props.openLoginModal()}>Click to login! </a></div>}
             </div>
         );

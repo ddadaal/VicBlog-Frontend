@@ -1,6 +1,6 @@
 
 
-export const APIRoot = "http://localhost:57092/";
+export const APIRoot = "http://localhost:5000/";
 export const APIs = {
     login: APIRoot + "login",
     regsiter: APIRoot + "register",
@@ -10,7 +10,7 @@ export const APIs = {
     categories: APIRoot+ "categories",
     comments: APIRoot+"comments",
     upload: APIRoot+"upload",
-    rate: APIRoot+"rating/",
+    rate: APIRoot+"rate/",
 };
 
 export const JSONRequestInit = (payload,headers?,method?:string,)=>({

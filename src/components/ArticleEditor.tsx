@@ -33,7 +33,6 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
             content: this.props.compose.content,
             tags: this.props.compose.selectedTags,
             category: this.props.compose.selectedCategory,
-            token: this.props.user.user.token,
             rate: this.props.compose.rate
         };
 
@@ -53,7 +52,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
             duration: null
         });
         if (this.props.compose.mode  == EditorMode.New) {
-            this.props.submitArticle(payload, (article) => {
+            this.props.submitArticle(this.props.user.user.token, payload, (article) => {
                 notification.destroy();
                 notification.success({
                     message: `Article submitted!`,
@@ -67,7 +66,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                 });
             });
         }else{
-            this.props.patchArticle(this.props.initialArticle.id, payload,(result)=>{
+            this.props.patchArticle(this.props.initialArticle.id, this.props.user.user.token, payload,(result)=>{
                 notification.destroy();
                 notification.success({
                     message: "Patch successfully!",

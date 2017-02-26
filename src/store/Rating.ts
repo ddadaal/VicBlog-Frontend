@@ -28,9 +28,9 @@ type KnownAction = ResetAllStatesAction | RateAction | SuccessRateAction | Error
 export const actionCreators = {
     rate: (articleID: string, score: number, token: string, success?: (newScore: number) => any, error?: (info: RatingError) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "RATE_ARTICLE", articleID: articleID });
-        return fetch(`${APIs.rate}${articleID}`, JSONRequestInit({ token: token, score: score })).then(res => {
+        return fetch(`${APIs.rate}${articleID}`, JSONRequestInit({score: score},{token: token})).then(res => {
             switch (res.status) {
-                case 201:
+                case 200:
                     res.json().then(json => {
                         dispatch({ type: "SUCCESS_RATE_ARTICLE", newScore: json });
                         success ? success(json as number) : {};

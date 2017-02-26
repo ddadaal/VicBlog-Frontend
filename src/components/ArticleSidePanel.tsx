@@ -12,7 +12,7 @@ const Panel = Collapse.Panel;
 type ArticleSidePanelProps = {
     article: Article,
     userState: UserState
-} & typeof articlePageActions;
+} & typeof articlePageActions & typeof userActions;
 
 
 class ArticleSidePanel extends React.Component<ArticleSidePanelProps, void>{
@@ -28,9 +28,16 @@ class ArticleSidePanel extends React.Component<ArticleSidePanelProps, void>{
         const tags = this.props.article.tags.map(item => <Tag key={item}>{item}</Tag>);
         return <Card title={<span><Icon type="info-circle-o" /> Meta info</span>}>
 
-            <div>Click the star to rate this article! <br />
-                <Rating article={this.props.article} />
-            </div>
+            {this.props.userState.status == Status.LoggedIn
+                ? <div>Click to rate!  <br />
+                    <Rating article={this.props.article} />
+                </div>
+                : <div>You need to <a onClick={() => this.props.openLoginModal()}>Log in</a> to rate! <br/>
+                        <Rating article={this.props.article} disabled />
+                </div>
+            }
+
+
 
             <p><Icon type="user" /> Author: {this.props.article.username}</p>
             <div>Category: <Tag color="blue" key="category" children={this.props.article.category} /></div>
@@ -59,6 +66,6 @@ class ArticleSidePanel extends React.Component<ArticleSidePanelProps, void>{
 
 export default connect(
     s => ({ userState: s.user }),
-    articlePageActions,
+    {...articlePageActions,...userActions},
     (state, dispatch, ownProps: any) => ({ ...state, ...dispatch, article: ownProps.article })
 )(ArticleSidePanel)

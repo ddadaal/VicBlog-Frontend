@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ArticleBrief } from '../store/ArticleList';
 import { Card, Tag, Rate, Icon } from 'antd';
-import { APIs } from '../Utils';
+import { APIs, pathCombine } from '../Utils';
 import { Link } from 'react-router';
 import moment from 'moment';
 
@@ -13,7 +13,7 @@ export default class ArticleCard extends React.Component<ArticleCardProps, void>
 
 
     render() {
-        const url = APIs.article + this.props.brief.id;
+        const url = pathCombine(APIs.articles,this.props.brief.id);
         const tags = this.props.brief.tags.map(item => <Tag key={item} >{item}</Tag>);
         return <Card title={<div><Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title}</Link> <Tag key="category" color="blue">{this.props.brief.category}</Tag></div> }>
             <div>

@@ -1,27 +1,33 @@
 import * as React from 'react';
-import { Route, IndexRoute} from 'react-router';
+import { Route, IndexRoute, IndexRedirect } from 'react-router';
 import App from './pages/App';
 import Home from './pages/Home';
 import { ArticleListPage } from './pages/ArticleListPage';
 import ArticlePage from './pages/ArticlePage';
-import { TestPage} from './pages/Test';
+import { TestPage } from './pages/Test';
 import ComposePage from './pages/ComposePage';
 import EditPage from './pages/EditPage';
-import  AboutPage from './pages/AboutPage';
+import AboutProject from './pages/AboutProject';
+import AboutPage from './pages/AboutPage';
+import AboutMe from './pages/AboutMe';
 
 export const routes = (
     <Route path='/' component={App}>
         <IndexRoute component={Home} />
         <Route path="articles">
-            <IndexRoute component={ArticleListPage}/>
+            <IndexRoute component={ArticleListPage} />
             <Route path=":ID">
-                <IndexRoute component={ArticlePage}/>
-                <Route path="edit" component={EditPage}/>
-                </Route>
+                <IndexRoute component={ArticlePage} />
+                <Route path="edit" component={EditPage} />
+            </Route>
         </Route>
-        <Route path="compose" component={ComposePage}/>
-        <Route path="test" component={TestPage}/>
-        <Route path="about" component={AboutPage}/>
+        <Route path="compose" component={ComposePage} />
+        <Route path="test" component={TestPage} />
+        <Route path="about" component={AboutPage}>
+            <IndexRedirect to="project"/>
+            <Route path="project" component={AboutProject} />
+            <Route path="me" component={AboutMe}/>
+        </Route>
     </Route>
 );
 

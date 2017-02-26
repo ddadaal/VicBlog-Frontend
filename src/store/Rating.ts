@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import fetch from 'isomorphic-fetch';
-import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
+import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 
 export enum RatingError {
     ArticleNotFound,
@@ -28,7 +28,7 @@ type KnownAction = ResetAllStatesAction | RateAction | SuccessRateAction | Error
 export const actionCreators = {
     rate: (articleID: string, score: number, token: string, success?: (newScore: number) => any, error?: (info: RatingError) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "RATE_ARTICLE", articleID: articleID });
-        return fetch(`${APIs.rate}${articleID}`, JSONRequestInit({score: score},{token: token})).then(res => {
+        return fetch(pathCombine(APIs.rate, articleID), JSONRequestInit({score: score},{token: token})).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {

@@ -7,6 +7,7 @@ import * as Comments from './CommentPanel';
 import * as Rate from './Rating';
 import * as ArticleFilter from './ArticleListFilter';
 import * as ComposeArticle from './ComposeArticle';
+import * as AboutPage from './AboutPage';
 
 // The top-level state object
 export interface ApplicationState {
@@ -17,6 +18,7 @@ export interface ApplicationState {
     rate: Rate.RatingState,
     articleFilter: ArticleFilter.ArticleFilterState,
     composeArticle: ComposeArticle.ComposeArticleState,
+    aboutPage: AboutPage.AboutPageState
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -29,7 +31,8 @@ export const reducers = {
     comments: Comments.reducer,
     rate: Rate.reducer,
     articleFilter: ArticleFilter.reducer,
-    composeArticle: ComposeArticle.reducer
+    composeArticle: ComposeArticle.reducer,
+    aboutPage: AboutPage.reducer
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

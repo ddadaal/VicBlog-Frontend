@@ -2,9 +2,9 @@ import * as React from 'react';
 import { actionCreators, RegisterInfo, User } from '../store/User';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
-import { Modal, Form, Input, Button, Checkbox, Alert, Icon } from 'antd';
+import { Modal, Form, Input, Button, Checkbox, Alert, Icon, Spin } from 'antd';
 import { browserHistory } from 'react-router';
-import { APIs, JSONRequestInit, registerTerms, errorMessage } from '../Utils';
+import { APIs, JSONRequestInit, errorMessage } from '../Utils';
 import fetch from 'isomorphic-fetch';
 const FormItem = Form.Item;
 const md = require("markdown-it")();
@@ -28,13 +28,15 @@ interface RegisterModalStates {
     termsAgreed: boolean,
     status: Status,
     registeredUser: User,
-    remember: boolean
+    remember: boolean,
+    termsAndConditionsContent: string,
+    termsAndConditionsAcquiring: boolean
 }
 
 class RegisterModal extends React.Component<RegisterModalProps, RegisterModalStates>{
 
     register(info: RegisterInfo) {
-        this.setState({status: Status.Registering});
+        this.setState({ status: Status.Registering });
         const url = APIs.regsiter;
         return fetch(url, JSONRequestInit(info)).then(res => {
             switch (res.status) {
@@ -59,6 +61,16 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                     this.setState({ status: Status.Network });
             }
         });
+    }
+
+    componentDidMount() {
+        this.setState({
+            termsAndConditionsAcquiring: true
+        });
+        fetch(APIs.termsAndConditions).then(res => res.text()).then(value=>this.setState({
+            termsAndConditionsAcquiring: false,
+            termsAndConditionsContent: value
+        }));
     }
 
     handleSubmit() {
@@ -108,7 +120,9 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
         Modal.info({
             title: "VicBlog Terms and Conditions",
             content: (
-                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(registerTerms) }} />
+                this.state.termsAndConditionsAcquiring
+                ? <div><Spin spinning={true} size="large"/>Loading</div>
+                : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.state.termsAndConditionsContent) }} />
             ),
             width: "600px",
             okText: "OK I knew it."
@@ -133,7 +147,9 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
             termsAgreed: false,
             status: Status.Initial,
             registeredUser: null,
-            remember: false
+            remember: false,
+            termsAndConditionsAcquiring: false,
+            termsAndConditionsContent: ""
         }
     }
 

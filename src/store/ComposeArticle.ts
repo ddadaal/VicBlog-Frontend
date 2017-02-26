@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
-import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
+import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 import { Article } from './ArticlePage';
 import { ExpireListAction } from './ArticleList';
 import fetch from 'isomorphic-fetch';
@@ -96,7 +96,7 @@ export const actionCreators = {
     },
     patchArticle: (articleID: string, token: string, model: ArticlePatchModel, success?: (result: ArticlePatchResultModel) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "PATCH_ARTICLE" });
-        return fetch(`${APIs.article}${articleID}`, JSONRequestInit(model, { token: token }, "PATCH")).then(res => {
+        return fetch(pathCombine(APIs.articles, articleID), JSONRequestInit(model, { token: token }, "PATCH")).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {

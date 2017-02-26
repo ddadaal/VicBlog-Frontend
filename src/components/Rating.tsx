@@ -7,11 +7,12 @@ import { connect } from 'react-redux';
 import { errorMessage } from '../Utils';
 import { actionCreators as listActions } from '../store/ArticleList';
 
-type RatingProps = typeof userActions & typeof actionCreators & { rateState: RatingState, userState: UserState, article: Article, expireList: () => any };
+type RatingProps = typeof userActions & typeof actionCreators & { rateState: RatingState, userState: UserState, article: Article, expireList: () => any, disabled: boolean };
 
 interface RatingStates {
     score: number,
-    popconfirmVisible: boolean
+    popconfirmVisible: boolean,
+
 }
 
 class Rating extends React.Component<RatingProps, RatingStates>{
@@ -93,13 +94,14 @@ class Rating extends React.Component<RatingProps, RatingStates>{
 
 
     render() {
+        const disabledProps = this.props.disabled ? {disabled: true} : {};
 
         return <Popconfirm visible={this.state.popconfirmVisible} title={`You want to rate ${this.state.score} in this article, don't you?`} okText="Yes" cancelText="No"
             onConfirm={() => {
                 this.sendRate();
                 this.setState({ popconfirmVisible: false })
             }} onCancel={() => this.setState({ score: this.props.article.rate, popconfirmVisible: false })}>
-            <Rate value={this.state.score} allowHalf onChange={value => {
+            <Rate value={this.state.score} allowHalf {...disabledProps} onChange={value => {
                 this.setState({ score: value, popconfirmVisible: true });
             }} /> {this.state.score.toFixed(1)}</Popconfirm>
     }
@@ -108,7 +110,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
 export default connect(
     (s) => ({ rateState: s.rate, userState: s.user }),
     { ...actionCreators, ...userActions, expireList: listActions.expireList },
-    (state, dispatch, ownProps: any) => ({ ...state, ...dispatch, article: ownProps.article })
+    (state, dispatch, ownProps: any) => ({ ...state, ...dispatch, article: ownProps.article, disabled: ownProps.disabled })
 )(Rating);
 
 

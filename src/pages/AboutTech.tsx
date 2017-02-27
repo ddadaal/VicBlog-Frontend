@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIs} from '../Utils';
+import { APIs } from '../Utils';
 import { Spin } from 'antd';
 import { actionCreators } from '../store/AboutPage';
 import fetch from 'isomorphic-fetch';
@@ -23,27 +23,29 @@ var md = require('markdown-it')({
 });
 
 
-type AboutThisProjectProps = typeof actionCreators & {loading: boolean, error:boolean, content: string, loaded: boolean};
+type AboutTechPageProps = typeof actionCreators & { loading: boolean, error: boolean, content: string, loaded: boolean };
 
-class AboutThisProject extends React.Component<AboutThisProjectProps,void>{
-    componentDidMount(){
-        if (this.props.loaded){
+class AboutTechPage extends React.Component<AboutTechPageProps, void>{
+
+    componentDidMount() {
+        if (this.props.loaded) {
             return;
         }
-        this.props.fetchAboutProject();
+        this.props.fetchAboutTech();
     }
-    constructor(props){
+
+    constructor(props) {
         super(props);
     }
 
-    render(){
+    render() {
         return this.props.loading
-        ? <div><Spin spinning size="large"> Loading</Spin></div>
-        : <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(this.props.content) }}/>
+            ? <div><Spin spinning size="large"> Loading</Spin></div>
+            : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.props.content) }} />
     }
 }
 
 export default connect(
-    s=>({...s.aboutPage.aboutProject}),
+    s => ({ ...s.aboutPage.aboutTech }),
     actionCreators
-)(AboutThisProject);
+)(AboutTechPage);

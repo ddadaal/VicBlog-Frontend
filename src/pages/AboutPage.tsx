@@ -17,11 +17,12 @@ class AboutPage extends React.Component<AboutPageProps, void>{
 
     render() {
         const currentKey = this.props.currentPath.split('/')[2];
-        return <Row type="flex" style={{marginTop: "16px"}} gutter={32} >
+        return <Row type="flex" style={{marginTop: "16px", marginBottom: "16px"}} gutter={32} >
             <Col {...twoColStyleLeft}>
                 <Menu selectedKeys={[currentKey]} mode="vertical">
                     <Menu.Item key="project"><Link to={"/about/project"}>About this project</Link></Menu.Item>
                     <Menu.Item key="me"><Link to={"/about/me"}>About me</Link></Menu.Item>
+                    <Menu.Item key="tech"><Link to={"/about/tech"}>Tech details</Link></Menu.Item>
                 </Menu>
             </Col>
             <Col {...twoColStyleRight}>

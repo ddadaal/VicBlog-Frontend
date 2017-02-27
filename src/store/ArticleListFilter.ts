@@ -8,10 +8,32 @@ export interface ArticleFilterState {
     filter: ArticleFilter
 }
 
+export enum ArticleBriefListOrder {
+    NotSpecified,
+    SubmitEarliestToLatest,
+    SubmitLatestToEarliest,
+    LastEditedEarliestToLatest,
+    LastEditedLatestToEarliest,
+    RankHighestToLowest,
+    RankLowestToHighest
+}
+
+export const orderDescription = {
+    [ArticleBriefListOrder.NotSpecified]: "Arbitrary",
+    [ArticleBriefListOrder.SubmitEarliestToLatest]: "Submit Time Earliest To Latest",
+    [ArticleBriefListOrder.SubmitLatestToEarliest]: "Submit Time Latest To Earliest",
+    [ArticleBriefListOrder.LastEditedEarliestToLatest]: "Last Edited Earliest To Latest",
+    [ArticleBriefListOrder.LastEditedLatestToEarliest]: "Last Edited Latest To Earliest",
+    [ArticleBriefListOrder.RankHighestToLowest]: "Rate Highest To Lowest",
+    [ArticleBriefListOrder.RankLowestToHighest]: "Rate Lowest To Highest"
+}
+
+
 export interface ArticleFilter {
     categories: string[],
     titleText: string,
-    tags: string[]
+    tags: string[],
+    order: ArticleBriefListOrder
 }
 
 
@@ -28,7 +50,8 @@ const initialState: ArticleFilterState = {
     filter: {
         categories: [],
         tags: [],
-        titleText: ""
+        titleText: "",
+        order: ArticleBriefListOrder.NotSpecified
     }
 
 }

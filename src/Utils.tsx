@@ -14,9 +14,13 @@ export const APIs = {
     comments:pathCombine(APIRoot,"comments"),
     upload:pathCombine(APIRoot,"upload"),
     rate:pathCombine(APIRoot,"rate"),
+    filteredList: pathCombine(APIRoot,"articles","filter"),
     termsAndConditions:pathCombine(APIRoot,"info","TermsAndConditions.md"),
-    about: pathCombine(APIRoot, "info","about.md"),
-    contact: pathCombine(APIRoot,"info","contact.md")
+    about:{
+        project: pathCombine(APIRoot, "info","project.md"),
+        me: pathCombine(APIRoot,"info","me.md"),
+        tech :pathCombine(APIRoot, "info","tech.md")
+    } ,
 };
 
 export const JSONRequestInit = (payload,headers?,method?:string,)=>({

@@ -31,7 +31,7 @@ class AboutMePage extends React.Component<AboutMePageProps, void>{
         if (this.props.loaded) {
             return;
         }
-        this.props.requestAboutMe();
+        this.props.fetchAboutMe();
     }
 
     constructor(props) {

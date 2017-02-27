@@ -10,6 +10,7 @@ import EditPage from './pages/EditPage';
 import AboutProject from './pages/AboutProject';
 import AboutPage from './pages/AboutPage';
 import AboutMe from './pages/AboutMe';
+import AboutTech from './pages/AboutTech';
 
 export const routes = (
     <Route path='/' component={App}>
@@ -27,6 +28,7 @@ export const routes = (
             <IndexRedirect to="project"/>
             <Route path="project" component={AboutProject} />
             <Route path="me" component={AboutMe}/>
+            <Route path="tech" component={AboutTech}/>
         </Route>
     </Route>
 );

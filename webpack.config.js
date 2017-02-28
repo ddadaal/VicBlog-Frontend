@@ -28,10 +28,15 @@ const basePlugins = [
 const devPlugins = [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+        APIROOTURL: JSON.stringify("http://localhost:5000")
+    }),
 ];
 
 const prodPlugins = [
-    
+    new webpack.DefinePlugin({
+        APIROOTURL: JSON.stringify("https://api.viccrubs.tk")
+    }),
 ]
 
 const plugins = basePlugins.concat(isDev ? devPlugins : prodPlugins);
@@ -55,9 +60,9 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].[hash].js',
+        filename: '[name].js',
         publicPath: '/',
-        sourceMapFilename: '[name].[hash].js.map',
+        sourceMapFilename: '[name].js.map',
         chunkFilename: '[id].chunk.js'
     },
 
@@ -94,7 +99,7 @@ module.exports = {
                     options: {
                         hash: "sha512",
                         digest: "hex",
-                        name: "images/[name]-[hash].[ext]'"
+                        name: "images/[name].[ext]'"
                     }
                 }]
             }, {

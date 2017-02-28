@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "set NODE_ENV=production&&webpack -p --progress --color"
+    "build": "set NODE_ENV=production&&webpack -p --color",
+    "publish":"cd ./dist&&git add *&&git commit -m 'update'&&git push origin master"
   },
   "repository": {
     "type": "git",
@@ -17,14 +18,14 @@
     "@types/highlight.js": "^9.1.9",
     "@types/isomorphic-fetch": "0.0.33",
     "@types/md5": "^2.1.31",
-    "@types/react": "^15.0.12",
+    "@types/react": "^15.0.13",
     "@types/react-dom": "^0.14.23",
     "@types/react-redux": "^4.4.36",
     "@types/react-router": "^3.0.5",
     "@types/react-router-redux": "^4.0.41",
     "@types/redux": "^3.6.31",
     "@types/webpack-env": "^1.13.0",
-    "awesome-typescript-loader": "^3.0.7",
+    "awesome-typescript-loader": "^3.0.8",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-plugin-import": "^1.1.1",
@@ -44,7 +45,7 @@
   },
   "dependencies": {
     "@types/react-router-redux": "^4.0.41",
-    "antd": "^2.7.2",
+    "antd": "^2.7.3",
     "highlight.js": "^9.9.0",
     "isomorphic-fetch": "^2.2.1",
     "markdown-it": "^8.3.0",

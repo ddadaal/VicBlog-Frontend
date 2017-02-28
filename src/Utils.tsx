@@ -1,10 +1,11 @@
 
+declare var APIROOTURL: string;
 
 export const pathCombine = (...paths: string[])=>{
     return paths.join('/');
 }
 
-export const APIRoot = "http://localhost:5000";
+export const APIRoot = APIROOTURL;
 export const APIs = {
     login: pathCombine(APIRoot,"login"),
     regsiter:pathCombine(APIRoot,"register"),
@@ -25,7 +26,6 @@ export const APIs = {
 
 export const JSONRequestInit = (payload,headers?,method?:string,)=>({
     method: method ? method : "POST",
-    mode: "cors",
     body: JSON.stringify(payload),
     headers:{
         ...headers,

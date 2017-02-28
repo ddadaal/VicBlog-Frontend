@@ -30,7 +30,8 @@ interface RegisterModalStates {
     registeredUser: User,
     remember: boolean,
     termsAndConditionsContent: string,
-    termsAndConditionsAcquiring: boolean
+    termsAndConditionsAcquiring: boolean,
+    termsAndConditionsError: boolean
 }
 
 class RegisterModal extends React.Component<RegisterModalProps, RegisterModalStates>{
@@ -67,9 +68,14 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
         this.setState({
             termsAndConditionsAcquiring: true
         });
-        fetch(APIs.termsAndConditions).then(res => res.text()).then(value=>this.setState({
+        fetch(APIs.termsAndConditions).then(res => res.text()).then(value => this.setState({
             termsAndConditionsAcquiring: false,
-            termsAndConditionsContent: value
+            termsAndConditionsContent: value,
+            termsAndConditionsError: false
+        })).catch(res => this.setState({
+            termsAndConditionsAcquiring: false,
+            termsAndConditionsContent: "",
+            termsAndConditionsError: true
         }));
     }
 
@@ -117,12 +123,18 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
     }
 
     showTerms() {
+        if (this.state.termsAndConditionsError) {
+            this.componentDidMount();
+        }
         Modal.info({
             title: "VicBlog Terms and Conditions",
             content: (
                 this.state.termsAndConditionsAcquiring
-                ? <div><Spin spinning={true} size="large"/>Loading</div>
-                : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.state.termsAndConditionsContent) }} />
+                    ? <div><Spin spinning={true} size="large" />Loading</div>
+                    : (this.state.termsAndConditionsError
+                        ? <Alert type="error" message={errorMessage.Others} />
+                        : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.state.termsAndConditionsContent) }} />
+                    )
             ),
             width: "600px",
             okText: "OK I knew it."
@@ -149,7 +161,8 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
             registeredUser: null,
             remember: false,
             termsAndConditionsAcquiring: false,
-            termsAndConditionsContent: ""
+            termsAndConditionsContent: "",
+            termsAndConditionsError: false
         }
     }
 

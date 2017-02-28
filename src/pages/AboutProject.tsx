@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { APIs} from '../Utils';
-import { Spin } from 'antd';
+import { APIs, errorMessage} from '../Utils';
+import { Spin, Alert } from 'antd';
 import { actionCreators } from '../store/AboutPage';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
@@ -36,10 +36,12 @@ class AboutThisProject extends React.Component<AboutThisProjectProps,void>{
         super(props);
     }
 
-    render(){
+    render() {
         return this.props.loading
-        ? <div><Spin spinning size="large"> Loading</Spin></div>
-        : <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(this.props.content) }}/>
+            ? <div><Spin spinning size="large"> Loading</Spin></div>
+            : ( this.props.error 
+            ? <Alert type="error" message={errorMessage.Network}/>
+            : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.props.content) }} />);
     }
 }
 

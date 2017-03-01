@@ -60,9 +60,9 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js',
+        filename: '[name]-[hash].js',
         publicPath: '/',
-        sourceMapFilename: '[name].js.map',
+        sourceMapFilename: '[name]-[hash].js.map',
         chunkFilename: '[id].chunk.js'
     },
 
@@ -99,7 +99,7 @@ module.exports = {
                     options: {
                         hash: "sha512",
                         digest: "hex",
-                        name: "images/[name].[ext]'"
+                        name: "images/[name]-[hash].[ext]'"
                     }
                 }]
             }, {

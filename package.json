@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "set NODE_ENV=production&&webpack -p --color",
-    "publish":"cd ./dist&&git add *&&git commit -m 'update'&&git push origin master"
+    "publish":"cd ./dist&&git add *&&git commit -m 'update'&&git push origin master",
+    "directpublish":"npm run build&&npm run publish"
   },
   "repository": {
     "type": "git",

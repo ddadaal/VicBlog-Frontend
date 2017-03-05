@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { ArticleBrief } from '../store/ArticleList';
-import { ArticleFilter, ArticleFilterState, actionCreators } from '../store/ArticleListFilter'
+import { ArticleFilter, ArticleFilterState, actionCreators } from '../../store/ArticleListFilter'
 import { Card, Tag, Rate, Icon } from 'antd';
-import { APIs, pathCombine } from '../Utils';
+import { APIs, pathCombine } from '../../Utils';
 import { Link } from 'react-router';
 import moment from 'moment';
 import { connect }from 'react-redux';
@@ -31,8 +30,8 @@ class ArticleCard extends React.Component<ArticleCardProps, void>{
         const url = pathCombine(APIs.articles,this.props.brief.id);
         const tags = this.props.brief.tags.map(item => <Tag key={item} ><a onClick={()=>this.handleTagClick(item)}>{item}</a></Tag>);
         return <Card title={<div>
-            <Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title}</Link>
-             <Tag key="category" color="blue"> <a onClick={()=>this.handleCategoryClick(this.props.brief.category)}>{this.props.brief.category}</a></Tag>
+            <Tag key="category" color="blue"> <a onClick={()=>this.handleCategoryClick(this.props.brief.category)}>{this.props.brief.category}</a></Tag>
+            <Link to={`/articles/${this.props.brief.id}`}>{this.props.brief.title}</Link>   
              </div> }>
             <div>
                 <div><Icon type="tags" /> {tags}</div>

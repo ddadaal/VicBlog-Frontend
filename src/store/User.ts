@@ -3,17 +3,7 @@ import { AppThunkAction } from './';
 import { APIs, JSONRequestInit } from '../Utils';
 import fetch from 'isomorphic-fetch';
 
-export enum UserRole {
-    User,
-    Admin,
-    Unclear
-}
 
-export interface User {
-    username: string,
-    role: UserRole,
-    token: string
-}
 
 export interface UserState {
     user: User,

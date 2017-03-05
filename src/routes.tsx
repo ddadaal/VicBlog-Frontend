@@ -4,7 +4,6 @@ import App from './pages/App';
 import Home from './pages/Home';
 import { ArticleListPage } from './pages/ArticleListPage';
 import ArticlePage from './pages/ArticlePage';
-import { TestPage } from './pages/Test';
 import ComposePage from './pages/ComposePage';
 import EditPage from './pages/EditPage';
 import AboutProject from './pages/AboutProject';
@@ -23,7 +22,6 @@ export const routes = (
             </Route>
         </Route>
         <Route path="compose" component={ComposePage} />
-        <Route path="test" component={TestPage} />
         <Route path="about" component={AboutPage}>
             <IndexRedirect to="project"/>
             <Route path="project" component={AboutProject} />

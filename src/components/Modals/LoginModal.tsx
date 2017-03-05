@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import { UserState, actionCreators, UserRole, LoginInfo, Status } from '../store/User';
+import { ApplicationState } from '../../store';
+import { UserState, actionCreators, LoginInfo, Status } from '../../store/User';
 import { Link } from 'react-router';
 import { Dropdown, Menu, Button, Modal, Form, Input, Icon, Alert, Checkbox } from 'antd';
 import md5 from 'md5';
-import { errorMessage } from '../Utils';
+import { errorMessage } from '../../Utils';
 
 type LoginModalProps = UserState & typeof actionCreators;
 interface LoginModalStates {

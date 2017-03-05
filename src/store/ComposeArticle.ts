@@ -1,7 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
-import { Article } from './ArticlePage';
 import { ExpireListAction } from './ArticleList';
 import fetch from 'isomorphic-fetch';
 

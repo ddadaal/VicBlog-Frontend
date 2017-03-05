@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Checkbox, Radio, Input, Rate, Upload } from 'antd';
 import { connect } from 'react-redux';
-import { actionCreators as composeActions } from '../store/ComposeArticle';
-import { actionCreators as listActions, ArticleListState } from '../store/ArticleList';
-import { ApplicationState } from '../store';
-import { TagSelector } from './TagSelector';
+import { actionCreators as composeActions } from '../../store/ComposeArticle';
+import { actionCreators as listActions, ArticleListState } from '../../store/ArticleList';
+import { TagSelector } from '../common/TagSelector';
 
 
 type ComposeArticleSidePanelProps = {
@@ -44,6 +43,6 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
 }
 
 export default connect(
-    (s: ApplicationState) => ({ selectedTags: s.composeArticle.selectedTags, selectedCategory: s.composeArticle.selectedCategory, availableTags: s.articleList.tags.content, availableCategories: s.articleList.categories.content, rate: s.composeArticle.rate }),
+    s => ({ selectedTags: s.composeArticle.selectedTags, selectedCategory: s.composeArticle.selectedCategory, availableTags: s.articleList.tags.content, availableCategories: s.articleList.categories.content, rate: s.composeArticle.rate }),
     { ...composeActions, ...listActions }
 )(ArticleEditorSidePanel);

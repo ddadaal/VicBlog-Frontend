@@ -1,22 +1,6 @@
 import * as React from 'react';
 import {Row, Col, Input} from 'antd';
-import "highlight.js/styles/default.css";
-import "../assets/github-markdown.css";
-const hljs = require('highlight.js');
-var md = require('markdown-it')({
-  highlight: function (str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(lang, str).value;
-      } catch (__) {}
-    }
-    try {
-      return hljs.highlightAuto(str).value;
-    } catch (err) {}
-
-    return ''; // use external default escaping
-  }
-});
+import { MarkdownDisplay } from '../common';
 interface MarkdownEditorProps {
     content: string
     onContentChange : (content:string)=>any,
@@ -26,7 +10,7 @@ interface MarkdownEditorProps {
 
 
 
-export class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
+export default class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
     constructor(){
         super();
     }
@@ -44,7 +28,7 @@ export class MarkdownEditor extends React.Component<MarkdownEditorProps, void>{
                     </div>
                     </Col>
                     <Col md={12} lg={12} sm={24} xs={0}>
-                        <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(this.props.content)}}/>
+                        <MarkdownDisplay content={this.props.content}/>
                     </Col>
                 </Row>
             </div>

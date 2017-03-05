@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { MarkdownEditor } from '../components/MarkdownEditor';
+import MarkdownEditor from '../common/MarkdownEditor';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import { UserState, actionCreators as userActions, Status as UserStatus } from '../store/User';
+import { ApplicationState } from '../../store';
+import { UserState, actionCreators as userActions, Status as UserStatus } from '../../store/User';
 import { browserHistory } from 'react-router';
-import { Article } from '../store/ArticlePage';
-import { ArticleFilterState } from '../store/ArticleListFilter';
+import { ArticleFilterState } from '../../store/ArticleListFilter';
 import { Link } from 'react-router';
 import { Input, Button, Row, Col, Checkbox, notification, Alert } from 'antd';
-import { padding, twoColStyleLeft, twoColStyleRight, simpleFormValidator } from '../Utils';
-import { actionCreators as composeActions, ComposeArticleState, ArticleSubmitStatus, EditorMode } from '../store/ComposeArticle';
-import ArticleEditorSidePanel from '../components/ArticleEditorSidePanel';
-import UploadPanel, { UploadedFile } from './UploadPanel';
+import { padding, twoColStyleLeft, twoColStyleRight, simpleFormValidator } from '../../Utils';
+import { actionCreators as composeActions, ComposeArticleState, ArticleSubmitStatus, EditorMode } from '../../store/ComposeArticle';
+import ArticleEditorSidePanel from '../ArticleEditor/ArticleEditorSidePanel';
+import UploadPanel, { UploadedFile } from '../common/UploadPanel';
 import fetch from 'isomorphic-fetch';
 
 type ArticleEditorProps = { user: UserState, compose: ComposeArticleState, initialArticle: Article } & typeof userActions & typeof composeActions;

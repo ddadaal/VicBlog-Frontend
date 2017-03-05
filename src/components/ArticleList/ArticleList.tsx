@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { ApplicationState } from '../store';
-import { actionCreators, ArticleListState, ArticleBrief, Status } from '../store/ArticleList';
+import { actionCreators, ArticleListState, Status } from '../../store/ArticleList';
 import { Spin, Alert, Icon } from 'antd';
-import ArticleCard from '../components/ArticleCard';
+import ArticleCard from './ArticleCard';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -25,6 +24,6 @@ class ArticleList extends React.Component<ArticleListProps, void>{
 }
 
 export default connect(
-    (s: ApplicationState) => s.articleList,
+    s => s.articleList,
     {}
 )(ArticleList);

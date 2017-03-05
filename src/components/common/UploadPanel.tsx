@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIs, APIRoot, JSONRequestInit } from '../Utils';
+import { APIs, APIRoot, JSONRequestInit } from '../../Utils';
 import { Upload, Button, Icon, message } from 'antd';
 import fetch from 'isomorphic-fetch';
 

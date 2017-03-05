@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ArticleEditor from '../components/ArticleEditor';
+import ArticleEditor from '../components/ArticleEditor/ArticleEditor';
 import { connect } from 'react-redux';
 import { actionCreators} from '../store/ComposeArticle';
 

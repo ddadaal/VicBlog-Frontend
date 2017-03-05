@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect } from 'react-redux';
-import ArticleEditor from '../components/ArticleEditor';
+import ArticleEditor from '../components/ArticleEditor/ArticleEditor';
 
 import { actionCreators, ArticlePageState} from '../store/ArticlePage';
 type EditPageProps = ArticlePageState & typeof actionCreators & { params:{ID: string}};

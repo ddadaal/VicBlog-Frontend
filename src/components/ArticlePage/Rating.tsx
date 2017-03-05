@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Rate, notification, Popconfirm } from 'antd';
-import { actionCreators, RatingError, RatingState } from '../store/Rating';
-import { UserState, Status as UserStatus, actionCreators as userActions } from '../store/User';
-import { Article } from '../store/ArticlePage';
+import { Rate, notification, Popconfirm,Tooltip } from 'antd';
+import { actionCreators, RatingError, RatingState } from '../../store/Rating';
+import { UserState, Status as UserStatus, actionCreators as userActions } from '../../store/User';
 import { connect } from 'react-redux';
-import { errorMessage } from '../Utils';
-import { actionCreators as listActions } from '../store/ArticleList';
+import { errorMessage } from '../../Utils';
+import { actionCreators as listActions } from '../../store/ArticleList';
 
 type RatingProps = typeof userActions & typeof actionCreators & { rateState: RatingState, userState: UserState, article: Article, expireList: () => any, disabled: boolean };
 
@@ -94,14 +93,19 @@ class Rating extends React.Component<RatingProps, RatingStates>{
 
 
     render() {
-        const disabledProps = this.props.disabled ? {disabled: true} : {};
 
+        if (this.props.userState.status != UserStatus.LoggedIn){
+            return <Tooltip title={<div><a onClick={()=>this.props.openLoginModal()}>Log in</a> to rate!</div>}><Rate value={this.state.score} allowHalf disabled/> {this.state.score.toFixed(1)}</Tooltip>;
+        }
         return <Popconfirm visible={this.state.popconfirmVisible} title={`You want to rate ${this.state.score} in this article, don't you?`} okText="Yes" cancelText="No"
             onConfirm={() => {
                 this.sendRate();
                 this.setState({ popconfirmVisible: false })
             }} onCancel={() => this.setState({ score: this.props.article.rate, popconfirmVisible: false })}>
-            <Rate value={this.state.score} allowHalf {...disabledProps} onChange={value => {
+
+            
+
+            <Rate value={this.state.score} allowHalf onChange={value => {
                 this.setState({ score: value, popconfirmVisible: true });
             }} /> {this.state.score.toFixed(1)}</Popconfirm>
     }
@@ -110,7 +114,7 @@ class Rating extends React.Component<RatingProps, RatingStates>{
 export default connect(
     (s) => ({ rateState: s.rate, userState: s.user }),
     { ...actionCreators, ...userActions, expireList: listActions.expireList },
-    (state, dispatch, ownProps: any) => ({ ...state, ...dispatch, article: ownProps.article, disabled: ownProps.disabled })
+    (state, dispatch, ownProps: any) => ({ ...state, ...dispatch, article: ownProps.article })
 )(Rating);
 
 

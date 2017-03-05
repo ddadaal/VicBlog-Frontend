@@ -1,6 +1,5 @@
 import * as React from 'react';
-import ArticleListSidePanel from '../components/ArticleListSidePanel';
-import ArticleList from '../components/ArticleList';
+import {ArticleListSidePanel, ArticleList} from '../components/ArticleList';
 import { Row ,Col } from 'antd';
 import {connect} from 'react-redux';
 import * as Store from '../store/ArticleList';

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import { UserState, actionCreators, UserRole, LoginInfo, Status } from '../store/User';
+import { UserState, actionCreators, LoginInfo, Status } from '../store/User';
 import { Link } from 'react-router';
 import { Dropdown, Menu, Button, Modal, Icon } from 'antd';
-import LoginModal from './LoginModal';
-import RegisterModal from './RegisterModal';
+import LoginModal from './Modals/LoginModal';
+import RegisterModal from './Modals/RegisterModal';
 
 type IndicatorProps = UserState & typeof actionCreators;
 
@@ -28,11 +28,11 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
                 <Menu.Item key="profile">
                     <Link to={`/users/${this.props.user.username}`}>Access profile</Link>
                 </Menu.Item>
-                {this.props.user.role == UserRole.Admin ? <Menu.Item key="1">
+                {this.props.user.role == UserRole.Admin ? <Menu.Item key="compose">
                     <Link to={"/compose"}>Compose new Article</Link>
                 </Menu.Item> : []}
                 <Menu.Divider />
-                <Menu.Item key="3">
+                <Menu.Item key="logout">
                     <a onClick={this.props.logout}>Log out</a>
                 </Menu.Item>
             </Menu>;

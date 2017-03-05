@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { actionCreators, RegisterInfo, User } from '../store/User';
-import { ApplicationState } from '../store';
+import { actionCreators, RegisterInfo } from '../../store/User';
+import { ApplicationState } from '../../store';
 import { connect } from 'react-redux';
 import { Modal, Form, Input, Button, Checkbox, Alert, Icon, Spin } from 'antd';
 import { browserHistory } from 'react-router';
-import { APIs, JSONRequestInit, errorMessage } from '../Utils';
+import { APIs, JSONRequestInit, errorMessage } from '../../Utils';
 import fetch from 'isomorphic-fetch';
 const FormItem = Form.Item;
-const md = require("markdown-it")();
+import { MarkdownDisplay } from '../common';
 
 enum Status {
     Initial,
@@ -133,7 +133,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                     ? <div><Spin spinning={true} size="large" />Loading</div>
                     : (this.state.termsAndConditionsError
                         ? <Alert type="error" message={errorMessage.Others} />
-                        : <div className="markdown-body" dangerouslySetInnerHTML={{ __html: md.render(this.state.termsAndConditionsContent) }} />
+                        : <MarkdownDisplay content={this.state.termsAndConditionsContent}/>
                     )
             ),
             width: "600px",

@@ -19,19 +19,6 @@ export interface ArticleListState {
     expired: boolean
 }
 
-export interface ArticleBrief {
-    id: string,
-    username: string,
-    submitTime: number,
-    lastEditedTime: number,
-    category: string,
-    tags: string[]
-    title: string,
-    rate: number
-}
-
-
-
 
 export enum Status {
     Initial,

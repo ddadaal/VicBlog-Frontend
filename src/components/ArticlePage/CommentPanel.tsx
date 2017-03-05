@@ -1,9 +1,9 @@
 import * as React from 'react';
-import * as CommentState from '../store/CommentPanel';
-import * as UserState from '../store/User';
+import * as CommentState from '../../store/CommentPanel';
+import * as UserState from '../../store/User';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import { MarkdownEditor } from './MarkdownEditor';
+import { ApplicationState } from '../../store';
+import MarkdownEditor from '../common/MarkdownEditor';
 import { CommentItem } from './CommentItem';
 import { Button, Icon } from 'antd';
 

@@ -1,9 +1,8 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, JSONRequestInit, pathCombine } from '../Utils';
-import { ArticleBrief, ExpireListAction } from './ArticleList';
+import { ExpireListAction } from './ArticleList';
 import fetch from 'isomorphic-fetch';
-export type Article = ArticleBrief & { content: string }
 
 
 export interface ArticlePageState {

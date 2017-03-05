@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Menu, Icon, Button, Row, Col } from 'antd';
 import { Link } from 'react-router';
 import Indicator from './NavbarUserIndicator';
@@ -9,7 +8,19 @@ type NavbarProps = {
     currentPath: string
 };
 
-export class Navbar extends React.Component<NavbarProps, void>{
+interface NavbarStates {
+    open: boolean
+}
+
+export class Navbar extends React.Component<NavbarProps, NavbarStates>{
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false
+        };
+    }
+
     render() {
         const logo = require("../assets/logo.jpg");
         const selectedKey = this.props.currentPath === '/'? "home" : this.props.currentPath.split('/')[1];
@@ -38,9 +49,15 @@ export class Navbar extends React.Component<NavbarProps, void>{
         </div>
         );
     }
+
+    toggleOpen() {
+        this.setState({
+            open: !this.state.open
+        });
+    }
 }
 
 export default connect(
-    s=>({currentPath: s.routing.locationBeforeTransitions.pathname}),
+    s => ({ currentPath: s.routing.locationBeforeTransitions.pathname }),
     {}
 )(Navbar);

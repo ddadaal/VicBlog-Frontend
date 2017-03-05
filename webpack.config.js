@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const moment = require("moment");
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -15,6 +16,7 @@ const basePlugins = [
     }),
     new HtmlWebpackPlugin({
         template: './src/index.html',
+        favicon: './src/assets/logo.jpg'
     }),
     new HtmlWebpackPlugin({
         title: '404 Jump Back - VicBlog',
@@ -22,7 +24,10 @@ const basePlugins = [
         filename: '404.html',
         chunks: []
     }),
-    new ExtractTextPlugin("github-markdown.css")
+    new ExtractTextPlugin("github-markdown.css"),
+    new webpack.DefinePlugin({
+        FRONT_END_BUILD: JSON.stringify(moment().format("YYYYMMDD"))
+    })
 ];
 
 const devPlugins = [
@@ -35,8 +40,9 @@ const devPlugins = [
 
 const prodPlugins = [
     new webpack.DefinePlugin({
-        APIROOTURL: JSON.stringify("https://api.viccrubs.tk")
+        APIROOTURL: JSON.stringify("https://api.viccrubs.tk"),
     }),
+
 ]
 
 const plugins = basePlugins.concat(isDev ? devPlugins : prodPlugins);

@@ -21,7 +21,8 @@ export const APIs = {
         project: pathCombine(APIRoot, "info","project.md"),
         me: pathCombine(APIRoot,"info","me.md"),
         tech :pathCombine(APIRoot, "info","tech.md")
-    } ,
+    },
+    backendVersion: pathCombine(APIRoot,"info","version.json")
 };
 
 export const JSONRequestInit = (payload,headers?,method?:string,)=>({

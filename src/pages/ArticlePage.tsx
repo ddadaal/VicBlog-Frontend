@@ -33,7 +33,6 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 
         document.title = "Article - VicBlog";
 
-
         let message = "";
         switch (this.props.pageStatus) {
             case Status.Network:
@@ -50,17 +49,19 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
                 message = "Internal Error. Please retry.";
                 break;
         };
-        let indicator = message ? <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> : <div />;
+
+        let indicator = message ? <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> : [];
+
         if (this.props.pageStatus == Status.Requesting) {
             indicator = <Alert type="info" message="Loading..." />;
         }
 
-        return this.props.pageStatus == Status.Received ?
-            (<div type="flex" style={{maxWidth: "1200px", marginLeft: "auto", marginRight: "auto"}}>
-
+        return <div type="flex" style={{ marginLeft: "auto", marginRight: "auto" }}>
+            {this.props.pageStatus == Status.Received ? (<div>
                 <ArticlePanel article={this.props.article} />
-                <CommentPanel articleID={this.props.params.ID} />
-            </div >) : indicator;
+                <CommentPanel articleID={this.props.params.ID} /></div>)
+                : indicator}
+        </div >;
     }
 }
 

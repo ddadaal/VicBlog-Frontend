@@ -10,6 +10,7 @@ import AboutProject from './pages/AboutProject';
 import AboutPage from './pages/AboutPage';
 import AboutMe from './pages/AboutMe';
 import AboutTech from './pages/AboutTech';
+import NotFoundPage from './pages/404';
 
 export const routes = (
     <Route path='/' component={App}>
@@ -28,6 +29,7 @@ export const routes = (
             <Route path="me" component={AboutMe}/>
             <Route path="tech" component={AboutTech}/>
         </Route>
+        <Route path="*" component={NotFoundPage}/>
     </Route>
 );
 

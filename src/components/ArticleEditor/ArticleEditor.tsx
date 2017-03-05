@@ -26,8 +26,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
         this.props.setMode(this.props.initialArticle ? EditorMode.Patch : EditorMode.New);
         this.props.initiateArticleInfo(this.props.initialArticle);
     }
-
-
+    
     submitArticle() {
         const payload = {
             title: this.props.compose.title,

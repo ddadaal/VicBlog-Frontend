@@ -23,11 +23,11 @@ export class Navbar extends React.Component<NavbarProps, NavbarStates>{
 
     render() {
         const logo = require("../assets/logo.jpg");
-        const selectedKey = this.props.currentPath === '/'? "home" : this.props.currentPath.split('/')[1];
+        const selectedKey = this.props.currentPath === '/' ? "home" : this.props.currentPath.split('/')[1];
         return (<div>
-            <Row style={{ backgroundColor: "white" }}>
-                <Col span={6} style={{textAlign: "center"}}>
-                    <img  style={{ marginTop: "18px" }} src={logo} alt="VicBlog" />
+            <Row style={{ backgroundColor: "white" }} gutter={16}>
+                <Col span={6} style={{ textAlign: "right" }}>
+                            <img style={{ marginTop: "18px" }} src={logo} alt="VicBlog" />
                 </Col>
                 <Col span={12}>
                     <Menu style={{ lineHeight: "80px" }} mode="horizontal" selectedKeys={[selectedKey]}>
@@ -42,7 +42,7 @@ export class Navbar extends React.Component<NavbarProps, NavbarStates>{
                         </Menu.Item>
                     </Menu>
                 </Col>
-                <Col span={6} style={{marginTop: "28px"}}>
+                <Col span={6} style={{ marginTop: "28px" }}>
                     <Indicator />
                 </Col>
             </Row>

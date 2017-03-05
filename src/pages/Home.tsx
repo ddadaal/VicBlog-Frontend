@@ -12,6 +12,7 @@ const Home: React.StatelessComponent<{}> = function (props) {
         <ol>
         <li><Link to="/articles">Check out my badly-written articles!</Link></li>
         <li><Link to="/about">Or some words I'd like to say about this website!</Link></li>
+        <li><Link to="/about/tech">Or what have I used to build this up!</Link></li>
         </ol>
         </div>
     );

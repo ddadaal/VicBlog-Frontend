@@ -70,7 +70,7 @@ export const actionCreators = {
                         }
                     });
                     break;
-                case 403:
+                case 401:
                     dispatch({ type: "ERROR_LOGIN", status: Status.CredentialInvalid });
                     break;
                 default:

@@ -64,7 +64,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
         return (
             <div>
                 <br />
-                <hr />
+                <br />
                 <p>
                     <span style={{ fontSize: "large" }}><Icon type="inbox" /> Comments: </span>
                     <span style={{ float: "right" }}>

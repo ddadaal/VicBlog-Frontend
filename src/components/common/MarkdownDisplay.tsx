@@ -18,11 +18,12 @@ var md = require('markdown-it')({
 });
 
 interface MarkdownDisplayProps {
-    content: string
+    content: string,
 }
 
 export default class MarkdownDisplay extends React.Component<MarkdownDisplayProps,void>{
     render(){
-        return <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(this.props.content)}}/>
+        return <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(
+          this.props.content)}}/>
     }
 }

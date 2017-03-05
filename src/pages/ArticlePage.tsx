@@ -56,7 +56,7 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
             indicator = <Alert type="info" message="Loading..." />;
         }
 
-        return <div type="flex" style={{ marginLeft: "auto", marginRight: "auto" }}>
+        return <div type="flex" style={{maxWidth:"1000px", marginLeft: "auto", marginRight: "auto" }}>
             {this.props.pageStatus == Status.Received ? (<div>
                 <ArticlePanel article={this.props.article} />
                 <CommentPanel articleID={this.props.params.ID} /></div>)

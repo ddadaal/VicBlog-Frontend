@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { APIs, padding, twoColStyleLeft, twoColStyleRight } from '../Utils';
-import { Spin, Menu, Col, Row, Affix } from 'antd';
+import { Spin, Menu, Col, Row, Affix, BackTop } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -18,6 +18,7 @@ class AboutPage extends React.Component<AboutPageProps, void>{
     render() {
         const currentKey = this.props.currentPath.split('/')[2];
         return <Row type="flex" style={{ margin: "16px auto 16px auto" }} gutter={32} >
+            <BackTop/>
             <Col lg={6} md={6} sm={24} xs={24}>
                 <Affix>
                     <Menu selectedKeys={[currentKey]} mode="vertical">

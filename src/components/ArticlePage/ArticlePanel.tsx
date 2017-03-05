@@ -17,7 +17,7 @@ export default class ArticlePanel extends React.Component<ArticlePanelProps, voi
     return (
       <div>
 
-        <div style={{ textAlign: "center" }}>
+        <div style={{textAlign: "center"}}>
           <h1>{this.props.article.title}</h1>
           <ArticleMetaRow article={this.props.article} />
         </div>

@@ -66,7 +66,7 @@ module.exports = {
         chunkFilename: '[id].chunk.js'
     },
 
-    devtool: "source-map",
+    devtool: isDev ? "source-map" : "",
     resolve: {
         extensions: [
             '.ts', '.tsx',

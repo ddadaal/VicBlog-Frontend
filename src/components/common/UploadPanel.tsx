@@ -59,7 +59,7 @@ export default class UploadPanel extends React.Component<UploadPanelProps, Uploa
             onPreview: file => {
                 this.props.onClick({
                     filename: file.name,
-                    url: `${APIRoot}${file.response.value[0]}`
+                    url: `${APIRoot}/${file.response.value[0]}`
                 });
             },
             onRemove: file => {

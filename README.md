@@ -8,4 +8,7 @@
 4. Now you can enjoy the hot module replacement :)
 
 ## Build
-`webpack -p` or `npm run build`
+
+`npm run build` will 
+1. clean up the previous build
+2. build with `webpack -p`

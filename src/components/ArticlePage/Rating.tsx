@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Rate, notification, Popconfirm,Tooltip } from 'antd';
 import { actionCreators, RatingError, RatingState } from '../../store/Rating';
-import { UserState, Status as UserStatus, actionCreators as userActions } from '../../store/User';
+import { UserState, UserStatus, actionCreators as userActions } from '../../store/User';
 import { connect } from 'react-redux';
 import { errorMessage } from '../../Utils';
 import { actionCreators as listActions } from '../../store/ArticleList';

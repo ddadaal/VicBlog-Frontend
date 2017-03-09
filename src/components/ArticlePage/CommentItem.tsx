@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Comment } from '../../store/CommentPanel';
 import { Link } from 'react-router';
+import { User} from '../../store/User';
 import moment from 'moment';
 import { Popconfirm, Icon } from 'antd';
 import { MarkdownDisplay } from '../common';
 
 
-interface CommentItemProps {
+export interface CommentItemProps {
   comment: Comment,
   currentUser: User,
   deleteComment: (commentID: string) => any

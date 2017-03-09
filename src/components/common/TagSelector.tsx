@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Tag, Input, Checkbox } from 'antd';
 
-interface TagSelectorProps {
+export interface TagSelectorProps {
     availableTags: string[],
     onSelectedChanged: (selected: string[]) => any,
     selectedTags: string[]
 }
 
-interface TagSelectorStates {
+export interface TagSelectorStates {
     inputtingTag: string
 }
 

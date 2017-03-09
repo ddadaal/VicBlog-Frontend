@@ -6,9 +6,9 @@ import { actionCreators as listActionCreators } from './ArticleList';
 import { ArticleFilter, ArticleBriefListOrder } from './ArticleListFilter';
 import fetch from 'isomorphic-fetch';
 
-interface SectionState<ContentType> {
+export interface SectionState<ContentType> {
     content: ContentType[],
-    status: Status
+    status: ContentStatus
 }
 
 export interface ArticleListState {
@@ -20,7 +20,7 @@ export interface ArticleListState {
 }
 
 
-export enum Status {
+export const enum ContentStatus {
     Initial,
     Requesting,
     Received,
@@ -28,16 +28,16 @@ export enum Status {
     Others
 }
 
-interface ErrorTags { type: "ERROR_TAGS", status: Status }
-interface ErrorCategories { type: "ERROR_CATEGORIES", status: Status }
-interface ErrorArticleList { type: "ERROR_ARTICLE_LIST", status: Status }
-interface RequestTags { type: "REQUEST_TAGS" }
-interface ReceiveTags { type: "RECEIVE_TAGS", tags: string[] }
-interface RequestCategories { type: "REQUEST_CATEGORIES" }
-interface ReceiveCategories { type: "RECEIVE_CATEGORIES", categories: string[] }
-interface RequestAllArticle { type: "REQUEST_ALL_ARTICLES" }
-interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[], updatedTime: number }
-interface RequestSearch { type: "REQUEST_SEARCH", filter: ArticleFilter }
+export interface ErrorTags { type: "ERROR_TAGS", status: ContentStatus }
+export interface ErrorCategories { type: "ERROR_CATEGORIES", status: ContentStatus }
+export interface ErrorArticleList { type: "ERROR_ARTICLE_LIST", status: ContentStatus }
+export interface RequestTags { type: "REQUEST_TAGS" }
+export interface ReceiveTags { type: "RECEIVE_TAGS", tags: string[] }
+export interface RequestCategories { type: "REQUEST_CATEGORIES" }
+export interface ReceiveCategories { type: "RECEIVE_CATEGORIES", categories: string[] }
+export interface RequestAllArticle { type: "REQUEST_ALL_ARTICLES" }
+export interface ReceiveArticleList { type: "RECEIVE_ARTICLE_LIST", articleList: ArticleBrief[], updatedTime: number }
+export interface RequestSearch { type: "REQUEST_SEARCH", filter: ArticleFilter }
 
 export interface ExpireListAction { type: "EXPIRE_LIST" }
 
@@ -49,7 +49,7 @@ export const actionCreators = {
         let url = APIs.tags;
         return fetch(url).then(res => res.json().then(res => {
             dispatch({ type: "RECEIVE_TAGS", tags: res as string[] });
-        })).catch(res => dispatch({ type: "ERROR_TAGS", status: Status.Others }))
+        })).catch(res => dispatch({ type: "ERROR_TAGS", status: ContentStatus.Others }))
     },
     requestArticleList: (filter?: ArticleFilter): AppThunkAction<KnownAction> => (dispatch, getState) => {
         if (filter) {
@@ -58,14 +58,14 @@ export const actionCreators = {
             return fetch(url, JSONRequestInit(filter)).then(res => res.json().then(res => {
                 dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now() });
                 localStorage.setItem("articleList", JSON.stringify(getState().articleList));
-            })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: Status.Network }))
+            })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: ContentStatus.Network }))
         } else {
             const url = APIs.articles;
             dispatch({ type: "REQUEST_ALL_ARTICLES" });
             return fetch(url).then(res => res.json().then(res => {
                 dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now() });
                 localStorage.setItem("articleList", JSON.stringify(getState().articleList));
-            })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: Status.Network }))
+            })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: ContentStatus.Network }))
         }
 
     },
@@ -79,10 +79,10 @@ export const actionCreators = {
                 });
             }
             else {
-                dispatch({ type: "ERROR_CATEGORIES", status: Status.Others });
+                dispatch({ type: "ERROR_CATEGORIES", status: ContentStatus.Others });
             }
 
-        }).catch(res => dispatch({ type: "ERROR_CATEGORIES", status: Status.Network }));
+        }).catch(res => dispatch({ type: "ERROR_CATEGORIES", status: ContentStatus.Network }));
     },
 
     expireList: () => ({ type: "EXPIRE_LIST" })
@@ -92,15 +92,15 @@ export const actionCreators = {
 export const initialState: ArticleListState = {
     tags: {
         content: [],
-        status: Status.Initial
+        status: ContentStatus.Initial
     },
     categories: {
         content: [],
-        status: Status.Initial
+        status: ContentStatus.Initial
     },
     articleList: {
         content: [],
-        status: Status.Initial,
+        status: ContentStatus.Initial,
         lastUpdatedTime: 0
     },
 
@@ -111,17 +111,17 @@ export const initialState: ArticleListState = {
 export const reducer: Reducer<ArticleListState> = (state: ArticleListState, action: KnownAction) => {
     switch (action.type) {
         case "REQUEST_CATEGORIES":
-            return { ...state, categories: { status: Status.Received, content: state.categories.content } };
+            return { ...state, categories: { status: ContentStatus.Received, content: state.categories.content } };
         case "REQUEST_TAGS":
-            return { ...state, tags: { status: Status.Requesting, content: state.tags.content } };
+            return { ...state, tags: { status: ContentStatus.Requesting, content: state.tags.content } };
         case "RECEIVE_CATEGORIES":
-            return { ...state, categories: { status: Status.Received, content: action.categories } };
+            return { ...state, categories: { status: ContentStatus.Received, content: action.categories } };
         case "RECEIVE_TAGS":
-            return { ...state, tags: { status: Status.Received, content: action.tags } };
+            return { ...state, tags: { status: ContentStatus.Received, content: action.tags } };
         case "REQUEST_ALL_ARTICLES":
-            return { ...state, articleList: { ...state.articleList, status: Status.Requesting, content: state.articleList.content } };
+            return { ...state, articleList: { ...state.articleList, status: ContentStatus.Requesting, content: state.articleList.content } };
         case "RECEIVE_ARTICLE_LIST":
-            return { ...state, expired: false, searching: false, articleList: { status: Status.Received, content: action.articleList, lastUpdatedTime: action.updatedTime } };
+            return { ...state, expired: false, searching: false, articleList: { status: ContentStatus.Received, content: action.articleList, lastUpdatedTime: action.updatedTime } };
         case "ERROR_CATEGORIES":
             return { ...state, categories: { status: action.status, content: state.categories.content } };
         case "ERROR_TAGS":
@@ -129,7 +129,7 @@ export const reducer: Reducer<ArticleListState> = (state: ArticleListState, acti
         case "ERROR_ARTICLE_LIST":
             return { ...state, searching: false, articleList: { ...state.articleList, status: action.status, content: state.articleList.content } };
         case "REQUEST_SEARCH":
-            return { ...state, searching: true, articleList: { ...state.articleList, status: Status.Requesting, content: state.articleList.content } };
+            return { ...state, searching: true, articleList: { ...state.articleList, status: ContentStatus.Requesting, content: state.articleList.content } };
         case "EXPIRE_LIST":
             return { ...state, expired: true };
         default:

@@ -3,9 +3,9 @@ import { APIs, APIRoot, JSONRequestInit } from '../../Utils';
 import { Upload, Button, Icon, message } from 'antd';
 import fetch from 'isomorphic-fetch';
 
-type UploadFileStatus = "uploading" | "done" | "error" | "removed" | "success";
+export type UploadFileStatus = "uploading" | "done" | "error" | "removed" | "success";
 
-interface File {
+export interface File {
     uid: number,
     name: string,
     status?: UploadFileStatus,
@@ -13,7 +13,7 @@ interface File {
     size: number
 }
 
-interface UploadPanelProps {
+export interface UploadPanelProps {
     token: string,
     onClick?: (file: UploadedFile) => any,
 }
@@ -23,7 +23,7 @@ export interface UploadedFile {
     url: string,
 }
 
-interface UploadPanelState {
+export interface UploadPanelState {
     fileList: File[]
 }
 

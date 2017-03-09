@@ -2,7 +2,7 @@ import * as React from 'react';
 import MarkdownEditor from '../common/MarkdownEditor';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
-import { UserState, actionCreators as userActions, Status as UserStatus } from '../../store/User';
+import { UserState, actionCreators as userActions, UserStatus } from '../../store/User';
 import { browserHistory } from 'react-router';
 import { ArticleFilterState } from '../../store/ArticleListFilter';
 import { Link } from 'react-router';
@@ -70,7 +70,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                 notification.destroy();
                 notification.success({
                     message: "Patch successfully!",
-                    description: <div>The article has been patched successfully. Click <a onClick={() => browserHistory.push("/articles/" + result.article.id)}>this</a> to see it!</div>
+                    description: <div>The article has been patched successfully. Click <a onClick={() => browserHistory.push("/articles/" + result.id)}>this</a> to see it!</div>
                 })
             }, (errorInfo) => {
                 notification.destroy();

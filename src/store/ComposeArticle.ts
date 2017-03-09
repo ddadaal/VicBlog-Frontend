@@ -16,13 +16,13 @@ export interface ComposeArticleState {
     content: string
 }
 
-export enum EditorMode {
+export const enum EditorMode {
     Others,
     New,
     Patch
 }
 
-export enum ArticleSubmitStatus {
+export const enum ArticleSubmitStatus {
     Initial,
     Submitting,
     Success,
@@ -51,20 +51,20 @@ export interface ArticlePatchResultModel {
     article: Article
 }
 
-interface ChangeCategoryAction { type: "CHANGE_CATEGORY", category: string }
-interface ChangeTagsAction { type: "CHANGE_TAGS", tags: string[] }
-interface ChangeTitleAction { type: "CHANGE_TITLE", title: string }
-interface ChangeContentAction { type: "CHANGE_CONTENT", content: string }
-interface ChangeRateAction { type: "CHANGE_RATE", rate: number }
-interface SubmitArticleAction { type: "SUBMIT_ARTICLE", model: ArticleSubmitModel }
-interface SuccessSubmittingAction { type: "SUCCESS_SUBMITTING", article: Article }
-interface ErrorSubmittingAction { type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus }
-interface PatchArticleAction { type: "PATCH_ARTICLE" }
-interface SuccessPatchArticleAction { type: "SUCCESS_PATCH_ARTICLE", result: ArticlePatchResultModel }
-interface ErrorPatchArticleAction { type: "ERROR_PATCH_ARTICLE", errorInfo: ArticleSubmitStatus }
-interface ResetStatusAction { type: "RESET_STATUS" }
-interface SetModeAction { type: "SET_MODE", mode: EditorMode }
-interface InitiateArticleInfoAction { type: "INITIATE_ARTICLE_INFO", article: Article }
+export interface ChangeCategoryAction { type: "CHANGE_CATEGORY", category: string }
+export interface ChangeTagsAction { type: "CHANGE_TAGS", tags: string[] }
+export interface ChangeTitleAction { type: "CHANGE_TITLE", title: string }
+export interface ChangeContentAction { type: "CHANGE_CONTENT", content: string }
+export interface ChangeRateAction { type: "CHANGE_RATE", rate: number }
+export interface SubmitArticleAction { type: "SUBMIT_ARTICLE", model: ArticleSubmitModel }
+export interface SuccessSubmittingAction { type: "SUCCESS_SUBMITTING", article: Article }
+export interface ErrorSubmittingAction { type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus }
+export interface PatchArticleAction { type: "PATCH_ARTICLE" }
+export interface SuccessPatchArticleAction { type: "SUCCESS_PATCH_ARTICLE", result: Article }
+export interface ErrorPatchArticleAction { type: "ERROR_PATCH_ARTICLE", errorInfo: ArticleSubmitStatus }
+export interface ResetStatusAction { type: "RESET_STATUS" }
+export interface SetModeAction { type: "SET_MODE", mode: EditorMode }
+export interface InitiateArticleInfoAction { type: "INITIATE_ARTICLE_INFO", article: Article }
 
 type KnownAction = InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction;
 
@@ -93,15 +93,15 @@ export const actionCreators = {
             error ? error(ArticleSubmitStatus.Network) : {};
         })
     },
-    patchArticle: (articleID: string, token: string, model: ArticlePatchModel, success?: (result: ArticlePatchResultModel) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    patchArticle: (articleID: string, token: string, model: ArticlePatchModel, success?: (result: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "PATCH_ARTICLE" });
         return fetch(pathCombine(APIs.articles, articleID), JSONRequestInit(model, { token: token }, "PATCH")).then(res => {
             switch (res.status) {
                 case 200:
                     res.json().then(json => {
-                        dispatch({ type: "SUCCESS_PATCH_ARTICLE", result: json as ArticlePatchResultModel });
+                        dispatch({ type: "SUCCESS_PATCH_ARTICLE", result: json as Article });
                         dispatch({ type: "EXPIRE_LIST" });
-                        success ? success(json as ArticlePatchResultModel) : {};
+                        success ? success(json as Article) : {};
                     });
                     break;
                 case 401:
@@ -164,7 +164,7 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
         case "PATCH_ARTICLE":
             return { ...state, patchStatus: ArticleSubmitStatus.Submitting };
         case "SUCCESS_PATCH_ARTICLE":
-            return { ...state, patchStatus: ArticleSubmitStatus.Success, resultArticle: action.result.article };
+            return { ...state, patchStatus: ArticleSubmitStatus.Success, resultArticle: action.result };
         case "ERROR_PATCH_ARTICLE":
             return { ...state, patchStatus: action.errorInfo };
         case "SET_MODE":

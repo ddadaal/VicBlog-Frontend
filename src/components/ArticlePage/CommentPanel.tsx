@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import MarkdownEditor from '../common/MarkdownEditor';
 import { CommentItem } from './CommentItem';
-import { Button, Icon } from 'antd';
+import { Button, Icon, notification } from 'antd';
 
 
 type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: string };
@@ -41,7 +41,20 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
     }
 
     deleteComment(commentID: string) {
-        this.props.deleteComment(commentID, this.props.user.token, () => { this.props.requestAllComments(this.props.articleID) });
+        notification.info({
+            message: "Deleting...",
+            description: "Comment is being deleting...",
+            duration: null
+        });
+        this.props.deleteComment(commentID, this.props.user.token, ()=>{
+            notification.destroy();
+            notification.success({
+                message: "Deleted successfully!",
+                description: "Your comment has been deleted!",
+                duration: 3
+            });
+            this.props.requestAllComments(this.props.articleID);
+        });
     }
 
     sendComment() {
@@ -76,7 +89,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
                 </p>
                 {items}
                 <br /><hr />
-                {this.props.status == UserState.Status.LoggedIn
+                {this.props.status == UserState.UserStatus.LoggedIn
                     ? <div>
                         <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.state.content} onContentChange={content => this.onContentChange(content)} />
                         <Button type="primary" onClick={() => this.sendComment()} loading={this.props.sendStatus == CommentState.SendStatus.Sending}>Send</Button>

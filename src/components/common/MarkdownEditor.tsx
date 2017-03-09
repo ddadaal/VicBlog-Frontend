@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Row, Col, Input } from 'antd';
 import { MarkdownDisplay } from '../common';
-interface MarkdownEditorProps {
+export interface MarkdownEditorProps {
     content: string
     onContentChange: (content: string) => any,
     placeholder: string,

@@ -3,7 +3,7 @@ import { AppThunkAction } from './';
 import fetch from 'isomorphic-fetch';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 
-export enum RatingError {
+export const enum RatingError {
     ArticleNotFound,
     ScoreNotInRange,
     Unauthorized,
@@ -18,10 +18,10 @@ export interface RatingState {
     score: number,
 }
 
-interface RateAction { type: "RATE_ARTICLE", articleID: string }
-interface SuccessRateAction { type: "SUCCESS_RATE_ARTICLE", newScore: number }
-interface ErrorRateAction { type: "ERROR_RATE_ARTICLE" }
-interface ResetAllStatesAction { type: "RESET_ALL_STATES" }
+export interface RateAction { type: "RATE_ARTICLE", articleID: string }
+export interface SuccessRateAction { type: "SUCCESS_RATE_ARTICLE", newScore: number }
+export interface ErrorRateAction { type: "ERROR_RATE_ARTICLE" }
+export interface ResetAllStatesAction { type: "RESET_ALL_STATES" }
 
 type KnownAction = ResetAllStatesAction | RateAction | SuccessRateAction | ErrorRateAction;
 

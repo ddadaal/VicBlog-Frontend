@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { actionCreators, ArticleListState, Status } from '../../store/ArticleList';
+import { actionCreators, ArticleListState, ContentStatus } from '../../store/ArticleList';
 import { ArticleFilterState, actionCreators as filterActions, ArticleBriefListOrder, orderDescription } from '../../store/ArticleListFilter';
 import { Input, Checkbox, Button, Card, Icon, Alert, Tag, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
@@ -78,8 +78,8 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
         return (
             <div>
-                {this.props.articleList.status == Status.Network ? <Alert type="error" message="Network error. Please check your network connection. " /> : []}
-                {this.props.articleList.status == Status.Others ? <Alert type="error" message="Something bad happened. Please retry." /> : []}
+                {this.props.articleList.status == ContentStatus.Network ? <Alert type="error" message="Network error. Please check your network connection. " /> : []}
+                {this.props.articleList.status == ContentStatus.Others ? <Alert type="error" message="Something bad happened. Please retry." /> : []}
                 <Card title={<span><Icon type="filter" /> Filter</span>}>
                     <Input placeholder="Text in Title" onChange={e => this.handleTitleTextChange(e)} value={this.props.filter.titleText} />
                     <br />
@@ -101,7 +101,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                 <br />
                 Last updated in {moment(this.props.articleList.lastUpdatedTime).format("MMM Do, YYYY, HH:mm:ss")}.
             <br />
-                {this.props.articleList.status != Status.Requesting
+                {this.props.articleList.status != ContentStatus.Requesting
                     ? <a onClick={() => {
                         this.props.requestAllCategories();
                         this.props.requestAllTags();

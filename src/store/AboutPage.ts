@@ -3,7 +3,7 @@ import { AppThunkAction } from './';
 import { APIs } from '../Utils';
 import fetch from 'isomorphic-fetch';
 
-interface SectionState{
+export interface SectionState{
     loading: boolean,
     error: boolean,
     loaded: boolean,
@@ -16,15 +16,15 @@ export interface AboutPageState {
     aboutTech: SectionState
 }
 
-interface FetchAboutProjectAction { type: "FETCH_ABOUT_PROJECT" }
-interface SuccessAboutProjectAction { type: "SUCCESS_ABOUT_PROECT", content: string}
-interface ErrorAboutProjectAction { type: "ERROR_ABOUT_PROJECT"}
-interface FetchAboutMeAction { type: "FETCH_ABOUT_ME" }
-interface SuccessAboutMeAction { type: "SUCCESS_ABOUT_ME", content: string}
-interface ErrorAboutMeAction { type: "ERROR_ABOUT_ME"}
-interface FetchAboutTechAction { type: "FETCH_ABOUT_TECH" }
-interface SuccessAboutTechAction { type: "SUCCESS_ABOUT_TECH", content: string}
-interface ErrorAboutTechAction { type: "ERROR_ABOUT_TECH"}
+export interface FetchAboutProjectAction { type: "FETCH_ABOUT_PROJECT" }
+export interface SuccessAboutProjectAction { type: "SUCCESS_ABOUT_PROECT", content: string}
+export interface ErrorAboutProjectAction { type: "ERROR_ABOUT_PROJECT"}
+export interface FetchAboutMeAction { type: "FETCH_ABOUT_ME" }
+export interface SuccessAboutMeAction { type: "SUCCESS_ABOUT_ME", content: string}
+export interface ErrorAboutMeAction { type: "ERROR_ABOUT_ME"}
+export interface FetchAboutTechAction { type: "FETCH_ABOUT_TECH" }
+export interface SuccessAboutTechAction { type: "SUCCESS_ABOUT_TECH", content: string}
+export interface ErrorAboutTechAction { type: "ERROR_ABOUT_TECH"}
 
 type KnownAction = FetchAboutProjectAction | SuccessAboutProjectAction| ErrorAboutProjectAction|FetchAboutMeAction|SuccessAboutMeAction|ErrorAboutMeAction|FetchAboutTechAction|SuccessAboutTechAction|ErrorAboutTechAction;
 

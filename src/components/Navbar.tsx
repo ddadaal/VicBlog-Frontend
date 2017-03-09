@@ -4,11 +4,11 @@ import { Link } from 'react-router';
 import Indicator from './NavbarUserIndicator';
 import { connect } from 'react-redux';
 
-type NavbarProps = {
+export type NavbarProps = {
     currentPath: string
 };
 
-interface NavbarStates {
+export interface NavbarStates {
     open: boolean
 }
 

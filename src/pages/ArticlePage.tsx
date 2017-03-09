@@ -6,7 +6,7 @@ import { ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRigh
 import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { actionCreators, ArticlePageState, Status } from '../store/ArticlePage';
+import { actionCreators, ArticlePageState, PageStatus } from '../store/ArticlePage';
 
 type ArticlePageProps = typeof userActions & typeof actionCreators & ArticlePageState & { params: { ID: string }, expire: () => any };
 
@@ -18,7 +18,7 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
     }
 
     componentDidUpdate() {
-        if (this.props.pageStatus == Status.Deleting) {
+        if (this.props.pageStatus == PageStatus.Deleting) {
             notification.info({
                 message: "Deleting",
                 description: "This article is being deleted...",
@@ -35,29 +35,26 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 
         let message = "";
         switch (this.props.pageStatus) {
-            case Status.Network:
-                message = "Network error. Please check your network connection.";
-                break;
-            case Status.NotFound:
+            case PageStatus.NotFound:
                 message = `Article ${this.props.params.ID} is not found.`;
                 break;
-            case Status.Deleted:
+            case PageStatus.Deleted:
                 notification.destroy();
                 message = "This article has been deleted.";
                 break;
-            case Status.Others:
+            case PageStatus.Others:
                 message = "Internal Error. Please retry.";
                 break;
         };
 
         let indicator = message ? <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> : [];
 
-        if (this.props.pageStatus == Status.Requesting) {
+        if (this.props.pageStatus == PageStatus.Requesting) {
             indicator = <Alert type="info" message="Loading..." />;
         }
 
         return <div type="flex" style={{maxWidth:"1000px", marginLeft: "auto", marginRight: "auto" }}>
-            {this.props.pageStatus == Status.Received ? (<div>
+            {this.props.pageStatus == PageStatus.Received ? (<div>
                 <ArticlePanel article={this.props.article} />
                 <CommentPanel articleID={this.props.params.ID} /></div>)
                 : indicator}

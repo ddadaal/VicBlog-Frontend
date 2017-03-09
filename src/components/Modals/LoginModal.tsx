@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
-import { UserState, actionCreators, LoginInfo, Status } from '../../store/User';
+import { UserState, actionCreators, LoginInfo, UserStatus } from '../../store/User';
 import { Link } from 'react-router';
 import { Dropdown, Menu, Button, Modal, Form, Input, Icon, Alert, Checkbox } from 'antd';
 import md5 from 'md5';
@@ -27,16 +27,16 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
         this.setState({
             username: e.target.value
         });
-        if (this.props.status == Status.FormUsernameInvalid) {
-            this.props.setUserStatus(Status.Initial);
+        if (this.props.status == UserStatus.FormUsernameInvalid) {
+            this.props.setStatus(UserStatus.Initial);
         }
     }
     handlePasswordChange(e) {
         this.setState({
             password: e.target.value
         });
-        if (this.props.status == Status.FormPasswordInvalid) {
-            this.props.setUserStatus(Status.Initial);
+        if (this.props.status == UserStatus.FormPasswordInvalid) {
+            this.props.setStatus(UserStatus.Initial);
         }
 
     }
@@ -48,11 +48,11 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
 
     handleLogin() {
         if (!this.state.username) {
-            this.props.setUserStatus(Status.FormUsernameInvalid);
+            this.props.setStatus(UserStatus.FormUsernameInvalid);
             return;
         }
         if (!this.state.password) {
-            this.props.setUserStatus(Status.FormPasswordInvalid);
+            this.props.setStatus(UserStatus.FormPasswordInvalid);
             return;
         }
         let info = {
@@ -67,13 +67,13 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
         let alertMessage = "";
 
         switch (this.props.status) {
-            case Status.CredentialInvalid:
+            case UserStatus.CredentialInvalid:
                 alertMessage = "Credentials are invalid. Please check.";
                 break;
-            case Status.Others:
+            case UserStatus.Others:
                 alertMessage = errorMessage.Others;
                 break;
-            case Status.Network:
+            case UserStatus.Network:
                 alertMessage = errorMessage.Network;
                 break;
             default:
@@ -82,8 +82,8 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
 
         const alert = alertMessage ? <Alert message={alertMessage} type="error" /> : [];
 
-        const usernameInputProps = this.props.status == Status.FormUsernameInvalid ? { validateStatus: "error", help: "Please input username!" } : {};
-        const passwordInputProps = this.props.status == Status.FormPasswordInvalid ? { validateStatus: "error", help: "Please input password!" } : {};
+        const usernameInputProps = this.props.status == UserStatus.FormUsernameInvalid ? { validateStatus: "error", help: "Please input username!" } : {};
+        const passwordInputProps = this.props.status == UserStatus.FormPasswordInvalid ? { validateStatus: "error", help: "Please input password!" } : {};
 
         return <Modal title="Log In" visible={this.props.loginModalVisible}
             onCancel={this.props.closeLoginModal}
@@ -93,7 +93,7 @@ class LoginModal extends React.Component<LoginModalProps, LoginModalStates>{
                     this.props.closeLoginModal();
                     this.props.openRegisterModal();
                 }}>Register</Button>,
-                <Button key="login" size="large" type="primary" loading={this.props.status == Status.LoggingIn} onClick={() => this.handleLogin()}>Login</Button>
+                <Button key="login" size="large" type="primary" loading={this.props.status == UserStatus.LoggingIn} onClick={() => this.handleLogin()}>Login</Button>
             ]}>
             {alert}
             <Form>

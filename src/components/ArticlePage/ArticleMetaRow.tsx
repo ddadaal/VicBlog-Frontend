@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Icon, Tooltip, Tag, Popconfirm } from 'antd';
-import { UserState, actionCreators as userActions, Status } from '../../store/User';
+import { UserState, actionCreators as userActions, UserStatus } from '../../store/User';
 import { actionCreators as articleActions } from '../../store/ArticlePage';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -27,11 +27,11 @@ class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
             <ItemColumn iconName="clock-circle" content={moment.utc(this.props.article.lastEditedTime).local().format("MMM Do, YYYY, HH:mm:ss")} tooltip="Last Edited Time" />
 
             <Rating article={this.props.article} />&nbsp;
-            {this.props.userState.status == Status.LoggedIn && this.props.userState.user.username == this.props.article.username
+            {this.props.userState.status == UserStatus.LoggedIn && this.props.userState.user.username == this.props.article.username
                 ? [
-                    <ItemColumn iconName="edit" content={<Link to={`/articles/${this.props.article.id}/edit`}>Edit</Link>} tooltip="Edit this article" />,
-                    <Popconfirm title="Are you sure delete this article?" onConfirm={() => this.props.deleteArticle(this.props.userState.user.token, this.props.article.id)} okText="Yes" cancelText="No">
-                        <a style={{color: "#FF0000"}}><Icon type="delete" /> Delete</a>
+                    <ItemColumn key="edit" iconName="edit" content={<Link to={`/articles/${this.props.article.id}/edit`}>Edit</Link>} tooltip="Edit this article" />,
+                    <Popconfirm key="deletePopconfirm" title="Are you sure delete this article?" onConfirm={() => this.props.deleteArticle(this.props.userState.user.token, this.props.article.id)} okText="Yes" cancelText="No">
+                        <a key="delete" style={{color: "#FF0000"}}><Icon type="delete" /> Delete</a>
                     </Popconfirm>,
                 ]
                 : []}

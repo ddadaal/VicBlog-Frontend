@@ -27,7 +27,7 @@ export interface SendCommentModel {
 }
 
 
-export enum ContentStatus{
+export const enum ContentStatus{
     Initial,
     Requesting,
     Recevied, 
@@ -36,7 +36,7 @@ export enum ContentStatus{
     Others
 }
 
-export enum SendStatus {
+export const enum SendStatus {
     Initial,
     Sending,
     Success,
@@ -46,7 +46,7 @@ export enum SendStatus {
     Others
 }
 
-export enum DeleteStatus {
+export const enum DeleteStatus {
     Initial,
     Deleting,
     Success,
@@ -57,15 +57,15 @@ export enum DeleteStatus {
 }
 
 
-interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articleID: string }
-interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus }
-interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string }
-interface SendCommentAction { type: "SEND_COMMENT", model: SendCommentModel }
-interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus }
-interface SuccessSendingCommentAction { type: "SUCCESS_SENDING_COMMENT", comment: Comment }
-interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token: string}
-interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
-interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
+export interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articleID: string }
+export interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus }
+export interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string }
+export interface SendCommentAction { type: "SEND_COMMENT", model: SendCommentModel }
+export interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus }
+export interface SuccessSendingCommentAction { type: "SUCCESS_SENDING_COMMENT", comment: Comment }
+export interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token: string}
+export interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
+export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
 
 type KnownAction =ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction;
 
@@ -106,7 +106,7 @@ export const actionCreators = {
             }           
         }).catch(res=>dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.Network}));
     },
-    deleteComment: (commentID: string, token: string, callback: ()=>any ) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
+    deleteComment: (commentID: string, token: string, callback: ()=>any) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
         dispatch({type:"DELETE_COMMENT", commentID: commentID, token: token});
         const url = attachQueryString(APIs.comments,{commentID: commentID});
         return fetch(url,JSONRequestInit(null,{token: token},"DELETE")).then(res=>{
@@ -127,7 +127,7 @@ export const actionCreators = {
                     dispatch({type:"ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Others});
             }
         }).catch(res=>dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Network}));
-    }
+    },
     
 }
 

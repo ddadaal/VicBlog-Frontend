@@ -7,7 +7,7 @@ import { MarkdownDisplay } from '../common';
 import { Card, Tag } from 'antd';
 import { ArticleMetaRow } from './';
 
-interface ArticlePanelProps {
+export interface ArticlePanelProps {
   article: Article
 }
 

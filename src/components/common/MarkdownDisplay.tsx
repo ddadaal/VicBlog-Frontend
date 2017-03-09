@@ -17,7 +17,7 @@ var md = require('markdown-it')({
   }
 });
 
-interface MarkdownDisplayProps {
+export interface MarkdownDisplayProps {
     content: string,
 }
 

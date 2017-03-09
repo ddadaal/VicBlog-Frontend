@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { actionCreators, RegisterInfo } from '../../store/User';
+import { actionCreators, RegisterInfo, User } from '../../store/User';
 import { ApplicationState } from '../../store';
 import { connect } from 'react-redux';
 import { Modal, Form, Input, Button, Checkbox, Alert, Icon, Spin } from 'antd';
@@ -9,7 +9,7 @@ import fetch from 'isomorphic-fetch';
 const FormItem = Form.Item;
 import { MarkdownDisplay } from '../common';
 
-enum Status {
+const enum RegisterStatus {
     Initial,
     Registering,
     Success,
@@ -26,7 +26,7 @@ interface RegisterModalStates {
     username: string,
     password: string
     termsAgreed: boolean,
-    status: Status,
+    status: RegisterStatus,
     registeredUser: User,
     remember: boolean,
     termsAndConditionsContent: string,
@@ -37,29 +37,29 @@ interface RegisterModalStates {
 class RegisterModal extends React.Component<RegisterModalProps, RegisterModalStates>{
 
     register(info: RegisterInfo) {
-        this.setState({ status: Status.Registering });
+        this.setState({ status: RegisterStatus.Registering });
         const url = APIs.regsiter;
         return fetch(url, JSONRequestInit(info)).then(res => {
             switch (res.status) {
                 case 201:
                     res.json().then(json => this.setState({
-                        status: Status.Success,
+                        status: RegisterStatus.Success,
                         registeredUser: json as User
                     }));
                     break;
                 case 409:
-                    this.setState({ status: Status.UsernameExists });
+                    this.setState({ status: RegisterStatus.UsernameExists });
                     break;
                 default:
-                    this.setState({ status: Status.Others });
+                    this.setState({ status: RegisterStatus.Others });
             }
         }).catch(res => {
             switch (res.status) {
                 case 409:
-                    this.setState({ status: Status.UsernameExists });
+                    this.setState({ status: RegisterStatus.UsernameExists });
                     break;
                 default:
-                    this.setState({ status: Status.Network });
+                    this.setState({ status: RegisterStatus.Network });
             }
         });
     }
@@ -82,19 +82,19 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
     handleSubmit() {
         if (!this.state.username || this.state.username.includes(" ")) {
             this.setState({
-                status: Status.FormUsernameInvalid
+                status: RegisterStatus.FormUsernameInvalid
             });
             return;
         }
         if (!this.state.password) {
             this.setState({
-                status: Status.FormPasswordInvalid
+                status: RegisterStatus.FormPasswordInvalid
             });
             return;
         }
         if (!this.state.termsAgreed) {
             this.setState({
-                status: Status.TermsNotAgreed
+                status: RegisterStatus.TermsNotAgreed
             });
             return;
         }
@@ -108,8 +108,8 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
         this.setState({
             username: e.target.value
         });
-        if (this.state.status == Status.FormUsernameInvalid) {
-            this.setState({ status: Status.Initial });
+        if (this.state.status == RegisterStatus.FormUsernameInvalid) {
+            this.setState({ status: RegisterStatus.Initial });
         }
     }
 
@@ -117,8 +117,8 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
         this.setState({
             password: e.target.value
         });
-        if (this.state.status == Status.FormPasswordInvalid) {
-            this.setState({ status: Status.Initial });
+        if (this.state.status == RegisterStatus.FormPasswordInvalid) {
+            this.setState({ status: RegisterStatus.Initial });
         }
     }
 
@@ -146,7 +146,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
             username: "",
             password: "",
             termsAgreed: false,
-            status: Status.Initial,
+            status: RegisterStatus.Initial,
             registeredUser: null,
             remember: false
         })
@@ -157,7 +157,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
             username: "",
             password: "",
             termsAgreed: false,
-            status: Status.Initial,
+            status: RegisterStatus.Initial,
             registeredUser: null,
             remember: false,
             termsAndConditionsAcquiring: false,
@@ -170,7 +170,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
         const widthStyle = { maxWidth: "600px", marginLeft: "auto", marginRight: "auto" };
         let insideComponent = null;
         let footerComponents = null;
-        if (this.state.status == Status.Success) {
+        if (this.state.status == RegisterStatus.Success) {
             insideComponent = <div style={widthStyle}>
                 <h1> Welcome! {this.state.registeredUser.username}!</h1>
                 You have been successfully registered!
@@ -189,21 +189,21 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
             ]
         }
         else {
-            let usernameInputStatus = this.state.status == Status.FormUsernameInvalid ? { validateStatus: "error", help: "Invalid username. Username must contain no whitespace." } : {};
-            const passwordInputStatus = this.state.status == Status.FormPasswordInvalid ? { validateStatus: "error", help: "Invalid password." } : {};
+            let usernameInputStatus = this.state.status == RegisterStatus.FormUsernameInvalid ? { validateStatus: "error", help: "Invalid username. Username must contain no whitespace." } : {};
+            const passwordInputStatus = this.state.status == RegisterStatus.FormPasswordInvalid ? { validateStatus: "error", help: "Invalid password." } : {};
 
             let alertMsg = "";
             switch (this.state.status) {
-                case Status.Network:
+                case RegisterStatus.Network:
                     alertMsg = errorMessage.Network;
                     break;
-                case Status.Others:
+                case RegisterStatus.Others:
                     alertMsg = errorMessage.Others;
                     break;
-                case Status.TermsNotAgreed:
+                case RegisterStatus.TermsNotAgreed:
                     alertMsg = "You must agree the terms and conditions.";
                     break;
-                case Status.UsernameExists:
+                case RegisterStatus.UsernameExists:
                     alertMsg = "Username exists! Please change one."
                     break;
                 default:
@@ -234,7 +234,7 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                     this.props.closeRegisterModal();
                     this.reset();
                 }}>Close</Button>,
-                <Button key="register" size="large" type="primary" onClick={() => this.handleSubmit()} loading={this.state.status == Status.Registering}>Register</Button>
+                <Button key="register" size="large" type="primary" onClick={() => this.handleSubmit()} loading={this.state.status == RegisterStatus.Registering}>Register</Button>
             ];
         }
 

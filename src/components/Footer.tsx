@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 declare const FRONT_END_BUILD: string;
 
-interface FooterStates {
+export interface FooterStates {
     loading: boolean,
     version: string,
     updatedTime: string,

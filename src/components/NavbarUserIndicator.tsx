@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import { UserState, actionCreators, LoginInfo, Status } from '../store/User';
+import { UserState, actionCreators, LoginInfo, UserStatus, UserRole, User } from '../store/User';
 import { Link } from 'react-router';
 import { Dropdown, Menu, Button, Modal, Icon } from 'antd';
 import LoginModal from './Modals/LoginModal';
@@ -23,7 +23,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
 
     render() {
 
-        if (this.props.status == Status.LoggedIn ) {
+        if (this.props.status == UserStatus.LoggedIn ) {
             const dropdownMenu = <Menu >
                 <Menu.Item key="profile">
                     <Link to={`/users/${this.props.user.username}`}>Access profile</Link>

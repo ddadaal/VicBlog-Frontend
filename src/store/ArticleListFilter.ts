@@ -8,7 +8,7 @@ export interface ArticleFilterState {
     filter: ArticleFilter
 }
 
-export enum ArticleBriefListOrder {
+export const enum ArticleBriefListOrder {
     NotSpecified,
     SubmitEarliestToLatest,
     SubmitLatestToEarliest,
@@ -38,7 +38,7 @@ export interface ArticleFilter {
 
 
 
-interface ChangeFilterAction { type: "CHANGE_FILTER", filter: ArticleFilter }
+export interface ChangeFilterAction { type: "CHANGE_FILTER", filter: ArticleFilter }
 
 type KnownAction = ChangeFilterAction;
 
@@ -51,7 +51,7 @@ const initialState: ArticleFilterState = {
         categories: [],
         tags: [],
         titleText: "",
-        order: ArticleBriefListOrder.NotSpecified
+        order: ArticleBriefListOrder.SubmitLatestToEarliest
     }
 
 }

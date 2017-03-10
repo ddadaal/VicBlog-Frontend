@@ -19,7 +19,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
             this.props.requestAllTags();
             this.props.requestAllCategories();
-            this.props.requestArticleList();
+            this.props.requestArticleList(this.props.filter);
         }
 
     }

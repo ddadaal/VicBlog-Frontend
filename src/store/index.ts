@@ -3,7 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import * as User from './User';
 import * as ArticleList from './ArticleList';
 import * as ArticlePage from './ArticlePage';
-import * as Comments from './CommentPanel';
+import * as Comments from './Comment';
 import * as Rate from './Rating';
 import * as ArticleFilter from './ArticleListFilter';
 import * as ComposeArticle from './ComposeArticle';

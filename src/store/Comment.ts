@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
+import { TokenOutdatedAction } from './User';
 import fetch from 'isomorphic-fetch';
 
 export interface CommentPanelState {
@@ -42,6 +43,7 @@ export const enum SendStatus {
     Success,
     NotAuthorized,
     ArticleNotFound,
+    TokenOutdated,
     Network,
     Others
 }
@@ -52,6 +54,7 @@ export const enum DeleteStatus {
     Success,
     NotAuthorized,
     CommentNotFound,
+    TokenOutdated,
     Network,
     Others
 }
@@ -67,7 +70,7 @@ export interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token
 export interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
 export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
 
-type KnownAction =ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction;
+type KnownAction =ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
 
 export const actionCreators = {
     requestAllComments: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -101,6 +104,10 @@ export const actionCreators = {
                 case 404:
                     dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.ArticleNotFound});
                     break;
+                case 403:
+                    dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.TokenOutdated});
+                    dispatch({type: "TOKEN_OUTDATED"});
+                    break;
                 default:
                     dispatch({type:"ERROR_SENDING_COMMENT", errorInfo: SendStatus.Others});
             }           
@@ -119,6 +126,9 @@ export const actionCreators = {
                     break;
                 case 401:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.NotAuthorized});
+                    break;
+                case 403:
+                    dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.TokenOutdated});
                     break;
                 case 404:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.CommentNotFound});
@@ -159,6 +169,8 @@ export const reducer: Reducer<CommentPanelState>= (state:CommentPanelState, acti
             return {...state, deleteStatus: DeleteStatus.Success};
         case "ERROR_DELETING_COMMENT":
             return {...state, deleteStatus: action.errorInfo};
+        case "TOKEN_OUTDATED":
+            return state;
         default:
             const exhausiveCheck: never = action;
     }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import { UserState, actionCreators, LoginInfo, UserStatus, UserRole, User } from '../store/User';
 import { Link } from 'react-router';
-import { Dropdown, Menu, Button, Modal, Icon } from 'antd';
+import { Dropdown, Menu, Button, Modal, Icon, notification } from 'antd';
 import LoginModal from './Modals/LoginModal';
 import RegisterModal from './Modals/RegisterModal';
 
@@ -19,6 +19,17 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
 
     handleLogin(loginInfo: LoginInfo) {
         this.props.requestLogin(loginInfo);
+    }
+
+    componentDidUpdate(){
+        if (this.props.status == UserStatus.TokenOutdated){
+            notification.info({
+                description: "Your token is not outdated. You need to relogin!",
+                message :"Login is now invalid. ",
+                
+            });
+            this.props.logout();
+        }
     }
 
     render() {

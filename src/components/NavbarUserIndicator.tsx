@@ -24,8 +24,16 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
     componentDidUpdate(){
         if (this.props.status == UserStatus.TokenOutdated){
             notification.info({
-                description: "Your token is not outdated. You need to relogin!",
-                message :"Login is now invalid. ",
+                description: <p>Your token is not outdated. You need to <a onClick={()=>this.props.openLoginModal()}>relogin</a>!</p>,
+                message :"Need to relogin",
+                
+            });
+            this.props.logout();
+        }
+        if (this.props.status == UserStatus.TokenInvalid){
+            notification.info({
+                description: <p>Your token is invalid. You need to <a onClick={()=>this.props.openLoginModal()}>relogin</a>!</p>,
+                message :"Need to relogin",
                 
             });
             this.props.logout();

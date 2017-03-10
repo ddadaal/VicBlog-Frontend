@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
-import { TokenOutdatedAction } from './User';
+import { TokenOutdatedAction, TokenInvalidAction } from './User';
 import fetch from 'isomorphic-fetch';
 
 export interface CommentPanelState {
@@ -70,7 +70,7 @@ export interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token
 export interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
 export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
 
-type KnownAction =ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
+type KnownAction =TokenInvalidAction|ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
 
 export const actionCreators = {
     requestAllComments: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -100,6 +100,7 @@ export const actionCreators = {
                     break;
                 case 401:
                     dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.NotAuthorized});
+                    dispatch({type: "TOKEN_INVALID"});
                     break;
                 case 404:
                     dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.ArticleNotFound});
@@ -126,9 +127,11 @@ export const actionCreators = {
                     break;
                 case 401:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.NotAuthorized});
+                    dispatch({type: "TOKEN_INVALID"});
                     break;
                 case 403:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.TokenOutdated});
+                    dispatch({type: "TOKEN_OUTDATED"});
                     break;
                 case 404:
                     dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.CommentNotFound});
@@ -170,6 +173,7 @@ export const reducer: Reducer<CommentPanelState>= (state:CommentPanelState, acti
         case "ERROR_DELETING_COMMENT":
             return {...state, deleteStatus: action.errorInfo};
         case "TOKEN_OUTDATED":
+        case "TOKEN_INVALID":
             return state;
         default:
             const exhausiveCheck: never = action;

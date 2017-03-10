@@ -46,6 +46,7 @@ export const enum UserStatus {
     Network,
     CredentialInvalid,
     TokenOutdated,
+    TokenInvalid,
     Others
 }
 
@@ -60,8 +61,9 @@ export interface OpenRegisterModalAction { type: "OPEN_REGISTER_MODAL" }
 export interface CloseRegisterModalAction { type: "CLOSE_REGISTER_MODAL" }
 export interface SetStatusAction { type: "SET_USER_STATUS", status: UserStatus }
 export interface TokenOutdatedAction { type: "TOKEN_OUTDATED"  }
+export interface TokenInvalidAction { type: "TOKEN_INVALID"}
 
-type KnownAction =TokenOutdatedAction| CloseRegisterModalAction | OpenRegisterModalAction | SetStatusAction | LogoutAction | RequestLoginAction | SuccessLoginAction | ErrorLoginAction | OpenLoginModalAction | CloseLoginModalAction;
+type KnownAction =TokenInvalidAction|TokenOutdatedAction| CloseRegisterModalAction | OpenRegisterModalAction | SetStatusAction | LogoutAction | RequestLoginAction | SuccessLoginAction | ErrorLoginAction | OpenLoginModalAction | CloseLoginModalAction;
 
 export const actionCreators = {
     logout: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -131,6 +133,8 @@ export const reducer: Reducer<UserState> = (state: UserState, action: KnownActio
             return { ...state, registerModalVisible: false };
         case "TOKEN_OUTDATED":
             return {...state, status: UserStatus.TokenOutdated};
+        case "TOKEN_INVALID":
+            return {...state, status: UserStatus.TokenInvalid};
         default:
             const exhaustiveCheck: never = action;
     }

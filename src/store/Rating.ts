@@ -2,7 +2,7 @@ import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import fetch from 'isomorphic-fetch';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
-import { TokenOutdatedAction } from './User';
+import { TokenOutdatedAction, TokenInvalidAction } from './User';
 
 export const enum RatingError {
     ArticleNotFound,
@@ -26,7 +26,7 @@ export interface SuccessRateAction { type: "SUCCESS_RATE_ARTICLE", newScore: num
 export interface ErrorRateAction { type: "ERROR_RATE_ARTICLE" }
 export interface ResetAllStatesAction { type: "RESET_ALL_STATES" }
 
-type KnownAction = ResetAllStatesAction | RateAction | SuccessRateAction | ErrorRateAction|TokenOutdatedAction;
+type KnownAction = TokenInvalidAction|ResetAllStatesAction | RateAction | SuccessRateAction | ErrorRateAction|TokenOutdatedAction;
 
 export const actionCreators = {
     rate: (articleID: string, score: number, token: string, success?: (newScore: number) => any, error?: (info: RatingError) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -41,6 +41,7 @@ export const actionCreators = {
                     break;
                 case 401:
                     dispatch({ type: "ERROR_RATE_ARTICLE" });
+                    dispatch({type: "TOKEN_INVALID"});
                     if (error) error(RatingError.ScoreNotInRange);
                     break;
                 case 403:
@@ -81,6 +82,7 @@ export const reducer: Reducer<RatingState> = (state: RatingState, action: KnownA
         case "RESET_ALL_STATES":
             return initialState;
         case "TOKEN_OUTDATED":
+        case "TOKEN_INVALID":
             return state;
         default:
             const exhausiveCheck: never = action;

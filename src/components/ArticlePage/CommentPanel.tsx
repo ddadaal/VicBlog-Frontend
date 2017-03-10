@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as CommentState from '../../store/CommentPanel';
+import * as CommentState from '../../store/Comment';
 import * as UserState from '../../store/User';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';

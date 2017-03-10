@@ -37,8 +37,8 @@ class ArticleCard extends React.Component<ArticleCardProps, void>{
                 <div><Icon type="tags" /> {tags}</div>
                 <div>Rate: <Rate defaultValue={this.props.brief.rate} disabled allowHalf /> {this.props.brief.rate.toFixed(1)} </div>
                 <br />
-                <p><Icon type="clock-circle-o" /> Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY")}</p>
-                <p><Icon type="clock-circle" /> Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY")}</p>
+                <p><Icon type="clock-circle-o" /> Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY, HH:mm")}</p>
+                <p><Icon type="clock-circle" /> Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY, HH:mm")}</p>
                 <p><Icon type="user" /> By {this.props.brief.username}</p>
             </div>
         </Card>

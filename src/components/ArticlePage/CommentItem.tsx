@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Comment } from '../../store/CommentPanel';
+import { Comment } from '../../store/Comment';
 import { Link } from 'react-router';
 import { User} from '../../store/User';
 import moment from 'moment';

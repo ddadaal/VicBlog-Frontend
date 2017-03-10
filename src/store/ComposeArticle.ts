@@ -2,6 +2,7 @@ import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 import { ExpireListAction } from './ArticleList';
+import { TokenOutdatedAction} from './User';
 import fetch from 'isomorphic-fetch';
 
 export interface ComposeArticleState {
@@ -27,6 +28,7 @@ export const enum ArticleSubmitStatus {
     Submitting,
     Success,
     Unauthorized,
+    TokenOutdated,
     Network,
     Others
 }
@@ -66,7 +68,7 @@ export interface ResetStatusAction { type: "RESET_STATUS" }
 export interface SetModeAction { type: "SET_MODE", mode: EditorMode }
 export interface InitiateArticleInfoAction { type: "INITIATE_ARTICLE_INFO", article: Article }
 
-type KnownAction = InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction;
+type KnownAction = InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction | TokenOutdatedAction;
 
 export const actionCreators = {
     submitArticle: (token: string, model: ArticleSubmitModel, success?: (article: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -77,20 +79,25 @@ export const actionCreators = {
                     res.json().then(json => {
                         dispatch({ type: "SUCCESS_SUBMITTING", article: json as Article });
                         dispatch({ type: "EXPIRE_LIST" });
-                        success ? success(json as Article) : {};
+                        if (success) success(json);
                     });
                     break;
                 case 401:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Unauthorized });
-                    error ? error(ArticleSubmitStatus.Unauthorized) : {};
+                    if (error) error(ArticleSubmitStatus.Unauthorized);
+                    break;
+                case 403:
+                    dispatch({type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.TokenOutdated})
+                    dispatch({type: "TOKEN_OUTDATED"});
+                    if (error) error(ArticleSubmitStatus.TokenOutdated);
                     break;
                 default:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Others });
-                    error ? error(ArticleSubmitStatus.Others) : {};
+                    if (error) error(ArticleSubmitStatus.Others);
             }
         }).catch(res => {
             dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Network });
-            error ? error(ArticleSubmitStatus.Network) : {};
+            if (error) error(ArticleSubmitStatus.Network);
         })
     },
     patchArticle: (articleID: string, token: string, model: ArticlePatchModel, success?: (result: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -101,20 +108,24 @@ export const actionCreators = {
                     res.json().then(json => {
                         dispatch({ type: "SUCCESS_PATCH_ARTICLE", result: json as Article });
                         dispatch({ type: "EXPIRE_LIST" });
-                        success ? success(json as Article) : {};
+                        if (success) success(json as Article);
                     });
                     break;
                 case 401:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Unauthorized });
-                    error ? error(ArticleSubmitStatus.Unauthorized) : {};
+                    if (error) error(ArticleSubmitStatus.Unauthorized);
+                    break;
+                case 403:
+                    dispatch({type: "ERROR_PATCH_ARTICLE", errorInfo: ArticleSubmitStatus.TokenOutdated})
+                    if (error) error(ArticleSubmitStatus.TokenOutdated);
                     break;
                 default:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Others });
-                    error ? error(ArticleSubmitStatus.Others) : {};
+                    if (error) error(ArticleSubmitStatus.Others);
             }
         }).catch(res => {
             dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Network });
-            error ? error(ArticleSubmitStatus.Network) : {};
+            if (error) error(ArticleSubmitStatus.Network);
         })
     },
     resetStatus: () => ({ type: "RESET_STATUS" }),
@@ -175,6 +186,9 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
             } else {
                 return state;
             }
+
+        case "TOKEN_OUTDATED":
+            return state;
         default:
             const exhausiveCheck: never = action;
     }

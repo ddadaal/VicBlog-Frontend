@@ -21,28 +21,30 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
         this.props.requestLogin(loginInfo);
     }
 
-    componentDidUpdate(){
-        if (this.props.status == UserStatus.TokenOutdated){
-            notification.info({
-                description: <p>Your token is now outdated. You need to <a onClick={()=>this.props.openLoginModal()}>relogin</a>!</p>,
-                message :"Need to relogin",
-                
-            });
+    componentDidUpdate() {
+        if (this.props.status == UserStatus.TokenOutdated) {
             this.props.logout();
+            notification.info({
+                description: <p>Your token is now outdated. You need to <a onClick={() => this.props.openLoginModal()}>relogin</a>!</p>,
+                message: "Need to relogin",
+
+            });
+
         }
-        if (this.props.status == UserStatus.TokenInvalid){
-            notification.info({
-                description: <p>Your token is invalid. You need to <a onClick={()=>this.props.openLoginModal()}>relogin</a>!</p>,
-                message :"Need to relogin",
-                
-            });
+        if (this.props.status == UserStatus.TokenInvalid) {
             this.props.logout();
+            notification.info({
+                description: <p>Your token is invalid. You need to <a onClick={() => this.props.openLoginModal()}>relogin</a>!</p>,
+                message: "Need to relogin",
+
+            });
+
         }
     }
 
     render() {
 
-        if (this.props.status == UserStatus.LoggedIn ) {
+        if (this.props.status == UserStatus.LoggedIn) {
             const dropdownMenu = <Menu >
                 <Menu.Item key="profile">
                     <Link to={`/users/${this.props.user.username}`}>Access profile</Link>
@@ -67,7 +69,7 @@ class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
             return <div>
                 <Button onClick={this.props.openLoginModal}>Log in</Button>
                 <LoginModal />
-                <RegisterModal/>
+                <RegisterModal />
             </div>
         }
     }

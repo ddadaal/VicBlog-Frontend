@@ -53,7 +53,7 @@ export default class Footer extends React.Component<void, FooterStates>  {
             <p><Icon type="github" /> FrontEnd <a href="https://github.com/viccrubs/VicBlog-Frontend">Github Repository</a>. Live Version: <strong>{FRONT_END_BUILD}</strong></p>
             <p><Icon type="github" /> BackEnd <a href="https://github.com/viccrubs/VicBlog-Backend">Github Repository</a>. Live Version:&nbsp;
             {this.state.loaded
-                    ? <Tooltip title={this.state.updatedTime}><strong>{this.state.version}</strong></Tooltip>
+                    ? <Tooltip placement="bottom" title={this.state.updatedTime}><strong>{this.state.version}</strong></Tooltip>
                     : this.state.error ? "Error" : "Fetching..."
                 }
             </p>

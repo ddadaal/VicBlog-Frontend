@@ -7,7 +7,7 @@ interface ArticleBrief {
     category: string,
     tags: string[]
     title: string,
-    rate: number
+    rate: number,
 }
 
 declare type Article = ArticleBrief & {content: string}

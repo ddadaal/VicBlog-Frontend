@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { ArticleListUpdateMinutesSpan } from '../../Utils';
 import moment from 'moment';
-
 const CheckableTag = Tag.CheckableTag;
 
 const Search = Input.Search;

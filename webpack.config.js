@@ -34,7 +34,7 @@ const devPlugins = [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
-        APIROOTURL: JSON.stringify("http://localhost:57092")
+        APIROOTURL: JSON.stringify("http://localhost:63511")
     }),
 ];
 

@@ -25,6 +25,9 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
                 duration: null
             });
         }
+        if (Date.now() - this.props.lastUpdatedTime > ArticleListUpdateMinutesSpan *60 *60){
+            this.props.requestArticle(this.props.params.ID);
+        }
 
     }
 

@@ -22,6 +22,7 @@ class AboutMePage extends React.Component<AboutMePageProps, void>{
     }
 
     render() {
+        document.title = "About me - VicBlog";
         return this.props.loading
             ? <div><Spin spinning size="large"> Loading</Spin></div>
             : ( this.props.error 

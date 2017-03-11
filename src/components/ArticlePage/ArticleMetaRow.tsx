@@ -5,6 +5,7 @@ import { actionCreators as articleActions } from '../../store/ArticlePage';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
+import { APIs} from '../../Utils';
 import Rating from './Rating';
 
 type ArticleMetaRowProps = {
@@ -12,7 +13,37 @@ type ArticleMetaRowProps = {
     userState: UserState
 } & typeof userActions & typeof articleActions;
 
-class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
+type ArticleMetaRowStates = {
+    pvError: boolean,
+    pvFetching: boolean,
+    pv: number
+}
+
+class ArticleMetaRow extends React.Component<ArticleMetaRowProps, ArticleMetaRowStates>{
+
+    constructor(){
+        super();
+        this.state = {
+            pvError: false,
+            pvFetching: false,
+            pv: -1
+        };
+    }
+
+    componentDidMount(){
+        this.fetchPV();
+    }
+
+
+    fetchPV() {
+        this.setState({ pvFetching: true });
+        fetch(`${APIs.pv}?ID=${this.props.article.id}`).then(res => res.json()).then(value => this.setState({
+            pvFetching: false,
+            pvError: false,
+            pv: value as any
+        })).catch(res=>this.setState({ pvFetching: false, pvError: true }));
+    }
+
     render() {
 
         const ItemColumn = (props: { iconName: string, content: string | JSX.Element | JSX.Element[], tooltip: string }) => <Tooltip title={props.tooltip}><span><Icon type={props.iconName} /> {props.content} &nbsp;</span></Tooltip>;
@@ -25,8 +56,9 @@ class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
             <ItemColumn iconName="tags" content={tags} tooltip="Tags" />
             <ItemColumn iconName="clock-circle-o" content={moment.utc(this.props.article.submitTime).local().format("MMM Do, YYYY, HH:mm:ss")} tooltip="Create Time" />
             <ItemColumn iconName="clock-circle" content={moment.utc(this.props.article.lastEditedTime).local().format("MMM Do, YYYY, HH:mm:ss")} tooltip="Last Edited Time" />
-
+            <ItemColumn iconName="like-o" content={ this.state.pvFetching ? "Fetching PV...": this.state.pvError ? "Error fetching pv." : `${this.state.pv}`} tooltip="Viewed times" /> 
             <Rating article={this.props.article} />&nbsp;
+
             {this.props.userState.status == UserStatus.LoggedIn && this.props.userState.user.username == this.props.article.username
                 ? [
                     <ItemColumn key="edit" iconName="edit" content={<Link to={`/articles/${this.props.article.id}/edit`}>Edit</Link>} tooltip="Edit this article" />,

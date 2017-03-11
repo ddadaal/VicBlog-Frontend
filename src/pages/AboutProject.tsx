@@ -20,6 +20,7 @@ class AboutThisProject extends React.Component<AboutThisProjectProps,void>{
     }
 
     render() {
+        document.title = "About this project - VicBlog";
         return this.props.loading
             ? <div><Spin spinning size="large"> Loading</Spin></div>
             : ( this.props.error 

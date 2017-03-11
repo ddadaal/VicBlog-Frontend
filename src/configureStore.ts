@@ -1,6 +1,9 @@
 import {
     createStore, applyMiddleware, compose,combineReducers,GenericStoreEnhancer
 } from 'redux';
+
+import createSagaMiddleware from 'redux-saga'
+
 import * as Redux from 'react-redux';
 import { routerReducer } from 'react-router-redux';
 import thunkMiddleWare from 'redux-thunk';

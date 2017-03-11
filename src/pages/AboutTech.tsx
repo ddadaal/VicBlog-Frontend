@@ -23,6 +23,7 @@ class AboutTechPage extends React.Component<AboutTechPageProps, void>{
     }
 
     render() {
+        document.title = "Tech Details - VicBlog";
         return this.props.loading
             ? <div><Spin spinning size="large"> Loading</Spin></div>
             : (this.props.error

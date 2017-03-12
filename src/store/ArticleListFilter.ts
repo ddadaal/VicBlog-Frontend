@@ -33,7 +33,11 @@ export interface ArticleFilter {
     categories: string[],
     titleText: string,
     tags: string[],
-    order: ArticleBriefListOrder
+    order: ArticleBriefListOrder,
+    createdTimeEnabled: boolean,
+    createdTimeRange: [number, number],
+    editedTimeEnabled: boolean,
+    editedTimeRange: [number,number]
 }
 
 
@@ -46,12 +50,16 @@ export const actionCreators = {
     changeFilter: (filter: ArticleFilter) => ({ type: "CHANGE_FILTER", filter: filter }),
 }
 
-const initialState: ArticleFilterState = {
+export const initialState: ArticleFilterState = {
     filter: {
         categories: [],
         tags: [],
         titleText: "",
-        order: ArticleBriefListOrder.SubmitLatestToEarliest
+        order: ArticleBriefListOrder.SubmitLatestToEarliest,
+        createdTimeEnabled: false,
+        createdTimeRange: [0,0],
+        editedTimeEnabled: false,
+        editedTimeRange: [0,0]
     }
 
 }

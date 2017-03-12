@@ -5,39 +5,30 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import MarkdownEditor from '../common/MarkdownEditor';
 import { CommentItem } from './CommentItem';
-import { Button, Icon, notification } from 'antd';
+import { CommentFetchMinutesSpan } from '../../Utils';
+import { Button, Icon, notification, Alert } from 'antd';
 
 
-type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentPanelState & typeof CommentState.actionCreators & { articleID: string };
-interface CommentPanelStates {
-    content: string
-}
-
-class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates>{
+type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentsState & typeof CommentState.actionCreators & { articleID: string };
+class CommentPanel extends React.Component<CommentPanelProps, void>{
 
 
     constructor() {
         super();
-        this.state = {
-            content: ""
-        };
-    }
-
-    clearContent() {
-        this.setState({
-            content: ""
-        });
     }
 
     componentDidMount() {
 
-        this.props.requestAllComments(this.props.articleID);
+        const commentObject: CommentState.CommentsOfArticle = this.props.commentsOfArticles[this.props.articleID];
+
+        if (!commentObject || Date.now() - commentObject.lastUpdatedTime > CommentFetchMinutesSpan * 60 * 1000) {
+            this.props.requestAllComments(this.props.articleID);
+        }
+
     }
 
     onContentChange(content: string) {
-        this.setState({
-            content: content
-        });
+        this.props.changeContent(content);
     }
 
     deleteComment(commentID: string) {
@@ -46,7 +37,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
             description: "Comment is being deleting...",
             duration: null
         });
-        this.props.deleteComment(commentID, this.props.user.token, ()=>{
+        this.props.deleteComment(commentID, this.props.user.token, () => {
             notification.destroy();
             notification.success({
                 message: "Deleted successfully!",
@@ -60,20 +51,34 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
     sendComment() {
         const payload: CommentState.SendCommentModel = {
             articleID: this.props.articleID,
-            content: this.state.content,
+            content: this.props.content,
             replyTo: ""
         };
         this.props.sendComment(this.props.user.token, payload, () => {
             this.props.requestAllComments(this.props.articleID);
-            this.clearContent();
+            this.props.changeContent("");
         });
 
     }
 
     render() {
-        const items = this.props.comments.map(item => {
-            return <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />;
-        });
+        const commentObject:CommentState.CommentsOfArticle = this.props.commentsOfArticles[this.props.articleID];
+        if (!commentObject) {
+            return <div>
+                <br />
+                <br />
+                <p>
+                    <span style={{ fontSize: "large" }}><Icon type="inbox" /> Comments: </span>
+                    <span style={{ float: "right" }}>
+                        <a disabled>Refreshing...</a>
+                    </span>
+                </p>
+                <Alert message="Loading..." type="info" />
+            </div>;
+        }
+
+
+        const items = commentObject.comments.map(item => <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />);
         return (
             <div>
                 <br />
@@ -81,7 +86,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
                 <p>
                     <span style={{ fontSize: "large" }}><Icon type="inbox" /> Comments: </span>
                     <span style={{ float: "right" }}>
-                        {this.props.contentStatus != CommentState.ContentStatus.Requesting
+                        {commentObject.fetchStatus != CommentState.FetchStatus.Requesting
                             ? <a onClick={() => this.props.requestAllComments(this.props.articleID)}>Refresh</a>
                             : <a disabled>Refreshing...</a>
                         }
@@ -91,7 +96,7 @@ class CommentPanel extends React.Component<CommentPanelProps, CommentPanelStates
                 <br /><hr />
                 {this.props.status == UserState.UserStatus.LoggedIn
                     ? <div>
-                        <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.state.content} onContentChange={content => this.onContentChange(content)} />
+                        <MarkdownEditor placeholder="Input your comment here. Markdown supported." content={this.props.content} onContentChange={content => this.onContentChange(content)} />
                         <Button type="primary" onClick={() => this.sendComment()} loading={this.props.sendStatus == CommentState.SendStatus.Sending}>Send</Button>
                     </div>
                     : <div>Wanna comment on this article? <a onClick={e => this.props.openLoginModal()}>Click to login! </a></div>}

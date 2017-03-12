@@ -1,9 +1,7 @@
 
 declare var APIROOTURL: string;
 
-export const pathCombine = (...paths: string[])=>{
-    return paths.join('/');
-}
+export const pathCombine = (...paths: string[])=>paths.join('/');
 
 export const APIRoot = APIROOTURL;
 export const APIs = {
@@ -36,6 +34,9 @@ export const JSONRequestInit = (payload,headers?,method?:string,)=>({
 });
 
 export const ArticleListUpdateMinutesSpan = 30;
+export const PVFetchSecondsSpan = 5*60;
+export const ArticleFetchMinutesSpan = 30;
+export const CommentFetchMinutesSpan = 30;
 
 export const attachQueryString = (url: string, params: Object): string => {
     let esc = encodeURIComponent;

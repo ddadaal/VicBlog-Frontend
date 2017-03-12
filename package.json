@@ -48,6 +48,7 @@
     "antd": "^2.8.1",
     "highlight.js": "^9.10.0",
     "isomorphic-fetch": "^2.2.1",
+    "js.cookie": "0.0.4",
     "markdown-it": "^8.3.1",
     "md5": "^2.2.1",
     "moment": "^2.17.1",

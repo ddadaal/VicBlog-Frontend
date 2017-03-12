@@ -20,8 +20,13 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
     }
 
     componentDidMount() {
-        this.props.requestAllTags();
-        this.props.requestAllCategories();
+        if (!this.props.availableTags) {
+            this.props.requestAllTags();
+        }
+        if (!this.props.availableCategories) {
+            this.props.requestAllCategories();
+        }
+
     }
 
     render() {
@@ -37,7 +42,7 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
             <hr />
             Set a rate in your opinion:<br />
             <Rate value={this.props.rate} onChange={value => this.props.changeRate(value)} />
-            <hr/>
+            <hr />
         </div>;
     }
 }

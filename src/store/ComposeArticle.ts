@@ -2,7 +2,8 @@ import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 import { ExpireListAction } from './ArticleList';
-import { TokenOutdatedAction, TokenInvalidAction} from './User';
+import { TokenOutdatedAction, TokenInvalidAction } from './User';
+import { ExpireArticleAction } from './ArticlePage';
 import fetch from 'isomorphic-fetch';
 
 export interface ComposeArticleState {
@@ -68,7 +69,7 @@ export interface ResetStatusAction { type: "RESET_STATUS" }
 export interface SetModeAction { type: "SET_MODE", mode: EditorMode }
 export interface InitiateArticleInfoAction { type: "INITIATE_ARTICLE_INFO", article: Article }
 
-type KnownAction =TokenInvalidAction| InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction | TokenOutdatedAction;
+type KnownAction = ExpireArticleAction | TokenInvalidAction | InitiateArticleInfoAction | SetModeAction | PatchArticleAction | SuccessPatchArticleAction | ErrorPatchArticleAction | ExpireListAction | ResetStatusAction | ChangeRateAction | ChangeCategoryAction | ChangeRateAction | ChangeContentAction | ChangeTagsAction | ChangeTitleAction | SubmitArticleAction | SuccessSubmittingAction | ErrorSubmittingAction | TokenOutdatedAction;
 
 export const actionCreators = {
     submitArticle: (token: string, model: ArticleSubmitModel, success?: (article: Article) => any, error?: (errorInfo: ArticleSubmitStatus) => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -84,12 +85,12 @@ export const actionCreators = {
                     break;
                 case 401:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Unauthorized });
-                    dispatch({type: "TOKEN_INVALID"});
+                    dispatch({ type: "TOKEN_INVALID" });
                     if (error) error(ArticleSubmitStatus.Unauthorized);
                     break;
                 case 403:
-                    dispatch({type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.TokenOutdated})
-                    dispatch({type: "TOKEN_OUTDATED"});
+                    dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.TokenOutdated })
+                    dispatch({ type: "TOKEN_OUTDATED" });
                     if (error) error(ArticleSubmitStatus.TokenOutdated);
                     break;
                 default:
@@ -109,17 +110,18 @@ export const actionCreators = {
                     res.json().then(json => {
                         dispatch({ type: "SUCCESS_PATCH_ARTICLE", result: json as Article });
                         dispatch({ type: "EXPIRE_LIST" });
+                        dispatch({ type: "EXPIRE_ARTICLE", articleID: articleID });
                         if (success) success(json as Article);
                     });
                     break;
                 case 401:
                     dispatch({ type: "ERROR_SUBMITTING", errorInfo: ArticleSubmitStatus.Unauthorized });
-                    dispatch({type: "TOKEN_INVALID"});
+                    dispatch({ type: "TOKEN_INVALID" });
                     if (error) error(ArticleSubmitStatus.Unauthorized);
                     break;
                 case 403:
-                    dispatch({type: "ERROR_PATCH_ARTICLE", errorInfo: ArticleSubmitStatus.TokenOutdated});
-                    dispatch({type: "TOKEN_OUTDATED"});
+                    dispatch({ type: "ERROR_PATCH_ARTICLE", errorInfo: ArticleSubmitStatus.TokenOutdated });
+                    dispatch({ type: "TOKEN_OUTDATED" });
                     if (error) error(ArticleSubmitStatus.TokenOutdated);
                     break;
                 default:
@@ -166,15 +168,13 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
         case "CHANGE_TAGS":
             return { ...state, selectedTags: action.tags };
         case "SUBMIT_ARTICLE":
-            return { ...state, status: ArticleSubmitStatus.Submitting };
+            return { ...state, submitStatus: ArticleSubmitStatus.Submitting };
         case "SUCCESS_SUBMITTING":
-            return { ...state, status: ArticleSubmitStatus.Success, resultArticle: action.article };
+            return { ...state, submitStatus: ArticleSubmitStatus.Success, resultArticle: action.article };
         case "ERROR_SUBMITTING":
-            return { ...state, status: action.errorInfo };
+            return { ...state, submitStatus: action.errorInfo };
         case "RESET_STATUS":
             return initialState;
-        case "EXPIRE_LIST":
-            return state;
         case "PATCH_ARTICLE":
             return { ...state, patchStatus: ArticleSubmitStatus.Submitting };
         case "SUCCESS_PATCH_ARTICLE":
@@ -189,9 +189,10 @@ export const reducer: Reducer<ComposeArticleState> = (state: ComposeArticleState
             } else {
                 return state;
             }
-
+        case "EXPIRE_LIST":
         case "TOKEN_OUTDATED":
         case "TOKEN_INVALID":
+        case "EXPIRE_ARTICLE":
             return state;
         default:
             const exhausiveCheck: never = action;

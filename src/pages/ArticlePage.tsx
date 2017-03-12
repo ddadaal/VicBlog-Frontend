@@ -2,30 +2,36 @@ import * as React from 'react';
 import { Row, Col, Spin, Alert, notification } from 'antd';
 import { ArticlePanel, CommentPanel } from '../components/ArticlePage';
 import { ApplicationState } from '../store';
-import { ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRight } from '../Utils';
+import { ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRight, ArticleFetchMinutesSpan } from '../Utils';
 import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { actionCreators, ArticlePageState, PageStatus } from '../store/ArticlePage';
+import { actionCreators, ArticlePagesState, ArticleStatus } from '../store/ArticlePage';
 
-type ArticlePageProps = typeof userActions & typeof actionCreators & ArticlePageState & { params: { ID: string }, expire: () => any };
+type ArticlePageProps = typeof userActions & typeof actionCreators & { params: { ID: string }, expire: () => any, articles: any };
 
 class ArticlePage extends React.Component<ArticlePageProps, void>{
 
     componentDidMount() {
-        this.props.requestArticle(this.props.params.ID);
+        if (!this.props.articles[this.props.params.ID] || this.props.articles[this.props.params.ID].status == ArticleStatus.Expired || Date.now() - this.props.articles[this.props.params.ID].updatedTime > ArticleFetchMinutesSpan * 60 * 1000) {
+            this.props.requestArticle(this.props.params.ID);
+        }
+
 
     }
 
     componentDidUpdate() {
-        if (this.props.pageStatus == PageStatus.Deleting) {
+        if (!this.props.articles[this.props.params.ID]) {
+            return;
+        }
+        if (this.props.articles[this.props.params.ID].pageStatus == ArticleStatus.Deleting) {
             notification.info({
                 message: "Deleting",
                 description: "This article is being deleted...",
                 duration: null
             });
         }
-        if (Date.now() - this.props.lastUpdatedTime > ArticleListUpdateMinutesSpan *60 *60){
+        if (Date.now() - this.props.articles[this.props.params.ID].lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 60) {
             this.props.requestArticle(this.props.params.ID);
         }
 
@@ -34,31 +40,35 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
     render() {
 
 
-        document.title = "Article - VicBlog";
+        const articleObject = this.props.articles[this.props.params.ID];
+
+        if (!articleObject || articleObject.status == ArticleStatus.Requesting) {
+            return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+                <Alert type="info" message="Loading..." />
+            </div >;
+        }
+
+        document.title = `${articleObject.article.title} - VicBlog`;
 
         let message = "";
-        switch (this.props.pageStatus) {
-            case PageStatus.NotFound:
+        switch (articleObject.status) {
+            case ArticleStatus.NotFound:
                 message = `Article ${this.props.params.ID} is not found.`;
                 break;
-            case PageStatus.Deleted:
+            case ArticleStatus.Deleted:
                 notification.destroy();
                 message = "This article has been deleted.";
                 break;
-            case PageStatus.Others:
+            case ArticleStatus.Others:
                 message = "Internal Error. Please retry.";
                 break;
         };
 
-        let indicator = message ? <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> : [];
+        const indicator = message ? <div><Alert type="error" message={message} /><a onClick={() => this.componentDidMount()}>Retry</a></div> : [];
 
-        if (this.props.pageStatus == PageStatus.Requesting) {
-            indicator = <Alert type="info" message="Loading..." />;
-        }
-
-        return <div type="flex" style={{maxWidth:"1000px", marginLeft: "auto", marginRight: "auto" }}>
-            {this.props.pageStatus == PageStatus.Received ? (<div>
-                <ArticlePanel article={this.props.article} />
+        return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            {articleObject.status == ArticleStatus.Received ? (<div>
+                <ArticlePanel article={articleObject.article} />
                 <CommentPanel articleID={this.props.params.ID} /></div>)
                 : indicator}
         </div >;
@@ -66,6 +76,6 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
 }
 
 export default connect(
-    (s: ApplicationState) => s.articlePage,
+    (s: ApplicationState) => ({ articles: s.articlePage }),
     { ...actionCreators, ...userActions }
 )(ArticlePage);

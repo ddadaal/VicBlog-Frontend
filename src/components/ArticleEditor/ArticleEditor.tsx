@@ -6,7 +6,7 @@ import { UserState, actionCreators as userActions, UserStatus } from '../../stor
 import { browserHistory } from 'react-router';
 import { ArticleFilterState } from '../../store/ArticleListFilter';
 import { Link } from 'react-router';
-import { Input, Button, Row, Col, Checkbox, notification, Alert } from 'antd';
+import { Input, Button, Row, Col, Checkbox, notification, Alert, Spin } from 'antd';
 import { padding, twoColStyleLeft, twoColStyleRight, simpleFormValidator } from '../../Utils';
 import { actionCreators as composeActions, ComposeArticleState, ArticleSubmitStatus, EditorMode } from '../../store/ComposeArticle';
 import ArticleEditorSidePanel from '../ArticleEditor/ArticleEditorSidePanel';
@@ -56,8 +56,9 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                 notification.destroy();
                 notification.success({
                     message: `Article submitted!`,
-                    description: <div>The article has been submitted successfully. Click <a onClick={() => browserHistory.push("/articles/" + article.id)}>this</a> to see it!</div>
+                    description: "The article has been submitted successfully. Redirected to the new page!"
                 });
+                //browserHistory.push(`/articles/${article.id}`);
             }, (errorInfo) => {
                 notification.destroy();
                 notification.error({
@@ -70,8 +71,9 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                 notification.destroy();
                 notification.success({
                     message: "Patch successfully!",
-                    description: <div>The article has been patched successfully. Click <a onClick={() => browserHistory.push("/articles/" + result.id)}>this</a> to see it!</div>
-                })
+                    description: "The article has been patched successfully. Redirected to the new page!"
+                });
+                //browserHistory.push(`/articles/${result.id}`);
             }, (errorInfo) => {
                 notification.destroy();
                 notification.error({
@@ -87,9 +89,9 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
 
         const picturePostfixes = [".jpg", ".jpeg", ".png", ".gif"];
 
-        const a = picturePostfixes.map(x => file.filename.endsWith(x)).join(",");
+        const a = picturePostfixes.map(x => file.filename.endsWith(x));
 
-        if (a.includes("true")) {
+        if (a.indexOf(true)>-1) {
             this.props.changeContent(this.props.compose.content + `![${file.filename}](${file.url})`);
         }else{
             this.props.changeContent(this.props.compose.content + `[${file.filename}](${file.url})`)
@@ -102,8 +104,18 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
 
 
     render() {
-        return this.props.user.status == UserStatus.LoggedIn ?
-            <Row>
+
+        const loading = this.props.compose.submitStatus
+
+        if (this.props.user.status != UserStatus.LoggedIn){
+            return <div>
+                <Alert message="You are not logged in!" type="error" />
+                <a onClick={() => this.props.openLoginModal()}>Click this to login!</a>
+            </div>;
+        }
+         
+        return <Row>
+           {this.props.compose.submitStatus == ArticleSubmitStatus.Submitting || this.props.compose.patchStatus == ArticleSubmitStatus.Submitting ? <Spin/> :[]}
                 <Col style={padding} {...twoColStyleLeft}>
                     <ArticleEditorSidePanel />
                     <UploadPanel token={this.props.user.user.token} onClick={file=>this.handleUploadedFileClick(file)} />
@@ -115,12 +127,7 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
                     <MarkdownEditor minRow={8} placeholder="Input your content here" content={this.props.compose.content} onContentChange={content => this.props.changeContent(content)} />
                     <Button type="primary" icon="upload" loading={this.props.compose.submitStatus == ArticleSubmitStatus.Submitting} onClick={() => this.submitArticle()} children="Submit" />
                 </Col>
-            </Row>
-            : <div>
-                <Alert message="You are not logged in!" type="error" />
-                <a onClick={() => this.props.openLoginModal()}>Click this to login!</a>
-            </div>
-            ;
+            </Row> ;
     }
 }
 

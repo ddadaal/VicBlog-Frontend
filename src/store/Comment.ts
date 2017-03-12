@@ -4,12 +4,18 @@ import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
 import { TokenOutdatedAction, TokenInvalidAction } from './User';
 import fetch from 'isomorphic-fetch';
 
-export interface CommentPanelState {
-    comments: Comment[],
-    contentStatus: ContentStatus,
+export type CommentsState = {
+    commentsOfArticles: CommentsOfArticle[],
+    content: string,
     sendStatus: SendStatus,
-    deleteStatus: DeleteStatus,
+    deleteStatus: DeleteStatus
+}
+
+export interface CommentsOfArticle {
+    comments: Comment[],
+    fetchStatus: FetchStatus,
     articleID: string,
+    lastUpdatedTime: number
 }
 
 export interface Comment {
@@ -28,10 +34,10 @@ export interface SendCommentModel {
 }
 
 
-export const enum ContentStatus{
+export const enum FetchStatus {
     Initial,
     Requesting,
-    Recevied, 
+    Recevied,
     ArticleNotFound,
     Network,
     Others
@@ -61,117 +67,120 @@ export const enum DeleteStatus {
 
 
 export interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articleID: string }
-export interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus }
-export interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string }
+export interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: FetchStatus, articleID: string }
+export interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string, updatedTime: number }
 export interface SendCommentAction { type: "SEND_COMMENT", model: SendCommentModel }
-export interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus }
+export interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus}
 export interface SuccessSendingCommentAction { type: "SUCCESS_SENDING_COMMENT", comment: Comment }
-export interface DeleteComment { type:"DELETE_COMMENT", commentID: string, token: string}
+export interface DeleteComment { type: "DELETE_COMMENT",  commentID: string, token: string }
 export interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
-export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus}
+export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus }
+export interface ChangeContentAction { type: "CHANGE_CONTENT", content: string}
 
-type KnownAction =TokenInvalidAction|ErrorDeletingComment|SuccessDeletingComment |DeleteComment|RequestAllCommentsAction |  ErrorAllCommentsAction  | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
+type KnownAction =ChangeContentAction|  TokenInvalidAction | ErrorDeletingComment | SuccessDeletingComment | DeleteComment | RequestAllCommentsAction | ErrorAllCommentsAction | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
 
 export const actionCreators = {
     requestAllComments: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({type:"REQUEST_ALL_COMMENTS",articleID: articleID});
+        dispatch({ type: "REQUEST_ALL_COMMENTS", articleID: articleID });
         const url = attachQueryString(APIs.comments, { articleID: articleID });
         return fetch(url).then(res => {
             if (res.ok) {
                 res.json().then(json => {
-                    dispatch({ type: "RECEIVE_ALL_COMMENTS", comments: json as Comment[], articleID: articleID });
+                    dispatch({ type: "RECEIVE_ALL_COMMENTS", comments: json as Comment[], articleID: articleID, updatedTime: Date.now() });
                 })
             } else {
-                dispatch({ type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus.Others });
+                dispatch({ type: "ERROR_ALL_COMMENTS", articleID: articleID, errorInfo: FetchStatus.Others });
             }
-        }).catch(res => { dispatch({ type: "ERROR_ALL_COMMENTS", errorInfo: ContentStatus.Network }); });
+        }).catch(res => { dispatch({ type: "ERROR_ALL_COMMENTS", articleID: articleID, errorInfo: FetchStatus.Network }); });
 
     },
-    sendComment: (token:string, model: SendCommentModel, callback: ()=>any): AppThunkAction<KnownAction> => (dispatch, getState)=>{
-        dispatch({type: "SEND_COMMENT", model: model});
+    sendComment: (token: string, model: SendCommentModel, callback: () => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: "SEND_COMMENT", model: model });
         const url = APIs.comments;
-        return fetch(url, JSONRequestInit(model, {token: token})).then(res=>{
-            switch(res.status){
+        return fetch(url, JSONRequestInit(model, { token: token })).then(res => {
+            switch (res.status) {
                 case 201:
-                    res.json().then(json=>{
-                        dispatch({type:"SUCCESS_SENDING_COMMENT", comment: json as Comment  });
+                    res.json().then(json => {
+                        dispatch({ type: "SUCCESS_SENDING_COMMENT", comment: json as Comment });
                         callback();
                     });
                     break;
                 case 401:
-                    dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.NotAuthorized});
-                    dispatch({type: "TOKEN_INVALID"});
+                    dispatch({ type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.NotAuthorized });
+                    dispatch({ type: "TOKEN_INVALID" });
                     break;
                 case 404:
-                    dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.ArticleNotFound});
+                    dispatch({ type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.ArticleNotFound });
                     break;
                 case 403:
-                    dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.TokenOutdated});
-                    dispatch({type: "TOKEN_OUTDATED"});
+                    dispatch({ type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.TokenOutdated });
+                    dispatch({ type: "TOKEN_OUTDATED" });
                     break;
                 default:
-                    dispatch({type:"ERROR_SENDING_COMMENT", errorInfo: SendStatus.Others});
-            }           
-        }).catch(res=>dispatch({type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.Network}));
-    },
-    deleteComment: (commentID: string, token: string, callback: ()=>any) : AppThunkAction<KnownAction> =>(dispatch, getState)=>{
-        dispatch({type:"DELETE_COMMENT", commentID: commentID, token: token});
-        const url = attachQueryString(APIs.comments,{commentID: commentID});
-        return fetch(url,JSONRequestInit(null,{token: token},"DELETE")).then(res=>{
-            switch(res.status){
-                case 200:
-                    res.json().then(json=>{
-                        dispatch({type: "SUCCESS_DELETING_COMMENT",comment: json as Comment });
-                        callback();
-                    });
-                    break;
-                case 401:
-                    dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.NotAuthorized});
-                    dispatch({type: "TOKEN_INVALID"});
-                    break;
-                case 403:
-                    dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.TokenOutdated});
-                    dispatch({type: "TOKEN_OUTDATED"});
-                    break;
-                case 404:
-                    dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.CommentNotFound});
-                    break;
-                default:
-                    dispatch({type:"ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Others});
+                    dispatch({ type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.Others });
             }
-        }).catch(res=>dispatch({type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Network}));
+        }).catch(res => dispatch({ type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus.Network }));
     },
-    
+    deleteComment: (commentID: string, token: string, callback: () => any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: "DELETE_COMMENT", commentID: commentID, token: token });
+        const url = attachQueryString(APIs.comments, { commentID: commentID });
+        return fetch(url, JSONRequestInit(null, { token: token }, "DELETE")).then(res => {
+            switch (res.status) {
+                case 200:
+                    res.json().then(json => {
+                        dispatch({ type: "SUCCESS_DELETING_COMMENT", comment: json as Comment });
+                        callback();
+                    });
+                    break;
+                case 401:
+                    dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.NotAuthorized });
+                    dispatch({ type: "TOKEN_INVALID" });
+                    break;
+                case 403:
+                    dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.TokenOutdated });
+                    dispatch({ type: "TOKEN_OUTDATED" });
+                    break;
+                case 404:
+                    dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.CommentNotFound });
+                    break;
+                default:
+                    dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Others });
+            }
+        }).catch(res => dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Network }));
+    },
+    changeContent:(content: string)=>({type: "CHANGE_CONTENT", content: content})
 }
 
-export const initialState:CommentPanelState = {
-    articleID: "",
-    comments: [],
-    contentStatus: ContentStatus.Initial,
+export const initialState: CommentsState = {
+    commentsOfArticles: [],
+    content: "",
     deleteStatus: DeleteStatus.Initial,
     sendStatus: SendStatus.Initial
-}
 
-export const reducer: Reducer<CommentPanelState>= (state:CommentPanelState, action:KnownAction)=>{
-    switch(action.type){
+};
+
+export const reducer: Reducer<CommentsState> = (state: CommentsState, action: KnownAction) => {
+    switch (action.type) {
         case "REQUEST_ALL_COMMENTS":
-            return { ...state, articleID: action.articleID, contentStatus: ContentStatus.Requesting };
+            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: {  comments: [], articleID: action.articleID, fetchStatus: FetchStatus.Requesting, deleteStatus: DeleteStatus.Initial } } };
         case "RECEIVE_ALL_COMMENTS":
-            return { ...state, articleID: action.articleID, comments: action.comments, contentStatus: ContentStatus.Recevied };
+            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: { lastUpdatedTime: action.updatedTime,  comments: action.comments, articleID: action.articleID, fetchStatus: FetchStatus.Recevied, deleteStatus: DeleteStatus.Initial } } };
         case "ERROR_ALL_COMMENTS":
-            return { ...state, contentStatus: action.errorInfo };
+            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: { ...state.commentsOfArticles[action.articleID], articleID: action.articleID, fetchStatus: action.errorInfo } } };
         case "SEND_COMMENT":
-            return { ...state, sendStatus: SendStatus.Sending, articleID: action.model.articleID };
+            return { ...state, sendStatus: SendStatus.Sending, };
         case "SUCCESS_SENDING_COMMENT":
             return { ...state, sendStatus: SendStatus.Success };
         case "ERROR_SENDING_COMMENT":
             return { ...state, sendStatus: action.errorInfo };
         case "DELETE_COMMENT":
-            return {...state, deleteStatus: DeleteStatus.Deleting};
+            return { ...state, deleteStatus: DeleteStatus.Deleting};
         case "SUCCESS_DELETING_COMMENT":
-            return {...state, deleteStatus: DeleteStatus.Success};
+            return { ...state, deleteStatus: DeleteStatus.Success};
         case "ERROR_DELETING_COMMENT":
-            return {...state, deleteStatus: action.errorInfo};
+            return { ...state, deleteStatus: action.errorInfo };
+        case "CHANGE_CONTENT":
+            return {...state, content: action.content};
         case "TOKEN_OUTDATED":
         case "TOKEN_INVALID":
             return state;

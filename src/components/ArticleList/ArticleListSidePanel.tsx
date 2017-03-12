@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { actionCreators, ArticleListState, ContentStatus } from '../../store/ArticleList';
-import { ArticleFilterState, actionCreators as filterActions, ArticleBriefListOrder, orderDescription } from '../../store/ArticleListFilter';
-import { Input, Checkbox, Button, Card, Icon, Alert, Tag, Dropdown, Menu } from 'antd';
+import { ArticleFilterState, actionCreators as filterActions, ArticleBriefListOrder, orderDescription, initialState } from '../../store/ArticleListFilter';
+import { Input, Checkbox, Button, Card, Icon, Alert, Tag, Dropdown, Menu, DatePicker } from 'antd';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { ArticleListUpdateMinutesSpan } from '../../Utils';
+
 import moment from 'moment';
+import DateSelector from './DateSelector';
+
 const CheckableTag = Tag.CheckableTag;
 
 const Search = Input.Search;
@@ -14,7 +17,7 @@ type ArticleListSiderProps = typeof actionCreators & ArticleListState & typeof f
 
 class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
     componentDidMount() {
-        if (Date.now() - this.props.articleList.lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 60 || this.props.expired) {
+        if (this.props.expired || Date.now() - this.props.articleList.lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 1000) {
 
             this.props.requestAllTags();
             this.props.requestAllCategories();
@@ -43,13 +46,25 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
         });
     }
 
-    reset() {
+    handleCreatedTimePeriodChange(date: [moment.Moment, moment.Moment], dateString: [string, string]) {
         this.props.changeFilter({
-            titleText: "",
-            categories: [],
-            tags: [],
-            order: ArticleBriefListOrder.NotSpecified
+            ...this.props.filter,
+            createdTimeRange: [moment(dateString[0],"YYYY-MM-DD").valueOf(), moment(dateString[1],"YYYY-MM-DD").valueOf()]
         });
+    }
+
+    handleEditedTimePeriodChange(date: [moment.Moment, moment.Moment], dateString: [string, string]) {
+        this.props.changeFilter({
+            ...this.props.filter,
+            editedTimeRange: [date[0].valueOf(), date[1].valueOf()]
+        });
+    }
+    formatMoment() {
+
+    }
+
+    reset() {
+        this.props.changeFilter(initialState.filter);
         this.props.requestArticleList();
     }
 
@@ -67,13 +82,15 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
             <Checkbox onChange={e => this.handleCategoriesChange(e)} key={item}>{item}</Checkbox>
         ));
 
-        const menu =<Menu>
-            {[0, 1, 2, 3, 4, 5, 6].map(x => 
+        const menu = <Menu>
+            {[0, 1, 2, 3, 4, 5, 6].map(x =>
                 (<Menu.Item key={x} >
                     <a onClick={() => this.props.changeFilter({ ...this.props.filter, order: x })}>{orderDescription[x]}</a>
                 </Menu.Item>)
             )}
-            </Menu>;
+        </Menu>;
+
+        const { RangePicker } = DatePicker;
 
         return (
             <div>
@@ -84,16 +101,23 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                     <br />
                     <div><Icon type="tags" /> Tags</div>
                     <Checkbox.Group options={this.props.tags.content} value={this.props.filter.tags} onChange={e => this.handleTagsChange(e)} />
+                    <br />
                     <div><Icon type="tag-o" /> Categories</div>
                     <Checkbox.Group options={this.props.categories.content} value={this.props.filter.categories} onChange={e => this.handleCategoriesChange(e)} />
+                    <br />
+                    <DateSelector iconName="clock-circle-o" message="Created Time Range" enabled={this.props.filter.createdTimeEnabled} onEnabledChange={() => this.props.changeFilter({ ...this.props.filter, createdTimeEnabled: !this.props.filter.createdTimeEnabled })} onChange={(date, dateString) => this.handleCreatedTimePeriodChange(date, dateString)} />
+                    <br />
+                    <DateSelector iconName="clock-circle" message="Edited Time Range" enabled={this.props.filter.editedTimeEnabled} onEnabledChange={() => this.props.changeFilter({ ...this.props.filter, editedTimeEnabled: !this.props.filter.editedTimeEnabled })} onChange={(date, dateString) => this.handleEditedTimePeriodChange(date, dateString)} />
+                    <br />
                     <div><Icon type="bars" /> Order by</div>
                     <Dropdown overlay={menu} trigger={["click"]}>
                         <a className="ant-dropdown-link">
                             {orderDescription[this.props.filter.order]} <Icon type="down" />
                         </a>
                     </Dropdown>
+
                     <br />
-                    <hr/>
+                    <hr />
                     <Button icon="check" type="primary" onClick={() => this.startSearch()} loading={this.props.searching}>{this.props.searching ? "Refreshing" : "Filter"}</Button>
                     <Button icon="close" type="ghost" onClick={() => this.reset()}>Reset</Button>
                 </Card>
@@ -117,5 +141,5 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
 
 export default connect(
     (state: ApplicationState) => ({ ...state.articleList, ...state.articleFilter }),
-    { ...actionCreators, ...filterActions }
+    { ...actionCreators, ...filterActions, }
 )(ArticleListSider);

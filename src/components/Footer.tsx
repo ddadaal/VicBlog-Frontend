@@ -1,63 +1,45 @@
 import * as React from 'react';
 import { Icon, Tooltip } from 'antd';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { APIs } from '../Utils';
 import { Link } from 'react-router';
+import { BackendVersionInfo, VersionState, actionCreators } from '../store/Version';
 
-declare const FRONT_END_BUILD: string;
+export type FooterProps = VersionState & typeof actionCreators;
 
-export interface FooterStates {
-    loading: boolean,
-    version: string,
-    updatedTime: string,
-    error: boolean,
-    loaded: boolean
-}
-
-export default class Footer extends React.Component<void, FooterStates>  {
+class Footer extends React.Component<FooterProps, void>  {
 
     constructor() {
         super();
-        this.state = {
-            loading: false,
-            version: "",
-            updatedTime: "",
-            error: false,
-            loaded: false
-        }
     }
 
 
 
     componentDidMount() {
-        fetch(APIs.backendVersion).then(res => res.json()).then(value => {
-            this.setState({
-                loading: false,
-                error: false,
-                version: (value as any).version,
-                updatedTime: (value as any).updateTime,
-                loaded: true
-            });
-        }).catch(res => {
-            this.setState({
-                loading: false,
-                error: true,
-                loaded: false
-            })
-        })
+        this.props.fetchVersionInfo();
     }
 
     render() {
         return <footer style={{ textAlign: "center" }}>
             <p>Code Proudly by <Link to="/about/me">VicCrubs</Link></p>
-            <p><Icon type="github" /> FrontEnd <a href="https://github.com/viccrubs/VicBlog-Frontend">Github Repository</a>. Live Version: <strong>{FRONT_END_BUILD}</strong></p>
+            <p><Icon type="github" /> FrontEnd <a href="https://github.com/viccrubs/VicBlog-Frontend">Github Repository</a>. Live Version: <strong>{this.props.frontend}</strong></p>
             <p><Icon type="github" /> BackEnd <a href="https://github.com/viccrubs/VicBlog-Backend">Github Repository</a>. Live Version:&nbsp;
-            {this.state.loaded
-                    ? <Tooltip placement="bottom" title={this.state.updatedTime}><strong>{this.state.version}</strong></Tooltip>
-                    : this.state.error ? "Error" : "Fetching..."
+            {this.props.fetching
+                    ? "Fetching..."
+                    : (
+                        this.props.error
+                        ? "Error"
+                        : <Tooltip placement="bottom" title={this.props.backend.updateTime}><strong>{this.props.backend.version}</strong></Tooltip>
+                    )
                 }
             </p>
         </footer>
     }
 
 }
+
+export default connect(
+    s=>s.version,
+    actionCreators
+)(Footer);

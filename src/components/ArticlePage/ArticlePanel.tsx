@@ -1,8 +1,4 @@
 import * as React from 'react';
-import { ArticlePageState } from '../../store/ArticlePage';
-import { ApplicationState } from '../../store';
-import { connect } from 'react-redux';
-import moment from 'moment';
 import { MarkdownDisplay } from '../common';
 import { Card, Tag } from 'antd';
 import { ArticleMetaRow } from './';

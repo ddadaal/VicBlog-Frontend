@@ -26,7 +26,8 @@ const basePlugins = [
     }),
     new ExtractTextPlugin("github-markdown.css"),
     new webpack.DefinePlugin({
-        FRONT_END_BUILD: JSON.stringify(moment().format("YYYYMMDDHH"))
+        FRONT_END_BUILD: JSON.stringify(moment().format("YYYYMMDD")),
+        FRONT_END_BUILDTIME: JSON.stringify(moment().format("MMM Do, YYYY, HH:mm:ss"))
     })
 ];
 

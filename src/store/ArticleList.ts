@@ -57,14 +57,12 @@ export const actionCreators = {
             dispatch({ type: "REQUEST_SEARCH", filter: filter });
             return fetch(url, JSONRequestInit(filter)).then(res => res.json().then(res => {
                 dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now() });
-                localStorage.setItem("articleList", JSON.stringify(getState().articleList));
             })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: ContentStatus.Network }))
         } else {
             const url = APIs.articles;
             dispatch({ type: "REQUEST_ALL_ARTICLES" });
             return fetch(url).then(res => res.json().then(res => {
                 dispatch({ type: "RECEIVE_ARTICLE_LIST", articleList: res as ArticleBrief[], updatedTime: Date.now() });
-                localStorage.setItem("articleList", JSON.stringify(getState().articleList));
             })).catch(res => dispatch({ type: "ERROR_ARTICLE_LIST", status: ContentStatus.Network }))
         }
 

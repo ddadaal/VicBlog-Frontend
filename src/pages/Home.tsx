@@ -6,7 +6,6 @@ import CleanCacheTip from '../components/common/CacheCleanTip';
 const Home: React.StatelessComponent<{}> = function (props) {
     document.title = "Homepage - VicBlog";
     return <div style={{ textAlign: "center" }}>
-        <CleanCacheTip />
         <h1>Welcome to my blog!</h1>
         <br />
         So, what to do next ?

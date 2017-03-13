@@ -32,7 +32,7 @@ class CacheCleanTip extends React.Component<CacheCleanTipProps, CacheCleanTipSta
                     Cookies.set("cacheCleaned", "0");
                 }}>button</Button>;
             return <div>
-                <Alert type="warning" message={<div>Breaking changes occured in this build. Please click this {button} to clean the local cache. If you have done this, just ignore this. Thanks.</div>} />
+                <Alert type="warning" message={<div>Breaking changes occurred in this build. Please click this {button} to clean the local cache, or malfunctions are expected. Thanks for your support.</div>} />
                 
             </div>;
         }

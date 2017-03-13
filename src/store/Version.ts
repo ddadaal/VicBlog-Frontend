@@ -4,8 +4,9 @@ import { APIs, JSONRequestInit } from '../Utils';
 import fetch from 'isomorphic-fetch';
 
 declare const FRONT_END_BUILD:string;
+declare const FRONT_END_BUILDTIME:string;
 
-export interface BackendVersionInfo{
+export interface VersionInfo{
     version: string,
     updateTime: string
 }
@@ -13,16 +14,14 @@ export interface BackendVersionInfo{
 export interface VersionState {
     fetching: boolean,
     error: boolean,
-    backend: BackendVersionInfo,
-    frontend: string
+    backend: VersionInfo,
+    frontend: VersionInfo
 }
 
 export interface FetchVersionInfoAction { type: "FETCH_VERSION_INFO" }
-export interface SuccessVersionInfoAction { type: "SUCCSS_VERSION_INFO", info: BackendVersionInfo }
+export interface SuccessVersionInfoAction { type: "SUCCSS_VERSION_INFO", info: VersionInfo }
 export interface ErrorVersionInfoAction { type: "ERROR_VERSION_INFO" }
-export interface ResetTheAppAction{type: "RESET_APP"}
-
-type KnownAction =ResetTheAppAction| FetchVersionInfoAction | SuccessVersionInfoAction | ErrorVersionInfoAction;
+type KnownAction = FetchVersionInfoAction | SuccessVersionInfoAction | ErrorVersionInfoAction;
 
 export const actionCreators = {
     fetchVersionInfo: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -33,7 +32,6 @@ export const actionCreators = {
         .catch(res => dispatch({ type: "ERROR_VERSION_INFO" }));
     },
     resetApp:():AppThunkAction<KnownAction>=>(dispatch, getState)=>{
-        localStorage.removeItem("articleList");
         localStorage.removeItem("user");
     }
 }
@@ -45,7 +43,10 @@ export const initialState: VersionState = {
         version: "",
         updateTime: ""
     },
-    frontend: FRONT_END_BUILD
+    frontend: {
+        version: FRONT_END_BUILD,
+        updateTime: FRONT_END_BUILDTIME
+    }
 };
 
 export const reducer : Reducer<VersionState> = (state: VersionState, action: KnownAction)=>{
@@ -56,9 +57,6 @@ export const reducer : Reducer<VersionState> = (state: VersionState, action: Kno
             return {...state, fetching: false, error: false, backend: action.info};
         case "ERROR_VERSION_INFO":
             return {...state, error: true, fetching: false};
-        case "RESET_APP":
-            return state;
-            
     }
     return state || initialState;
 }

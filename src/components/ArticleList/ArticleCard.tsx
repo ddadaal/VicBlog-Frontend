@@ -9,13 +9,14 @@ import { connect } from 'react-redux';
 
 type ArticleCardProps = typeof pvActions & typeof actionCreators & ArticleFilterState & {
     brief: ArticleBrief,
-    pvState: any
+    pvState: PVState
 }
 
 class ArticleCard extends React.Component<ArticleCardProps, void>{
 
     componentDidMount() {
-        if (!this.props.pvState[this.props.brief.id] || (Date.now() - this.props.pvState[this.props.brief.id].updatedTime) > PVFetchSecondsSpan*1000) {
+        const state = this.props.pvState.get(this.props.brief.id);
+        if (!state || (Date.now() - state.updatedTime) > PVFetchSecondsSpan*1000) {
             this.props.fetchPV(this.props.brief.id);
         }
     }
@@ -36,6 +37,8 @@ class ArticleCard extends React.Component<ArticleCardProps, void>{
 
     render() {
         const url = pathCombine(APIs.articles, this.props.brief.id);
+        const state = this.props.pvState.get(this.props.brief.id);
+        
         const tags = this.props.brief.tags.map(item => <Tag key={item} ><a onClick={() => this.handleTagClick(item)}>{item}</a></Tag>);
         return <Card title={<div>
             <Tag key="category" color="blue"> <a onClick={() => this.handleCategoryClick(this.props.brief.category)}>{this.props.brief.category}</a></Tag>
@@ -47,7 +50,7 @@ class ArticleCard extends React.Component<ArticleCardProps, void>{
                 <br />
                 <p><Icon type="clock-circle-o" /> Created in {moment.utc(this.props.brief.submitTime).local().format("MMMM Do, YYYY, HH:mm")}</p>
                 <p><Icon type="clock-circle" /> Edited in {moment.utc(this.props.brief.lastEditedTime).local().format("MMMM Do, YYYY, HH:mm")}</p>
-                <p><Icon type="like-o" /> { !this.props.pvState[this.props.brief.id] ? "Fetching PV..." : this.props.pvState[this.props.brief.id].fetching ? "Fetching PV..." : this.props.pvState[this.props.brief.id].error ? "Error fetching pv." : `Viewed by ${this.props.pvState[this.props.brief.id].pv} times`}</p>
+                <p><Icon type="like-o" /> { !(state && !state.fetching) ? "Fetching PV..." : state.error ? "Error fetching pv." : `Viewed by ${state.pv} times`}</p>
                 <p><Icon type="user" /> By {this.props.brief.username}</p>
             </div>
         </Card>

@@ -2,17 +2,18 @@ import * as React from 'react';
 import { Icon, Tooltip, Tag, Popconfirm } from 'antd';
 import { UserState, actionCreators as userActions, UserStatus } from '../../store/User';
 import { actionCreators as articleActions } from '../../store/ArticlePage';
-import { actionCreators as pvActions } from '../../store/PV';
+import { actionCreators as pvActions, PVState } from '../../store/PV';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
 import { PVFetchSecondsSpan } from '../../Utils';
 import Rating from './Rating';
+import ItemColumn from './ItemColumn';
 
 type ArticleMetaRowProps = {
     article: Article,
     userState: UserState,
-    pvState: any
+    pvState: PVState
 } & typeof userActions & typeof pvActions & typeof articleActions;
 
 
@@ -23,23 +24,31 @@ class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
     }
 
     componentDidMount() {
-        this.props.fetchPV(this.props.article.id);
+        const state = this.props.pvState.get(this.props.article.id);
+        if (!state || (Date.now() - state.updatedTime) > PVFetchSecondsSpan * 1000) {
+            this.props.fetchPV(this.props.article.id);
+        }
 
     }
 
-    render() {
+    dateFormat(date: number) {
+        return moment.utc(date).local().format("MMM Do, YYYY, HH:mm:ss")
+    }
 
-        const ItemColumn = (props: { iconName: string, content: string | JSX.Element | JSX.Element[], tooltip: string }) => <Tooltip title={props.tooltip}><span><Icon type={props.iconName} /> {props.content} &nbsp;</span></Tooltip>;
+    render() {
         const tags = this.props.article.tags.map(item => <Tag key={item}>{item}</Tag>);
         const categoryTag = <Tag key="category" color="blue">{this.props.article.category}</Tag>;
+        const state = this.props.pvState.get(this.props.article.id);
 
         return (<div>
             <ItemColumn iconName="user" content={this.props.article.username} tooltip="Author" />
             <ItemColumn iconName="tag-o" content={categoryTag} tooltip="Category" />
             <ItemColumn iconName="tags" content={tags} tooltip="Tags" />
-            <ItemColumn iconName="clock-circle-o" content={moment.utc(this.props.article.submitTime).local().format("MMM Do, YYYY, HH:mm:ss")} tooltip="Create Time" />
-            <ItemColumn iconName="clock-circle" content={moment.utc(this.props.article.lastEditedTime).local().format("MMM Do, YYYY, HH:mm:ss")} tooltip="Last Edited Time" />
-            <ItemColumn iconName="like-o" content={!this.props.pvState[this.props.article.id] ? "Fetching PV..." : this.props.pvState[this.props.article.id].fetching ? "Fetching PV..." : this.props.pvState[this.props.article.id].error ? "Error fetching pv." : `${this.props.pvState[this.props.article.id].pv}`} tooltip="Viewed times" />
+            <ItemColumn iconName="clock-circle-o" content={this.dateFormat(this.props.article.submitTime)} tooltip="Create Time" />
+            <ItemColumn iconName="clock-circle" content={this.dateFormat(this.props.article.lastEditedTime)} tooltip="Last Edited Time" />
+            <ItemColumn iconName="like-o" content={
+                !(state && !state.fetching) ? "Fetching PV..." : state.error ? "Error fetching pv." : `${state.pv}`}
+                tooltip="Viewed times" />
             <Rating article={this.props.article} />&nbsp;
 
             {this.props.userState.status == UserStatus.LoggedIn && this.props.userState.user.username == this.props.article.username

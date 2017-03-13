@@ -3,9 +3,10 @@ import { AppThunkAction } from './';
 import { APIs, attachQueryString, JSONRequestInit } from '../Utils';
 import { TokenOutdatedAction, TokenInvalidAction } from './User';
 import fetch from 'isomorphic-fetch';
+import { Map } from 'immutable';
 
 export type CommentsState = {
-    commentsOfArticles: CommentsOfArticle[],
+    commentsOfArticles: Map<string, CommentsOfArticle>,
     content: string,
     sendStatus: SendStatus,
     deleteStatus: DeleteStatus
@@ -14,7 +15,6 @@ export type CommentsState = {
 export interface CommentsOfArticle {
     comments: Comment[],
     fetchStatus: FetchStatus,
-    articleID: string,
     lastUpdatedTime: number
 }
 
@@ -70,14 +70,14 @@ export interface RequestAllCommentsAction { type: "REQUEST_ALL_COMMENTS", articl
 export interface ErrorAllCommentsAction { type: "ERROR_ALL_COMMENTS", errorInfo: FetchStatus, articleID: string }
 export interface ReceiveAllCommentsAction { type: "RECEIVE_ALL_COMMENTS", comments: Comment[], articleID: string, updatedTime: number }
 export interface SendCommentAction { type: "SEND_COMMENT", model: SendCommentModel }
-export interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus}
+export interface ErrorSendingCommentAction { type: "ERROR_SENDING_COMMENT", errorInfo: SendStatus }
 export interface SuccessSendingCommentAction { type: "SUCCESS_SENDING_COMMENT", comment: Comment }
-export interface DeleteComment { type: "DELETE_COMMENT",  commentID: string, token: string }
+export interface DeleteComment { type: "DELETE_COMMENT", commentID: string, token: string }
 export interface SuccessDeletingComment { type: "SUCCESS_DELETING_COMMENT", comment: Comment }
 export interface ErrorDeletingComment { type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus }
-export interface ChangeContentAction { type: "CHANGE_CONTENT", content: string}
+export interface ChangeContentAction { type: "CHANGE_CONTENT", content: string }
 
-type KnownAction =ChangeContentAction|  TokenInvalidAction | ErrorDeletingComment | SuccessDeletingComment | DeleteComment | RequestAllCommentsAction | ErrorAllCommentsAction | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
+type KnownAction = ChangeContentAction | TokenInvalidAction | ErrorDeletingComment | SuccessDeletingComment | DeleteComment | RequestAllCommentsAction | ErrorAllCommentsAction | ReceiveAllCommentsAction | SendCommentAction | ErrorSendingCommentAction | SuccessSendingCommentAction | TokenOutdatedAction;
 
 export const actionCreators = {
     requestAllComments: (articleID: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -148,11 +148,11 @@ export const actionCreators = {
             }
         }).catch(res => dispatch({ type: "ERROR_DELETING_COMMENT", errorInfo: DeleteStatus.Network }));
     },
-    changeContent:(content: string)=>({type: "CHANGE_CONTENT", content: content})
+    changeContent: (content: string) => ({ type: "CHANGE_CONTENT", content: content })
 }
 
 export const initialState: CommentsState = {
-    commentsOfArticles: [],
+    commentsOfArticles: Map<string, CommentsOfArticle>(),
     content: "",
     deleteStatus: DeleteStatus.Initial,
     sendStatus: SendStatus.Initial
@@ -162,11 +162,11 @@ export const initialState: CommentsState = {
 export const reducer: Reducer<CommentsState> = (state: CommentsState, action: KnownAction) => {
     switch (action.type) {
         case "REQUEST_ALL_COMMENTS":
-            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: {  comments: [], articleID: action.articleID, fetchStatus: FetchStatus.Requesting, deleteStatus: DeleteStatus.Initial } } };
+            return { ...state, commentsOfArticles: state.commentsOfArticles.set(action.articleID, { ...state.commentsOfArticles.get(action.articleID), fetchStatus: FetchStatus.Requesting }) };
         case "RECEIVE_ALL_COMMENTS":
-            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: { lastUpdatedTime: action.updatedTime,  comments: action.comments, articleID: action.articleID, fetchStatus: FetchStatus.Recevied, deleteStatus: DeleteStatus.Initial } } };
+            return { ...state, commentsOfArticles: state.commentsOfArticles.set(action.articleID, { lastUpdatedTime: action.updatedTime, comments: action.comments, fetchStatus: FetchStatus.Recevied }) };
         case "ERROR_ALL_COMMENTS":
-            return { ...state, commentsOfArticles: { ...state.commentsOfArticles, [action.articleID]: { ...state.commentsOfArticles[action.articleID], articleID: action.articleID, fetchStatus: action.errorInfo } } };
+            return { ...state, commentsOfArticles: state.commentsOfArticles.set(action.articleID, { ...state.commentsOfArticles[action.articleID], articleID: action.articleID, fetchStatus: action.errorInfo }) };
         case "SEND_COMMENT":
             return { ...state, sendStatus: SendStatus.Sending, };
         case "SUCCESS_SENDING_COMMENT":
@@ -174,13 +174,13 @@ export const reducer: Reducer<CommentsState> = (state: CommentsState, action: Kn
         case "ERROR_SENDING_COMMENT":
             return { ...state, sendStatus: action.errorInfo };
         case "DELETE_COMMENT":
-            return { ...state, deleteStatus: DeleteStatus.Deleting};
+            return { ...state, deleteStatus: DeleteStatus.Deleting };
         case "SUCCESS_DELETING_COMMENT":
-            return { ...state, deleteStatus: DeleteStatus.Success};
+            return { ...state, deleteStatus: DeleteStatus.Success };
         case "ERROR_DELETING_COMMENT":
             return { ...state, deleteStatus: action.errorInfo };
         case "CHANGE_CONTENT":
-            return {...state, content: action.content};
+            return { ...state, content: action.content };
         case "TOKEN_OUTDATED":
         case "TOKEN_INVALID":
             return state;

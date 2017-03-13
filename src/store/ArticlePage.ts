@@ -2,10 +2,11 @@ import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
 import { APIs, JSONRequestInit, pathCombine } from '../Utils';
 import { ExpireListAction } from './ArticleList';
+import { Map } from 'immutable';
 import fetch from 'isomorphic-fetch';
 
 
-export interface ArticlePagesState { }
+export type ArticlePagesState = Map<string, ArticleState>;
 
 export type ArticleState = {
     article: Article
@@ -87,28 +88,28 @@ export const actionCreators = {
     }
 };
 
-export const initialState: ArticlePagesState = {};
+export const initialState: ArticlePagesState = Map<string, ArticleState>();
 
-export const reducer: Reducer<ArticlePagesState> = (state: ArticleState, action: KnownAction) => {
+export const reducer: Reducer<ArticlePagesState> = (state: ArticlePagesState, action: KnownAction) => {
     switch (action.type) {
         case "REQUEST_ARTICLE":
-            return { ...state, [action.articleID]: { ...state[action.articleID], status: ArticleStatus.Requesting } };
+            return state.set(action.articleID, {...state.get(action.articleID), status: ArticleStatus.Requesting,   });
         case "RECEIVE_ARTICLE":
-            return { ...state, [action.articleID]: { status: ArticleStatus.Received, article: action.article, lastUpdatedTime: action.updatedTime } };
+            return state.set(action.articleID, {status: ArticleStatus.Received, article: action.article, lastUpdatedTime: action.updatedTime});
         case "ERROR_ARTICLE":
-            return { ...state, [action.articleID]: { ...state[action.articleID], status: action.status } };
+            return state.set(action.articleID, { ...state.get(action.articleID), status: action.status });
         case "DELETE_ARTICLE":
-            return { ...state, [action.articleID]: { ...state[action.articleID], status: ArticleStatus.Deleting } };
+            return state.set(action.articleID, { ...state.get(action.articleID), status: ArticleStatus.Deleting });
         case "CLEAR_ARTICLE":
-            return { ...state, [action.articleID]: undefined };
+            return state.remove(action.articleID);
         case "SUCCESS_DELETE_ARTICLE":
-            return { ...state, [action.articleID]: { ...state[action.articleID], status: ArticleStatus.Deleted } };
+            return state.set(action.articleID, { ...state.get(action.articleID), status: ArticleStatus.Deleted });
         case "ERROR_DELETE_ARTICLE":
-            return { ...state, [action.articleID]: { ...state[action.articleID], status: ArticleStatus.Received } };
+            return state.set(action.articleID, { ...state.get(action.articleID), status: ArticleStatus.Received });
         case "EXPIRE_LIST":
             return state;
         case "EXPIRE_ARTICLE":
-            return {...state, [action.articleID]: { ...state[action.articleID], status: ArticleStatus.Expired}};
+            return state.set(action.articleID, {...state.get(action.articleID), status: ArticleStatus.Expired});
         default:
             const exhausiveCheck: never = action;
     };

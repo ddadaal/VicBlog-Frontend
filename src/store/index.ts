@@ -11,13 +11,16 @@ import * as AboutPage from './AboutPage';
 import * as PV from './PV';
 import * as Version from './Version';
 
+export const initialState: Partial<ApplicationState> = {
+    user: JSON.parse(localStorage.getItem("user")),
+};
+
 // The top-level state object
 export interface ApplicationState {
     user: User.UserState,
     articleList: ArticleList.ArticleListState,
     articlePage: ArticlePage.ArticlePagesState,
     comments: Comments.CommentsState,
-    
     rate: Rate.RatingState,
     articleFilter: ArticleFilter.ArticleFilterState,
     composeArticle: ComposeArticle.ComposeArticleState,
@@ -39,7 +42,7 @@ export const reducers = {
     composeArticle: ComposeArticle.reducer,
     aboutPage: AboutPage.reducer,
     pv: PV.reducer,
-    version: Version.reducer
+    version: Version.reducer,
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

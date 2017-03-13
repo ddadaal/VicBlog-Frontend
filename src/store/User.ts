@@ -109,7 +109,7 @@ export const actionCreators = {
 
 }
 
-const initialState: UserState = { user: null, status: UserStatus.Initial, loginModalVisible: false, registerModalVisible: false }
+export const initialState: UserState = { user: null, status: UserStatus.Initial, loginModalVisible: false, registerModalVisible: false }
 
 export const reducer: Reducer<UserState> = (state: UserState, action: KnownAction) => {
     switch (action.type) {

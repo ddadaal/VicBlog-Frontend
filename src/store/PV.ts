@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Action, Reducer } from 'redux';
 import { AppThunkAction } from './';
+import { Map } from 'immutable';
 import { APIs, attachQueryString, JSONRequestInit, pathCombine } from '../Utils';
 import fetch from 'isomorphic-fetch';
 
 export interface PV {
-    articleID: string,
     pv: number,
     updatedTime: number,
     fetching: boolean,
     error: boolean
 }
 
-export type PVState = {};
+export type PVState = Map<string, PV>;
 
 export interface FetchPVAction { type: "FETCH_PV", articleID: string }
 export interface UpdatePVAction { type: "UPDATE_PV", articleID: string, pv: number, updatedTime: number }
@@ -31,18 +31,18 @@ export const actionCreators = {
     }
 }
 
-export const initialState: PVState = {};
+export const initialState: PVState = Map<string, PV>();
 
 export const reducer : Reducer<PVState> = (state: PVState, action: KnownAction)=>{
     switch(action.type){
         case "FETCH_PV":
-            return {...state, [action.articleID]:{ articleID: action.articleID, pv: -1, updatedTime: 0, fetching: true, error: false  } };
+            return state.set(action.articleID, { pv: -1, updatedTime: 0, fetching: true, error: false  } );
         case "UPDATE_PV":
-            return {...state, [action.articleID]: { articleID: action.articleID, pv: action.pv, updatedTime: action.updatedTime, error: false, fetching: false }};
+            return state.set(action.articleID, { pv: action.pv, updatedTime: action.updatedTime, error: false, fetching: false });
         case "REMOVE_PV":
-            return {...state, [action.articleID]: undefined};
+            return state.remove(action.articleID);
         case "ERROR_PV":
-            return {...state, [action.articleID]: { articleID: action.articleID, pv: -1, updatedTime: 0, error: true, fetching: false }};
+            return state.set(action.articleID, {pv: -1, updatedTime: 0, error: true, fetching: false });
     }
     return state || initialState;
 }

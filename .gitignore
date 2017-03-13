@@ -1,5 +1,5 @@
 node_modules
 .vscode
 .awcache
-dist/*
+/dist
 npm-debug.log*

@@ -10,5 +10,6 @@
 ## Build
 
 `npm run build` will 
+
 1. clean up the previous build
 2. build with `webpack -p`

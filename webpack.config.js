@@ -49,12 +49,14 @@ const prodPlugins = [
 const plugins = basePlugins.concat(isDev ? devPlugins : prodPlugins);
 
 module.exports = {
-    entry: isDev ? [
-        'react-hot-loader/patch',
-        'webpack-dev-server/client?http://0.0.0.0:8080',
-        'webpack/hot/only-dev-server',
-        './src/index'
-    ] : './src/index',
+    entry: {
+        app: isDev ? [
+            'react-hot-loader/patch',
+            'webpack-dev-server/client?http://0.0.0.0:8080',
+            'webpack/hot/only-dev-server',
+            './src/index'
+        ] : './src/index',
+    },
 
     plugins: plugins,
 
@@ -85,14 +87,14 @@ module.exports = {
             // All .ts(x) files will be piped through ts-loader then babel
             {
                 test: /\.tsx?$/,
-                use: [
-                    "awesome-typescript-loader"
-                ]
+                loader: "awesome-typescript-loader",
+                include: path.join(__dirname, 'src')
             },
             // All .js(x) files will be piped through babel
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
+                include: path.join(__dirname, 'src')
             },
             {
                 test: /\.css$/,

@@ -47,7 +47,11 @@ export interface ChangeFilterAction { type: "CHANGE_FILTER", filter: ArticleFilt
 type KnownAction = ChangeFilterAction;
 
 export const actionCreators = {
-    changeFilter: (filter: ArticleFilter) => ({ type: "CHANGE_FILTER", filter: filter }),
+    changeFilter: (change: (filter: ArticleFilter)=>ArticleFilter):AppThunkAction<KnownAction> =>(dispatch, getState)=>{
+        dispatch({ type: "CHANGE_FILTER", filter: change(getState().articleFilter.filter) });
+    },
+    rewriteFilter: (filter: ArticleFilter)=>({type: "CHANGE_FILTER", filter: filter})
+     
 }
 
 export const initialState: ArticleFilterState = {

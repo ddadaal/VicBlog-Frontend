@@ -78,9 +78,9 @@ class CommentPanel extends React.Component<CommentPanelProps, void>{
         }
 
 
-        const items = commentObject.comments 
-        ?commentObject.comments.map(item => <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />)
-        :[];
+        const items = commentObject.comments
+            ? commentObject.comments.map(item => <CommentItem comment={item} key={item.id} currentUser={this.props.user} deleteComment={commentID => this.deleteComment(commentID)} />)
+            : [];
         return (
             <div>
                 <br />
@@ -89,9 +89,9 @@ class CommentPanel extends React.Component<CommentPanelProps, void>{
                     <span style={{ fontSize: "large" }}><Icon type="inbox" /> Comments: </span>
                     <span style={{ float: "right" }}>
                         {commentObject.fetchStatus != CommentState.FetchStatus.Requesting
-                        ?<a onClick={() => this.props.requestAllComments(this.props.articleID)}>Refresh</a>
-                        :<a disabled>Refreshing...</a>
-                        }        
+                            ? <a onClick={() => this.props.requestAllComments(this.props.articleID)}>Refresh</a>
+                            : <a disabled>Refreshing...</a>
+                        }
                     </span>
                 </p>
                 {items}

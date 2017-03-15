@@ -1,66 +1,63 @@
 
 declare var APIROOTURL: string;
 
-export const pathCombine = (...paths: string[])=>paths.join('/');
+export const pathCombine = (...paths: string[]) => paths.join('/');
 
 export const APIRoot = APIROOTURL;
+
 export const APIs = {
-    login: pathCombine(APIRoot,"login"),
-    regsiter:pathCombine(APIRoot,"register"),
-    articles:pathCombine(APIRoot,"articles"),
-    tags:pathCombine(APIRoot, "tags"),
-    categories:pathCombine(APIRoot,"categories"),
-    comments:pathCombine(APIRoot,"comments"),
-    upload:pathCombine(APIRoot,"upload"),
-    rate:pathCombine(APIRoot,"rate"),
-    filteredList: pathCombine(APIRoot,"articles","filter"),
-    termsAndConditions:pathCombine(APIRoot,"info","TermsAndConditions.md"),
-    about:{
-        project: pathCombine(APIRoot, "info","project.md"),
-        me: pathCombine(APIRoot,"info","me.md"),
-        tech :pathCombine(APIRoot, "info","tech.md")
+    login: `${APIROOTURL}/login`,
+    regsiter: `${APIROOTURL}/register`,
+    articles: `${APIROOTURL}/articles`,
+    tags: `${APIROOTURL}/tags`,
+    categories: `${APIROOTURL}/categories`,
+    comments: `${APIROOTURL}/comments`,
+    upload: `${APIROOTURL}/upload`,
+    rate: `${APIROOTURL}/rate`,
+    filteredList: `${APIROOTURL}/articles/filter`,
+    termsAndConditions: `${APIROOTURL}/info/TermsAndConditions.md`,
+    about: {
+        project: `${APIROOTURL}/info/project.md`,
+        me: `${APIROOTURL}/info/me.md`,
+        tech: `${APIROOTURL}/info/tech.md`,
     },
-    backendVersion: pathCombine(APIRoot,"info","version.json"),
-    pv: pathCombine(APIRoot, "pv")
+    backendVersion: `${APIROOTURL}/info/version.json`,
+    pv: `${APIROOTURL}/pv`,
 };
 
-export const JSONRequestInit = (payload,headers?,method?:string,)=>({
+export const JSONRequestInit = (payload, headers?, method?: string, ) => ({
     method: method ? method : "POST",
     body: JSON.stringify(payload),
-    headers:{
+    headers: {
         ...headers,
-        "Content-Type":"application/json"
+        "Content-Type": "application/json"
     }
 });
 
 export const ArticleListUpdateMinutesSpan = 30;
-export const PVFetchSecondsSpan = 5*60;
+export const PVFetchSecondsSpan = 5 * 60;
 export const ArticleFetchMinutesSpan = 30;
 export const CommentFetchMinutesSpan = 30;
 
 export const attachQueryString = (url: string, params: Object): string => {
-    let esc = encodeURIComponent;
-    let query = Object.keys(params)
+    const esc = encodeURIComponent;
+    const query = Object.keys(params)
         .map(k => esc(k) + '=' + esc(params[k]))
         .join('&');
-    return url+"?"+query;
+    return url + "?" + query;
 }
 
 export const errorMessage = {
-    Network: "Network Error. :(" ,
+    Network: "Network Error. :(",
     Others: "Something bad happened :("
 }
 
 export const padding = { padding: "8px 8px 8px 8px" };
 
-export const twoColStyleLeft = {lg:{ span: 6, order: 1 },md:{ span: 6, order: 1 },sm:{ span: 24, order: 2 }, xs:{ span: 24, order: 2 } }
-export const twoColStyleRight = {lg:{ span: 18, order: 2 },md:{ span: 18, order: 2 },sm:{ span: 24, order: 1 }, xs:{ span: 24, order: 1 } }
+export const twoColStyleLeft = { lg: { span: 6, order: 1 }, md: { span: 6, order: 1 }, sm: { span: 24, order: 2 }, xs: { span: 24, order: 2 } }
+export const twoColStyleRight = { lg: { span: 18, order: 2 }, md: { span: 18, order: 2 }, sm: { span: 24, order: 1 }, xs: { span: 24, order: 1 } }
 
-export const simpleFormValidator = (values:Object):Array<string>=>{
-    let emptyKeys = [];
-    Object.keys(values).forEach(key=>{
-        if (!values[key]){ emptyKeys.push(key);}
-        if (Array.isArray(values[key]) && values[key].length ==0 ) { emptyKeys.push(key)}
-    });
-    return emptyKeys.length==0 ? undefined : emptyKeys;
+export const simpleFormValidator = (values: Object): Array<string> => {
+    const emptyKeys = Object.keys(values).filter(key => (!values[key] || (Array.isArray(values[key]) && values[key].length == 0)));
+    return emptyKeys.length == 0 ? undefined : emptyKeys;
 }

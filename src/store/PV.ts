@@ -9,7 +9,8 @@ export interface PV {
     pv: number,
     updatedTime: number,
     fetching: boolean,
-    error: boolean
+    error: boolean,
+    articleID: string
 }
 
 export type PVState = Map<string, PV>;
@@ -36,13 +37,13 @@ export const initialState: PVState = Map<string, PV>();
 export const reducer : Reducer<PVState> = (state: PVState, action: KnownAction)=>{
     switch(action.type){
         case "FETCH_PV":
-            return state.set(action.articleID, { pv: -1, updatedTime: 0, fetching: true, error: false  } );
+            return state.set(action.articleID, { pv: -1, updatedTime: 0, fetching: true, error: false, articleID: action.articleID  } );
         case "UPDATE_PV":
-            return state.set(action.articleID, { pv: action.pv, updatedTime: action.updatedTime, error: false, fetching: false });
+            return state.set(action.articleID, { pv: action.pv, updatedTime: action.updatedTime, error: false, fetching: false, articleID: action.articleID });
         case "REMOVE_PV":
             return state.remove(action.articleID);
         case "ERROR_PV":
-            return state.set(action.articleID, {pv: -1, updatedTime: 0, error: true, fetching: false });
+            return state.set(action.articleID, {pv: -1, updatedTime: 0, error: true, fetching: false, articleID: action.articleID });
     }
     return state || initialState;
 }

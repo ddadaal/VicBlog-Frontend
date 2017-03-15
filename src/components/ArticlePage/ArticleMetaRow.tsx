@@ -47,7 +47,7 @@ class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
             <ItemColumn iconName="clock-circle-o" content={this.dateFormat(this.props.article.submitTime)} tooltip="Create Time" />
             <ItemColumn iconName="clock-circle" content={this.dateFormat(this.props.article.lastEditedTime)} tooltip="Last Edited Time" />
             <ItemColumn iconName="like-o" content={
-                !(state && !state.fetching) ? "Fetching PV..." : state.error ? "Error fetching pv." : `${state.pv}`}
+                (!state || state.fetching) ? "Fetching PV..." : state.error ? "Error fetching pv." : `${state.pv}`}
                 tooltip="Viewed times" />
             <Rating article={this.props.article} />&nbsp;
 

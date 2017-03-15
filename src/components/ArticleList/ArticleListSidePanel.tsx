@@ -5,6 +5,7 @@ import { Input, Checkbox, Button, Card, Icon, Alert, Tag, Dropdown, Menu, DatePi
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { ArticleListUpdateMinutesSpan } from '../../Utils';
+import { actionCreators as pvActions, PVState } from '../../store/PV';
 
 import moment from 'moment';
 import DateSelector from './DateSelector';
@@ -27,34 +28,34 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
     }
 
     handleTagsChange(checkedValues) {
-        this.props.changeFilter({
+        this.props.rewriteFilter({
             ...this.props.filter,
             tags: checkedValues
         });
     }
     handleCategoriesChange(checkedValues) {
-        this.props.changeFilter({
+        this.props.rewriteFilter({
             ...this.props.filter,
             categories: checkedValues
         });
     }
 
     handleTitleTextChange(e) {
-        this.props.changeFilter({
+        this.props.rewriteFilter({
             ...this.props.filter,
             titleText: e.target.value
         });
     }
 
     handleCreatedTimePeriodChange(date: [moment.Moment, moment.Moment], dateString: [string, string]) {
-        this.props.changeFilter({
+        this.props.rewriteFilter({
             ...this.props.filter,
             createdTimeRange: [moment(dateString[0],"YYYY-MM-DD").valueOf(), moment(dateString[1],"YYYY-MM-DD").valueOf()]
         });
     }
 
     handleEditedTimePeriodChange(date: [moment.Moment, moment.Moment], dateString: [string, string]) {
-        this.props.changeFilter({
+        this.props.rewriteFilter({
             ...this.props.filter,
             editedTimeRange: [date[0].valueOf(), date[1].valueOf()]
         });
@@ -64,7 +65,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
     }
 
     reset() {
-        this.props.changeFilter(initialState.filter);
+        this.props.rewriteFilter(initialState.filter);
         this.props.requestArticleList();
     }
 
@@ -85,7 +86,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
         const menu = <Menu>
             {[0, 1, 2, 3, 4, 5, 6].map(x =>
                 (<Menu.Item key={x} >
-                    <a onClick={() => this.props.changeFilter({ ...this.props.filter, order: x })}>{orderDescription[x]}</a>
+                    <a onClick={() => this.props.rewriteFilter({ ...this.props.filter, order: x })}>{orderDescription[x]}</a>
                 </Menu.Item>)
             )}
         </Menu>;
@@ -105,9 +106,9 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                     <div><Icon type="tag-o" /> Categories</div>
                     <Checkbox.Group options={this.props.categories.content} value={this.props.filter.categories} onChange={e => this.handleCategoriesChange(e)} />
                     <br />
-                    <DateSelector iconName="clock-circle-o" message="Created Time Range" enabled={this.props.filter.createdTimeEnabled} onEnabledChange={() => this.props.changeFilter({ ...this.props.filter, createdTimeEnabled: !this.props.filter.createdTimeEnabled })} onChange={(date, dateString) => this.handleCreatedTimePeriodChange(date, dateString)} />
+                    <DateSelector iconName="clock-circle-o" message="Created Time Range" enabled={this.props.filter.createdTimeEnabled} onEnabledChange={() => this.props.rewriteFilter({ ...this.props.filter, createdTimeEnabled: !this.props.filter.createdTimeEnabled })} onChange={(date, dateString) => this.handleCreatedTimePeriodChange(date, dateString)} />
                     <br />
-                    <DateSelector iconName="clock-circle" message="Edited Time Range" enabled={this.props.filter.editedTimeEnabled} onEnabledChange={() => this.props.changeFilter({ ...this.props.filter, editedTimeEnabled: !this.props.filter.editedTimeEnabled })} onChange={(date, dateString) => this.handleEditedTimePeriodChange(date, dateString)} />
+                    <DateSelector iconName="clock-circle" message="Edited Time Range" enabled={this.props.filter.editedTimeEnabled} onEnabledChange={() => this.props.rewriteFilter({ ...this.props.filter, editedTimeEnabled: !this.props.filter.editedTimeEnabled })} onChange={(date, dateString) => this.handleEditedTimePeriodChange(date, dateString)} />
                     <br />
                     <div><Icon type="bars" /> Order by</div>
                     <Dropdown overlay={menu} trigger={["click"]}>

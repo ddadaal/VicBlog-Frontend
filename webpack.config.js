@@ -42,9 +42,8 @@ const devPlugins = [
 const prodPlugins = [
     new webpack.DefinePlugin({
         APIROOTURL: JSON.stringify("https://api.viccrubs.tk"),
-    }),
-
-]
+    })
+];
 
 const plugins = basePlugins.concat(isDev ? devPlugins : prodPlugins);
 

@@ -2,14 +2,14 @@ import * as React from 'react';
 import { APIs, padding, twoColStyleLeft, twoColStyleRight } from '../Utils';
 import { Spin, Menu, Col, Row, Affix, BackTop } from 'antd';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 interface AboutPageProps {
     currentPath: string
 }
 
-class AboutPage extends React.Component<AboutPageProps, void>{
+class AboutPage extends React.Component<AboutPageProps, any>{
 
     constructor(props) {
         super(props);
@@ -37,6 +37,6 @@ class AboutPage extends React.Component<AboutPageProps, void>{
 }
 
 export default connect(
-    s => ({ currentPath: s.routing.locationBeforeTransitions.pathname }),
+    s => ({ currentPath: s.routing.location.pathname }),
     {}
 )(AboutPage);

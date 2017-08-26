@@ -11,7 +11,7 @@ export interface DateSelectorProps {
     message: string
 }
 
-export default class DateSelector extends React.Component<DateSelectorProps, void>{
+export default class DateSelector extends React.Component<DateSelectorProps, any>{
     render() {
 
 

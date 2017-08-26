@@ -38,7 +38,7 @@ export class TagSelector extends React.Component<TagSelectorProps, TagSelectorSt
     render() {
         const tags = this.props.selectedTags.map(item => <Tag closable afterClose={() => this.handleTagClose(item)} key={item}>{item}</Tag>);
         return <div>
-            <Checkbox.Group options={this.props.availableTags} value={this.props.selectedTags} onChange={values => this.props.onSelectedChanged(values)} />
+            <Checkbox.Group options={this.props.availableTags} value={this.props.selectedTags} onChange={values => this.props.onSelectedChanged(values.map(x=>x.toString()))} />
             <Input placeholder="Input new tag. Press enter to create a new one." onChange={e => this.handleChange(e)} value={this.state.inputtingTag} onPressEnter={() => this.createNewOne()} />
             selected:
             {tags}

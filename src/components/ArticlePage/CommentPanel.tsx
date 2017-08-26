@@ -10,7 +10,7 @@ import { Button, Icon, notification, Alert } from 'antd';
 
 
 type CommentPanelProps = typeof UserState.actionCreators & UserState.UserState & CommentState.CommentsState & typeof CommentState.actionCreators & { articleID: string };
-class CommentPanel extends React.Component<CommentPanelProps, void>{
+class CommentPanel extends React.Component<CommentPanelProps, any>{
 
 
     constructor() {
@@ -70,7 +70,7 @@ class CommentPanel extends React.Component<CommentPanelProps, void>{
                 <p>
                     <span style={{ fontSize: "large" }}><Icon type="inbox" /> Comments: </span>
                     <span style={{ float: "right" }}>
-                        <a disabled>Refreshing...</a>
+                        <a>Refreshing...</a>
                     </span>
                 </p>
                 <Alert message="Loading..." type="info" />
@@ -90,7 +90,7 @@ class CommentPanel extends React.Component<CommentPanelProps, void>{
                     <span style={{ float: "right" }}>
                         {commentObject.fetchStatus != CommentState.FetchStatus.Requesting
                             ? <a onClick={() => this.props.requestAllComments(this.props.articleID)}>Refresh</a>
-                            : <a disabled>Refreshing...</a>
+                            : <a>Refreshing...</a>
                         }
                     </span>
                 </p>

@@ -5,12 +5,12 @@ import { ApplicationState } from '../store';
 import { ArticleListUpdateMinutesSpan, padding, twoColStyleLeft, twoColStyleRight, ArticleFetchMinutesSpan, errorMessage } from '../Utils';
 import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { actionCreators, ArticlePagesState, ArticleStatus, ArticleState } from '../store/ArticlePage';
 
 type ArticlePageProps = typeof userActions & typeof actionCreators & { params: { ID: string }, expire: () => any, articles: ArticlePagesState };
 
-class ArticlePage extends React.Component<ArticlePageProps, void>{
+class ArticlePage extends React.Component<ArticlePageProps, any>{
 
 
     componentDidMount() {
@@ -61,14 +61,14 @@ class ArticlePage extends React.Component<ArticlePageProps, void>{
         const articleObject = this.props.articles.get(this.props.params.ID);
 
         if (!articleObject || articleObject.status == ArticleStatus.Requesting) {
-            return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="info" message="Loading..." />
             </div >;
         }
 
         document.title = `${articleObject.article.title} - VicBlog`;
 
-        return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+        return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
             {articleObject.status == ArticleStatus.Received ? (<div>
                 <ArticlePanel article={articleObject.article} />
                 <CommentPanel articleID={this.props.params.ID} /></div>)

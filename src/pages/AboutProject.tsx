@@ -8,7 +8,7 @@ import { MarkdownDisplay } from '../components/common';
 
 type AboutThisProjectProps = typeof actionCreators & {loading: boolean, error:boolean, content: string, loaded: boolean};
 
-class AboutThisProject extends React.Component<AboutThisProjectProps,void>{
+class AboutThisProject extends React.Component<AboutThisProjectProps,any>{
     componentDidMount(){
         if (this.props.loaded){
             return;

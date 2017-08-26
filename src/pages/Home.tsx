@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Alert } from 'antd';
 import CleanCacheTip from '../components/common/CacheCleanTip';
 
-const Home: React.StatelessComponent<{}> = function (props) {
+const Home: React.StatelessComponent<any> = function (props) {
     document.title = "Homepage - VicBlog";
     return <div style={{ textAlign: "center" }}>
         <h1>Welcome to my blog!</h1>

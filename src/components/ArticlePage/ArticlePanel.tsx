@@ -7,7 +7,7 @@ export interface ArticlePanelProps {
   article: Article
 }
 
-export default class ArticlePanel extends React.Component<ArticlePanelProps, void>{
+export default class ArticlePanel extends React.Component<ArticlePanelProps, any>{
   render() {
 
     return (

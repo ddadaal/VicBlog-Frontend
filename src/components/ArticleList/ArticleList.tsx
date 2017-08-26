@@ -12,7 +12,7 @@ type ArticleListProps = ArticleListState & typeof listActions & typeof filterAct
     filter: ArticleFilter
 };
 
-class ArticleList extends React.Component<ArticleListProps, void>{
+class ArticleList extends React.Component<ArticleListProps, any>{
 
 
     toggleCategory(category: string) {

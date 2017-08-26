@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Button } from 'antd';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import ArticleEditor from '../components/ArticleEditor/ArticleEditor';
 
 import { ArticleStatus, ArticleState, actionCreators, ArticlePagesState } from '../store/ArticlePage';
 type EditPageProps = typeof actionCreators & { params: { ID: string }, articles: ArticlePagesState };
 
-class EditPage extends React.Component<EditPageProps, void>{
+class EditPage extends React.Component<EditPageProps, any>{
 
     componentDidMount() {
         const article = this.props.articles.get(this.props.params.ID);
@@ -19,13 +19,13 @@ class EditPage extends React.Component<EditPageProps, void>{
     render() {
         const article = this.props.articles.get(this.props.params.ID);
         if (article && article.status == ArticleStatus.Expired){
-            return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="success" message="Patching successful."/>
                 <Link to={`/articles/${this.props.params.ID}`}>Click to redirect!</Link>
             </div >;
         }
         if (!article || article.status != ArticleStatus.Received) {
-            return <div type="flex" style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="info" message="Loading..." />
             </div >;
         }

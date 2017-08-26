@@ -16,7 +16,7 @@ const Search = Input.Search;
 
 type ArticleListSiderProps = typeof actionCreators & ArticleListState & typeof filterActions & ArticleFilterState;
 
-class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
+class ArticleListSider extends React.Component<ArticleListSiderProps, any>{
     componentDidMount() {
         if (this.props.expired || Date.now() - this.props.articleList.lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 1000) {
 
@@ -131,7 +131,7 @@ class ArticleListSider extends React.Component<ArticleListSiderProps, void>{
                         this.props.requestAllTags();
                         this.props.requestArticleList();
                     }}><Icon type="reload" /> Click this to perform a full reload</a>
-                    : <a disabled> <Icon type="reload" spin /> Refreshing</a>}
+                    : <a> <Icon type="reload" spin /> Refreshing</a>}
 
             </div>
         );

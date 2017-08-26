@@ -9,7 +9,7 @@ import { MarkdownDisplay } from '../components/common';
 
 type AboutTechPageProps = typeof actionCreators & { loading: boolean, error: boolean, content: string, loaded: boolean };
 
-class AboutTechPage extends React.Component<AboutTechPageProps, void>{
+class AboutTechPage extends React.Component<AboutTechPageProps, any>{
 
     componentDidMount() {
         if (this.props.loaded) {

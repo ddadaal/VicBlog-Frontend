@@ -35,11 +35,6 @@ export default class UploadPanel extends React.Component<UploadPanelProps, Uploa
             fileList: []
         };
     }
-
-
-
-
-
     render() {
 
         const props = {

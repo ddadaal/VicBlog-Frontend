@@ -3,12 +3,12 @@ import { Icon, Tooltip, message } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { APIs } from '../Utils';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { VersionInfo, VersionState, actionCreators } from '../store/Version';
 
 export type FooterProps = VersionState & typeof actionCreators;
 
-class Footer extends React.Component<FooterProps, void>  {
+class Footer extends React.Component<FooterProps, any>  {
 
     constructor() {
         super();

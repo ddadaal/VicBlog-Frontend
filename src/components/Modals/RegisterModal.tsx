@@ -3,7 +3,6 @@ import { actionCreators, RegisterInfo, User } from '../../store/User';
 import { ApplicationState } from '../../store';
 import { connect } from 'react-redux';
 import { Modal, Form, Input, Button, Checkbox, Alert, Icon, Spin } from 'antd';
-import { browserHistory } from 'react-router';
 import { APIs, JSONRequestInit, errorMessage } from '../../Utils';
 import fetch from 'isomorphic-fetch';
 const FormItem = Form.Item;
@@ -222,7 +221,9 @@ class RegisterModal extends React.Component<RegisterModalProps, RegisterModalSta
                         <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.handlePasswordChange(e)} />
                     </Form.Item>
                     <Checkbox onChange={e => this.setState({ termsAgreed: !this.state.termsAgreed })} checked={this.state.termsAgreed} >
+                        <div>
                         I have read and agreed the <a onClick={() => this.showTerms()}>VicBlog Terms and Conditions</a>.
+                        </div>
                     </Checkbox>
 
                 </Form>

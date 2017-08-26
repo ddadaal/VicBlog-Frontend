@@ -3,9 +3,8 @@ import MarkdownEditor from '../common/MarkdownEditor';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { UserState, actionCreators as userActions, UserStatus } from '../../store/User';
-import { browserHistory } from 'react-router';
 import { ArticleFilterState } from '../../store/ArticleListFilter';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Input, Button, Row, Col, Checkbox, notification, Alert, Spin } from 'antd';
 import { padding, twoColStyleLeft, twoColStyleRight, simpleFormValidator } from '../../Utils';
 import { actionCreators as composeActions, ComposeArticleState, ArticleSubmitStatus, EditorMode } from '../../store/ComposeArticle';
@@ -16,7 +15,7 @@ import fetch from 'isomorphic-fetch';
 type ArticleEditorProps = { user: UserState, compose: ComposeArticleState, initialArticle: Article } & typeof userActions & typeof composeActions;
 
 
-class ArticleEditor extends React.Component<ArticleEditorProps, void>{
+class ArticleEditor extends React.Component<ArticleEditorProps, any>{
 
     constructor() {
         super();
@@ -89,9 +88,9 @@ class ArticleEditor extends React.Component<ArticleEditorProps, void>{
 
         const picturePostfixes = [".jpg", ".jpeg", ".png", ".gif"];
 
-        const a = picturePostfixes.map(x => file.filename.endsWith(x));
+        const isPicture = picturePostfixes.some(x=>file.filename.endsWith(x));
 
-        if (a.indexOf(true)>-1) {
+        if (isPicture) {
             this.props.changeContent(this.props.compose.content + `![${file.filename}](${file.url})`);
         }else{
             this.props.changeContent(this.props.compose.content + `[${file.filename}](${file.url})`)

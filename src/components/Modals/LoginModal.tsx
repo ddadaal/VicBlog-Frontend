@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { UserState, actionCreators, LoginInfo, UserStatus } from '../../store/User';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Dropdown, Menu, Button, Modal, Form, Input, Icon, Alert, Checkbox } from 'antd';
 import md5 from 'md5';
 import { errorMessage } from '../../Utils';

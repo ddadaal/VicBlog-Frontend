@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Alert } from 'antd';
-import { Link } from 'react-router';
-export default class NotFoundPage extends React.Component<void, void>{
+import { Link } from 'react-router-dom';
+export default class NotFoundPage extends React.Component<any, any>{
     render() {
         return <div style={{maxWidth: "1200px", marginLeft:"auto",marginRight:"auto"}}> 
             <Alert

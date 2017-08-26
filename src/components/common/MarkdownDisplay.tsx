@@ -21,7 +21,7 @@ export interface MarkdownDisplayProps {
     content: string,
 }
 
-export default class MarkdownDisplay extends React.Component<MarkdownDisplayProps,void>{
+export default class MarkdownDisplay extends React.Component<MarkdownDisplayProps,any>{
     render(){
         return <div className="markdown-body" dangerouslySetInnerHTML={{__html: md.render(
           this.props.content)}}/>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Menu, Icon, Button, Row, Col } from 'antd';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Indicator from './NavbarUserIndicator';
 import { connect } from 'react-redux';
 
@@ -58,6 +58,6 @@ export class Navbar extends React.Component<NavbarProps, NavbarStates>{
 }
 
 export default connect(
-    s => ({ currentPath: s.routing.locationBeforeTransitions.pathname }),
+    s => ({ currentPath: s.routing.location.pathname }),
     {}
 )(Navbar);

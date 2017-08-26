@@ -14,7 +14,7 @@ type ComposeArticleSidePanelProps = {
     rate: number
 } & typeof composeActions & typeof listActions;
 
-class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProps, void>{
+class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProps, any>{
     constructor() {
         super();
     }
@@ -32,7 +32,7 @@ class ArticleEditorSidePanel extends React.Component<ComposeArticleSidePanelProp
     render() {
         return <div>
             Select a category or input a new one:<br />
-            <Radio.Group onChange={e => { console.log(e.target.value); this.props.changeCategory(e.target.value); }} value={this.props.selectedCategory}>
+            <Radio.Group onChange={e => this.props.changeCategory((e.target as any).value)} value={this.props.selectedCategory}>
                 {this.props.availableCategories.map(item => <Radio key={item} value={item}>{item}</Radio>)}
             </Radio.Group>
             <Input placeholder="New category..." value={this.props.selectedCategory} onChange={e => this.props.changeCategory((e.target as any).value)} />

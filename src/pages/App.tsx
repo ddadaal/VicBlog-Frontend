@@ -3,9 +3,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import "../assets/main.css";
 
-interface IAppProps extends React.Props<any> { };
 
-class App extends React.Component<void, void>{
+class App extends React.Component<any, any>{
     render() {
         return (
             <div>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import { UserState, actionCreators, LoginInfo, UserStatus, UserRole, User } from '../store/User';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Dropdown, Menu, Button, Modal, Icon, notification } from 'antd';
 import LoginModal from './Modals/LoginModal';
 import RegisterModal from './Modals/RegisterModal';
@@ -11,7 +11,7 @@ type IndicatorProps = UserState & typeof actionCreators;
 
 
 
-class NavbarUserIndicator extends React.Component<IndicatorProps, void>{
+class NavbarUserIndicator extends React.Component<IndicatorProps, any>{
 
     constructor(options) {
         super(options);

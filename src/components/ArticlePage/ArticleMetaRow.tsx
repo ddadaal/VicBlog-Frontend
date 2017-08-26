@@ -4,7 +4,7 @@ import { UserState, actionCreators as userActions, UserStatus } from '../../stor
 import { actionCreators as articleActions } from '../../store/ArticlePage';
 import { actionCreators as pvActions, PVState } from '../../store/PV';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { PVFetchSecondsSpan } from '../../Utils';
 import Rating from './Rating';
@@ -17,7 +17,7 @@ type ArticleMetaRowProps = {
 } & typeof userActions & typeof pvActions & typeof articleActions;
 
 
-class ArticleMetaRow extends React.Component<ArticleMetaRowProps, void>{
+class ArticleMetaRow extends React.Component<ArticleMetaRowProps, any>{
 
     constructor() {
         super();

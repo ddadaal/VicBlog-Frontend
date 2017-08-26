@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ArticleFilter, ArticleFilterState, actionCreators } from '../../store/ArticleListFilter'
 import { Card, Tag, Rate, Icon } from 'antd';
 import { APIs, pathCombine, attachQueryString, PVFetchSecondsSpan } from '../../Utils';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { actionCreators as pvActions, PVState, PV } from '../../store/PV';
@@ -20,7 +20,7 @@ type ArticleCardOwnProps = {
 type ArticleCardProps =  ArticleCardOwnProps & typeof pvActions;
 
 
-class ArticleCard extends React.Component<ArticleCardProps, void>{
+class ArticleCard extends React.Component<ArticleCardProps, any>{
     componentDidMount() {
         const state = this.props.pvState;
         if (!state || (Date.now() - state.updatedTime) > PVFetchSecondsSpan*1000) {

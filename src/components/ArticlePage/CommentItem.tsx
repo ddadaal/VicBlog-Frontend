@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Comment } from '../../store/Comment';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { User} from '../../store/User';
 import moment from 'moment';
 import { Popconfirm, Icon } from 'antd';
@@ -13,7 +13,7 @@ export interface CommentItemProps {
   deleteComment: (commentID: string) => any
 };
 
-export class CommentItem extends React.Component<CommentItemProps, void>{
+export class CommentItem extends React.Component<CommentItemProps, any>{
   render() {
     const floatRight = { float: "right" };
     return <div>

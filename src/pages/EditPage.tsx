@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Alert, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import ArticleEditor from '../components/ArticleEditor/ArticleEditor';
-
+import App from './App';
 import { ArticleStatus, ArticleState, actionCreators, ArticlePagesState } from '../store/ArticlePage';
+
 type EditPageProps = typeof actionCreators & { params: { ID: string }, articles: ArticlePagesState };
 
 class EditPage extends React.Component<EditPageProps, any>{
@@ -18,19 +19,23 @@ class EditPage extends React.Component<EditPageProps, any>{
 
     render() {
         const article = this.props.articles.get(this.props.params.ID);
-        if (article && article.status == ArticleStatus.Expired){
-            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
-                <Alert type="success" message="Patching successful."/>
+
+        var mainContent = null;
+
+        if (article && article.status == ArticleStatus.Expired) {
+            mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+                <Alert type="success" message="Patching successful." />
                 <Link to={`/articles/${this.props.params.ID}`}>Click to redirect!</Link>
             </div >;
-        }
-        if (!article || article.status != ArticleStatus.Received) {
-            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+        } else if (!article || article.status != ArticleStatus.Received) {
+            mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="info" message="Loading..." />
             </div >;
+        } else {
+            mainContent = <ArticleEditor initialArticle={article.article} />;
         }
 
-        return <ArticleEditor initialArticle={article.article} />;
+        return <App>{mainContent}</App>;
     }
 }
 

@@ -4,13 +4,14 @@ import Footer from '../components/Footer';
 import "../assets/main.css";
 
 
-class App extends React.Component<any, any>{
+export default class App extends React.Component<any, any>{
+
     render() {
         return (
             <div>
                 <Navbar />
                 <hr/>
-                <div style={{ backgroundColor: "white", padding: "8px 16px 8px 16px", maxWidth:"1600px", marginLeft:"auto",marginRight: "auto" }}>
+                <div className="main-content">
                     {this.props.children}
                 </div>
                 <hr/>
@@ -19,4 +20,3 @@ class App extends React.Component<any, any>{
         );
     }
 }
-export default App;

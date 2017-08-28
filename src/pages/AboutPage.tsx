@@ -4,7 +4,6 @@ import { Spin, Menu, Col, Row, Affix, BackTop } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-
 interface AboutPageProps {
     currentPath: string
 }

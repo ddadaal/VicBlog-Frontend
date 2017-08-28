@@ -12,25 +12,29 @@ import AboutMe from './pages/AboutMe';
 import AboutTech from './pages/AboutTech';
 import NotFoundPage from './pages/404';
 
-// export const routes = (
-//     <div>
-//         <Switch>
-//         <Route path='/' component={App}/>
 
-//         <Route path="/about" component={AboutPage}/>
-//         <Redirect exact path="/about" to="/about/project"/>
-//         <Route path="/about/project" component={AboutProject} />
-//         <Route path="/about/me" component={AboutMe}/>
-//         <Route path="/about/tech" component={AboutTech}/>
-//         <Route component={NotFoundPage}/>
-//         </Switch>
-//         <Route exact path='/' component={Home}/>
-//         <Route exact path='/articles' component={ArticleListPage}/>
-//         <Route exact path='/articles/:ID' component={ArticlePage}/>
-//         <Route exact path='/articles/:ID/edit' component={EditPage}/>
-//         <Route exact path='/compose' component={ComposePage}/>
-//     </div>
-// )
+const renderAppWith = (...components)=>(match)=>{
+    return  <App>
+        {components.map(X=><X match/>)}
+        </App>;
+};
+
+export const routes = (
+    <div>
+        <Switch>
+        <Route exact path='/' render={renderAppWith(Home)}/>
+        <Redirect exact path="/about" to="/about/project"/>
+        <Route exact path="/about/project" render={renderAppWith(AboutProject)} />
+        <Route exact path="/about/me" render={renderAppWith(AboutMe)}/>
+        <Route exact path="/about/tech" render={renderAppWith(AboutTech)}/>
+        <Route exact path='/articles' render={renderAppWith(ArticleListPage)}/>
+        <Route exact path='/articles/:ID' component={ArticlePage}/>
+        <Route exact path='/articles/:ID/edit' render={renderAppWith(EditPage)}/>
+        <Route exact path='/compose' render={renderAppWith(ComposePage)}/>
+        <Route render={renderAppWith(NotFoundPage)}/>
+        </Switch>
+    </div>
+)
 
 // export const routes = (
 //     <div>

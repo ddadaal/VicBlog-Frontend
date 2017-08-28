@@ -7,23 +7,25 @@ import { UserState, actionCreators as userActions } from '../store/User';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { actionCreators, ArticlePagesState, ArticleStatus, ArticleState } from '../store/ArticlePage';
+import App from './App';
 
-type ArticlePageProps = typeof userActions & typeof actionCreators & { params: { ID: string }, expire: () => any, articles: ArticlePagesState };
+
+type ArticlePageProps = typeof userActions & typeof actionCreators & { match:{ params: { ID: string }}, expire: () => any, articles: ArticlePagesState };
 
 class ArticlePage extends React.Component<ArticlePageProps, any>{
 
 
     componentDidMount() {
-        const state = this.props.articles.get(this.props.params.ID);
+        const state = this.props.articles.get(this.props.match.params.ID);
         if (!state || state.status == ArticleStatus.Expired || Date.now() - state.lastUpdatedTime > ArticleFetchMinutesSpan * 60 * 1000) {
-            this.props.requestArticle(this.props.params.ID);
+            this.props.requestArticle(this.props.match.params.ID);
         }
 
 
     }
 
     componentDidUpdate() {
-        const state = this.props.articles.get(this.props.params.ID);
+        const state = this.props.articles.get(this.props.match.params.ID);
 
         if (!state) {
             return;
@@ -36,7 +38,7 @@ class ArticlePage extends React.Component<ArticlePageProps, any>{
             });
         }
         if (Date.now() - state.lastUpdatedTime > ArticleListUpdateMinutesSpan * 60 * 60) {
-            this.props.requestArticle(this.props.params.ID);
+            this.props.requestArticle(this.props.match.params.ID);
         }
 
     }
@@ -44,36 +46,42 @@ class ArticlePage extends React.Component<ArticlePageProps, any>{
     constructIndicator(articleObject: ArticleState){
         switch (articleObject.status) {
             case ArticleStatus.NotFound:
-                return <div><Alert type="error" message={`Article ${this.props.params.ID} is not found.`} /><a onClick={() => this.props.requestArticle(this.props.params.ID)}>Retry</a></div> ;
+                return <div><Alert type="error" message={`Article ${this.props.match.params.ID} is not found.`} /><a onClick={() => this.props.requestArticle(this.props.match.params.ID)}>Retry</a></div> ;
             case ArticleStatus.Deleted:
                 notification.destroy();
-                return <div><Alert type="success" message={`Article ${this.props.params.ID} has been deleted.`} /><Link to="/articles">Back to List</Link></div> ;
+                return <div><Alert type="success" message={`Article ${this.props.match.params.ID} has been deleted.`} /><Link to="/articles">Back to List</Link></div> ;
             case ArticleStatus.Others:
-                return <div><Alert type="error" message={errorMessage.Others} /><a onClick={() => this.props.requestArticle(this.props.params.ID)}>Retry</a></div> ;
+                return <div><Alert type="error" message={errorMessage.Others} /><a onClick={() => this.props.requestArticle(this.props.match.params.ID)}>Retry</a></div> ;
             default:
                 return <div/>;
         };
     }
 
     render() {
+        const articleObject = this.props.articles.get(this.props.match.params.ID);
+        
 
+        var mainContent = null;
 
-        const articleObject = this.props.articles.get(this.props.params.ID);
 
         if (!articleObject || articleObject.status == ArticleStatus.Requesting) {
-            return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            document.title = "Article Page - VicBlog";
+            mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="info" message="Loading..." />
             </div >;
-        }
+        }else{
 
-        document.title = `${articleObject.article.title} - VicBlog`;
-
-        return <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
+            document.title = `${articleObject.article.title} - VicBlog`;
+            
+        mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
             {articleObject.status == ArticleStatus.Received ? (<div>
                 <ArticlePanel article={articleObject.article} />
-                <CommentPanel articleID={this.props.params.ID} /></div>)
+                <CommentPanel articleID={this.props.match.params.ID} /></div>)
                 : this.constructIndicator(articleObject)}
         </div >;
+        }
+
+        return <App>{mainContent}</App>;
     }
 }
 

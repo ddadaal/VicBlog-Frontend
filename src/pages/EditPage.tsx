@@ -6,26 +6,26 @@ import ArticleEditor from '../components/ArticleEditor/ArticleEditor';
 import App from './App';
 import { ArticleStatus, ArticleState, actionCreators, ArticlePagesState } from '../store/ArticlePage';
 
-type EditPageProps = typeof actionCreators & { params: { ID: string }, articles: ArticlePagesState };
+type EditPageProps = typeof actionCreators & { match: {params: { ID: string }}, articles: ArticlePagesState };
 
 class EditPage extends React.Component<EditPageProps, any>{
 
     componentDidMount() {
-        const article = this.props.articles.get(this.props.params.ID);
+        const article = this.props.articles.get(this.props.match.params.ID);
         if (!status || (article.status != ArticleStatus.Expired && article.status != ArticleStatus.Received)) {
-            this.props.requestArticle(this.props.params.ID);
+            this.props.requestArticle(this.props.match.params.ID);
         }
     }
 
     render() {
-        const article = this.props.articles.get(this.props.params.ID);
+        const article = this.props.articles.get(this.props.match.params.ID);
 
         var mainContent = null;
 
         if (article && article.status == ArticleStatus.Expired) {
             mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>
                 <Alert type="success" message="Patching successful." />
-                <Link to={`/articles/${this.props.params.ID}`}>Click to redirect!</Link>
+                <Link to={`/articles/${this.props.match.params.ID}`}>Click to redirect!</Link>
             </div >;
         } else if (!article || article.status != ArticleStatus.Received) {
             mainContent = <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto" }}>

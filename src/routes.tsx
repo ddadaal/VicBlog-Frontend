@@ -29,7 +29,7 @@ export const routes = (
         <Route exact path="/about/tech" render={renderAppWith(AboutTech)}/>
         <Route exact path='/articles' render={renderAppWith(ArticleListPage)}/>
         <Route exact path='/articles/:ID' component={ArticlePage}/>
-        <Route exact path='/articles/:ID/edit' render={renderAppWith(EditPage)}/>
+        <Route exact path='/articles/:ID/edit' component={EditPage}/>
         <Route exact path='/compose' render={renderAppWith(ComposePage)}/>
         <Route render={renderAppWith(NotFoundPage)}/>
         </Switch>

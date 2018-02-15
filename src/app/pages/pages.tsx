@@ -52,4 +52,5 @@ export function getPage(pathname: string) {
       return p;
     }
   }
+  return NotFoundPage;
 }

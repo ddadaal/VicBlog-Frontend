@@ -24,6 +24,21 @@ export const cn: Language = {
       deployedOn: "部署于 {githubPages} 和 {azure}",
       frontendVersion: "前端版本：{version}，构建时间：{buildTime}",
       backendVersion: "后端版本：{version}，构建时间：{buildTime}"
+    },
+    loginModal: {
+      title: "登录",
+      username: "用户名",
+      password: "密码",
+      pleaseInputUsername: "请输入用户名",
+      pleaseInputPassword: "请输入密码",
+      login: "登录",
+      loggingIn: "登录中……",
+      register: "注册",
+      close: "关闭",
+      loginFailed: "登录失败",
+      wrongCredential: "用户名和（或）密码无效。",
+      networkError: "网络错误，请检查网络连接。",
+      serverError: "服务器错误："
     }
   }
 };

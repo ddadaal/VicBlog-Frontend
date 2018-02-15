@@ -10,6 +10,7 @@ import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
 import * as ReactDOM from "react-dom";
 import * as localStyle from './style.css';
+import { LoginModal } from "../Modals/LoginModal";
 
 export interface HeaderContainerProps {
   [STORE_ROUTER]?: RouterStore,
@@ -52,6 +53,7 @@ export class Navbar extends React.Component<HeaderContainerProps, any> {
     const locale = this.props[STORE_LOCALE];
     const definition = locale.definition.header;
     return <div >
+      <LoginModal/>
       <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
         <LanguageSelector className={style("w3-dropdown-hover")}/>
         <a href="#" className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.home}</a>

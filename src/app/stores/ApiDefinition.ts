@@ -1,15 +1,15 @@
 declare var APIROOTURL: string;
 
 export const APIs = {
-  login: `${APIROOTURL}/login`,
-  register: `${APIROOTURL}/register`,
-  articles: `${APIROOTURL}/articles`,
-  tags: `${APIROOTURL}/tags`,
-  categories: `${APIROOTURL}/categories`,
-  comments: `${APIROOTURL}/comments`,
+  login: `${APIROOTURL}/Account/Login`,
+  register: `${APIROOTURL}/Account/Register`,
+  articles: `${APIROOTURL}/Articles`,
+  articleFilter: `${APIROOTURL}/Articles/Filter`,
+  tags: `${APIROOTURL}/Articles/Tags`,
+  comments: `${APIROOTURL}/Comments`,
   upload: `${APIROOTURL}/upload`,
-  rate: `${APIROOTURL}/rate`,
-  filteredList: `${APIROOTURL}/articles/filter`,
+  like: `${APIROOTURL}/Likes`,
+  likeHistory: `${APIROOTURL}/Likes/History`,
   termsAndConditions: `${APIROOTURL}/info/TermsAndConditions.md`,
   about: {
     project: `${APIROOTURL}/info/project.md`,

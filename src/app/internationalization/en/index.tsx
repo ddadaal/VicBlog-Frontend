@@ -24,6 +24,21 @@ export const en: Language = {
       deployedOn: "Deployed on {githubPages} and {azure}",
       frontendVersion: "Frontend version: {version}. Built at {buildTime}",
       backendVersion: "Backend version: {version}. Built at {buildTime}"
+    },
+    loginModal: {
+      title: "Login",
+      username: "Username",
+      password: "Password",
+      pleaseInputUsername: "Please Input Username",
+      pleaseInputPassword: "Please Input Password",
+      login: "Login",
+      loggingIn: "Logging in...",
+      register: "Register",
+      close: "Close",
+      loginFailed: "Login failed.",
+      wrongCredential: "Username/Password is not valid.",
+      networkError: "Network error. Please check your network connection.",
+      serverError: "Server responds with error(s):"
     }
   }
 };

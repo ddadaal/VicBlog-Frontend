@@ -4,18 +4,18 @@ import * as queryString from "querystring";
 import md5 from 'md5';
 import { APIs } from "./ApiDefinition";
 
-export class LoginError extends Error {
-
+export enum LoginErrorType {
+  WrongCredential, Server, Network
 }
 
-export class WrongCredentialError extends LoginError {
-
+export interface LoginError {
+  type: LoginErrorType
 }
 
-export class UnknownError extends LoginError {
-
+export interface ServerError extends LoginError {
+  type: LoginErrorType.Server,
+  messages: string[]
 }
-
 
 export enum LoginState {
   NotLoggedIn,
@@ -26,6 +26,9 @@ export enum LoginState {
 export class UserStore {
   @observable public user: User = null;
   @observable public state: LoginState = LoginState.NotLoggedIn;
+  @observable public loginModalShown: boolean = false;
+  @observable public registerModalShown: boolean = false;
+  @observable public previousError: LoginError = null;
 
   @computed
   public get loggedIn() {
@@ -42,8 +45,21 @@ export class UserStore {
     this.user = null;
   };
 
+  @action public toggleLoginModalShown = () => {
+    this.loginModalShown = !this.loginModalShown;
+  };
+
+  @action public toggleRegisterModalShown = () => {
+    this.registerModalShown = !this.registerModalShown;
+  };
+
+  @action public clearError = () => {
+    this.previousError = null;
+  };
+
   private encryptPassword(password: string) {
-    return md5(password).toUpperCase();
+    return password;
+    // return md5(password).toUpperCase();
   }
 
   @action public login = async (username: string, password: string) => {
@@ -59,12 +75,14 @@ export class UserStore {
           this.user = new User(user);
         });
       } else {
+        const resJson = await res.json();
         runInAction("login failed", () => {
           this.logout();
+          console.log(res.status);
           if (res.status === 401) {
-            throw new WrongCredentialError();
+            this.previousError = { type: LoginErrorType.WrongCredential };
           } else {
-            throw new UnknownError();
+            this.previousError = { type: LoginErrorType.Server, messages: resJson.errorDescriptions } as ServerError;
           }
         });
       }
@@ -72,7 +90,7 @@ export class UserStore {
     } catch (e) {
       runInAction("login failed", () => {
         this.logout();
-        throw new UnknownError();
+        this.previousError = { type: LoginErrorType.Network }
       });
     }
   }

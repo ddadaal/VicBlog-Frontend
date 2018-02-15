@@ -5,9 +5,6 @@
 master
 [<img src="https://viccrubs.visualstudio.com/_apis/public/build/definitions/9a321bef-923d-452d-852b-559124fbdcd4/4/badge"/>](https://viccrubs.visualstudio.com/VicBlog-Frontend/_build/index?definitionId=4)
 
-develop
-[<img src="https://viccrubs.visualstudio.com/_apis/public/build/definitions/9a321bef-923d-452d-852b-559124fbdcd4/5/badge">](https://viccrubs.visualstudio.com/VicBlog-Frontend/_build/index?definitionId=5)
-
 ## Features
 
 - React

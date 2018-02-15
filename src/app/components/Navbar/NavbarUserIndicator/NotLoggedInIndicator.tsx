@@ -14,7 +14,7 @@ export interface NotLoggedInIndicatorProps {
 export class NotLoggedInIndicator extends React.Component<NotLoggedInIndicatorProps, any> {
 
   render() {
-    return <a className={this.props.className} onClick={() => this.props[STORE_USER].login("root", "root")}>
+    return <a className={this.props.className} onClick={this.props[STORE_USER].toggleLoginModalShown}>
       {this.props[STORE_LOCALE].definition.header.navbarLogin.notLoggedInPrompt}</a>;
   }
 }

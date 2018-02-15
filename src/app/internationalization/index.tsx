@@ -21,6 +21,21 @@ export interface Language {
       deployedOn: string,
       frontendVersion: string,
       backendVersion: string,
+    },
+    loginModal: {
+      title: string,
+      username: string,
+      password: string,
+      pleaseInputUsername: string,
+      pleaseInputPassword: string,
+      login: string,
+      loggingIn: string,
+      register: string,
+      close: string,
+      loginFailed: string,
+      wrongCredential: string,
+      networkError: string,
+      serverError: string
     }
   }
 

@@ -16,6 +16,8 @@ export class BlogApp extends React.Component<BlogAppProps, {}> {
     if (process.env.NODE_ENV !== 'production') {
       const DevTools = require('mobx-react-devtools').default;
       return (<DevTools />);
+    } else {
+      return null;
     }
   };
 

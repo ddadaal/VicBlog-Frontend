@@ -21,7 +21,7 @@ export class Header extends React.Component<HeaderProps, any> {
       <LogoPicture className={logoStyle.logo}/>
       </div>
       <div className={style("w3-container","w3-right", "w3-cell", "w3-cell-bottom")}>
-        <p>{this.props[STORE_LOCALE].definition.header.blogBrief}</p>
+        <p>{this.props[STORE_LOCALE].definitions.header.blogBrief}</p>
       </div>
     </div>;
   }

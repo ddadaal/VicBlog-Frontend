@@ -28,10 +28,10 @@ export class Footer extends React.Component<FooterProps, any> {
 
     return <footer className={style("w3-container")}>
       <div style={{textAlign: 'center'}} className={style("w3-container")}>
-        <p>{locale.format(locale.definition.footer.codeProudlyByVicCrubs, { viccrubs: <a onClick={router.jumpToAboutMe}>VicCrubs</a>})}</p>
-        <p>{locale.format(locale.definition.footer.themedWith, {w3css:<a href={w3cssurl}>W3.CSS</a>, fabric: <a href={fabric}>Office UI Fabric</a>})}</p>
-        <p>{locale.format(locale.definition.footer.deployedOn, {githubPages: <a href={githubPages}>GitHub Pages</a>, azure: <a href={azure}>Microsoft Azure Global</a>})}</p>
-        <p>{locale.format(locale.definition.footer.frontendVersion, { version: FRONT_END_BUILD, buildTime: FRONT_END_BUILD_TIME})}</p>
+        <p>{locale.format(locale.definitions.footer.codeProudlyByVicCrubs, { viccrubs: <a onClick={router.jumpToAboutMe}>VicCrubs</a>})}</p>
+        <p>{locale.format(locale.definitions.footer.themedWith, {w3css:<a href={w3cssurl}>W3.CSS</a>, fabric: <a href={fabric}>Office UI Fabric</a>})}</p>
+        <p>{locale.format(locale.definitions.footer.deployedOn, {githubPages: <a href={githubPages}>GitHub Pages</a>, azure: <a href={azure}>Microsoft Azure Global</a>})}</p>
+        <p>{locale.format(locale.definitions.footer.frontendVersion, { version: FRONT_END_BUILD, buildTime: FRONT_END_BUILD_TIME})}</p>
       </div>
     </footer>
   }

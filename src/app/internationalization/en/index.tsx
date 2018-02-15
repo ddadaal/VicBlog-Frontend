@@ -2,7 +2,7 @@ import { Language } from "../index";
 import * as React from "react";
 
 export const en: Language = {
-  id: "en",
+  id: "en-US",
   name: "English",
   languagePrompt: "Current Language: English. Click to change.",
   definitions: {
@@ -37,8 +37,8 @@ export const en: Language = {
       close: "Close",
       loginFailed: "Login failed.",
       wrongCredential: "Username/Password is not valid.",
-      networkError: "Network error. Please check your network connection.",
-      serverError: "Server responds with error(s):"
+      networkError: "NetworkError error. Please check your network connection.",
+      serverError: "ServerError responds with error(s):"
     }
   }
 };

@@ -51,14 +51,14 @@ export class Navbar extends React.Component<HeaderContainerProps, any> {
   render() {
     const route = this.props[STORE_ROUTER];
     const locale = this.props[STORE_LOCALE];
-    const definition = locale.definition.header;
+    const definition = locale.definitions.header;
     return <div >
       <LoginModal/>
       <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
         <LanguageSelector className={style("w3-dropdown-hover")}/>
-        <a href="#" className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.home}</a>
-        <a href="#" className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.articleList}</a>
-        <a href="#" className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.about}</a>
+        <a onClick={route.jumpToHome} className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.home}</a>
+        <a onClick={route.jumpToArticleList} className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.articleList}</a>
+        <a onClick={route.jumpToAbout} className={style("w3-bar-item","w3-button","w3-hide-small")}>{definition.about}</a>
         {this.renderUserIndicator(style("w3-bar-item","w3-button","w3-hide-small","w3-right"), style("w3-dropdown-hover","w3-right","w3-hide-small"))}
         <a className={style("w3-bar-item","w3-button","w3-right","w3-hide-large","w3-hide-medium")}
            onClick={this.toggleCollapse}>&#9776;</a>

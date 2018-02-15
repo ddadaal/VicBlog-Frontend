@@ -6,20 +6,34 @@ import { cloneElement } from "react";
 export type ComponentChildrenType = string | JSX.Element;
 
 export class LocaleStore {
-  private availableTranslations: {[s: string]: Language};
-  @observable currentLanguage: Language;
+  private availableLanguages: Map<string ,Language>;
 
-  @computed get definition() {
+  @observable currentLanguage: Language;
+  @observable fallbackLanguage: Language;
+
+  @computed get definitions() {
     return this.currentLanguage.definitions;
   }
 
-  get allLanguages() {
-    return Object.keys(this.availableTranslations).map(x => this.availableTranslations[x]);
+
+  @computed get allLanguages(): Language[] {
+    return Array.from(this.availableLanguages.values());
   }
 
-  constructor(translations: Language[], defaultTranslationId? : string) {
-    this.availableTranslations = translations.reduce((obj, cur) => { return { ...obj, [cur.id]: cur }; }, {});
-    this.currentLanguage = this.availableTranslations[defaultTranslationId ? defaultTranslationId : 0];
+
+  constructor(availableLanguages: Language[], defaultLanguageId : string, fallbackLanguageId: string) {
+    this.availableLanguages = new Map();
+    for (const l of availableLanguages) {
+      this.availableLanguages.set(l.id, l);
+    }
+
+
+    this.fallbackLanguage = this.availableLanguages.get(fallbackLanguageId);
+
+    this.currentLanguage = this.availableLanguages.has(defaultLanguageId)
+      ? this.availableLanguages.get(defaultLanguageId)
+      : this.fallbackLanguage;
+
   }
 
   public format = (content: string, replacements?: {[s: string]: ComponentChildrenType}) : Array<ComponentChildrenType> => {
@@ -43,10 +57,6 @@ export class LocaleStore {
 
 
   @action public changeLanguage = (id: string) => {
-    this.currentLanguage = this.availableTranslations[id];
+    this.currentLanguage = this.availableLanguages.get(id);
   };
-
-  @action public tempToggleLanguage = () => {
-    this.changeLanguage(this.currentLanguage.id === 'cn' ? 'en' : 'cn');
-  }
 }

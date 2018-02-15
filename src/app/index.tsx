@@ -16,7 +16,11 @@ useStrict(true);
 // prepare MobX stores
 const history = createBrowserHistory();
 const routerStore = new RouterStore(history);
-const localeStore = new LocaleStore([en, cn], en.id);
+
+const fallbackLanguage = en.id;
+const userLanguage = window ? window.navigator.language : en.id;
+
+const localeStore = new LocaleStore([en, cn], userLanguage, fallbackLanguage);
 const userStore = new UserStore();
 
 const rootStores = {

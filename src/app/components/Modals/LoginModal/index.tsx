@@ -4,7 +4,7 @@ import { STORE_LOCALE, STORE_USER } from "../../../constants/stores";
 import { LocaleStore, UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import { action, observable, runInAction } from "mobx";
-import { LoginError, LoginErrorType, LoginState, ServerError } from "../../../stores/UserStore";
+import { ErrorLoginResult, LoginError, LoginErrorType, LoginServerError, LoginState } from "../../../stores/UserStore";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
@@ -13,30 +13,31 @@ interface LoginModalProps {
 
 interface AlertPanelProps {
   [STORE_LOCALE]?: LocaleStore,
-  [STORE_USER]?: UserStore
+  error: LoginError,
+  clearError: () => void
 }
 
-@inject(STORE_LOCALE, STORE_USER)
+@inject(STORE_LOCALE)
 @observer
 export class AlertPanel extends React.Component<AlertPanelProps, any> {
 
   generateAlertPanel = () => {
     const alertMessage = [] as Array<string | JSX.Element>;
     const locale = this.props[STORE_LOCALE];
-    const user = this.props[STORE_USER];
+    const { error } = this.props;
 
-    switch (user.previousError.type) {
+    switch (error.type) {
       case LoginErrorType.WrongCredential:
-        alertMessage.push(locale.definition.loginModal.wrongCredential);
+        alertMessage.push(locale.definitions.loginModal.wrongCredential);
         break;
-      case LoginErrorType.Network:
-        alertMessage.push(locale.definition.loginModal.networkError);
+      case LoginErrorType.NetworkError:
+        alertMessage.push(locale.definitions.loginModal.networkError);
         break;
-      case LoginErrorType.Server:
-        const error = user.previousError as ServerError;
-        alertMessage.push(locale.definition.loginModal.serverError);
+      case LoginErrorType.ServerError:
+        const trueError = error as LoginServerError;
+        alertMessage.push(locale.definitions.loginModal.serverError);
         alertMessage.push(<br key={0}/>);
-        for (const message of error.messages) {
+        for (const message of trueError.messages) {
           alertMessage.push(<br key={message}/>);
           alertMessage.push(message);
         }
@@ -45,16 +46,16 @@ export class AlertPanel extends React.Component<AlertPanelProps, any> {
 
     return <div className={style("w3-container")}>
       <div className={style("w3-panel", "w3-red", "w3-display-container")}>
-      <span onClick={user.clearError}
+      <span onClick={this.props.clearError}
             className={style("w3-button", "w3-red", "w3-large", "w3-display-topright")}>&times;</span>
-        <h3>{locale.definition.loginModal.loginFailed}</h3>
+        <h3>{locale.definitions.loginModal.loginFailed}</h3>
         <p>{alertMessage}</p>
       </div>
     </div>
   };
 
   render() {
-    return this.props[STORE_USER].previousError ? this.generateAlertPanel() : null;
+    return this.props.error ? this.generateAlertPanel() : null;
   }
 }
 
@@ -64,6 +65,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
   @observable username: string = "";
   @observable password: string = "";
+  @observable lastError: LoginError = null;
 
   @action handleUsernameChange = (e) => {
     this.username = e.target.value;
@@ -78,14 +80,24 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
     this.username = "";
   };
 
+  @action clearError = () => {
+    this.lastError = null;
+  };
+
   @action login = async () => {
-    this.props[STORE_USER].clearError();
-    await this.props[STORE_USER].login(this.username, this.password);
-    if (!this.props[STORE_USER].previousError) {
+    const user = this.props[STORE_USER];
+    this.clearError();
+    const loginResult = await user.login(this.username, this.password);
+    if (loginResult.success) {
       runInAction("Login successful", () => {
-        this.props[STORE_USER].toggleLoginModalShown();
+        user.toggleLoginModalShown();
         this.reset();
       });
+    } else {
+      const error = loginResult as ErrorLoginResult;
+      runInAction("Login failed", () => {
+        this.lastError =  error.error;
+      })
     }
   };
 
@@ -99,35 +111,35 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
         <div className={style("w3-container")}>
 
           <div className={style("w3-center")}>
-                    <span onClick={user.toggleLoginModalShown} title={locale.definition.loginModal.close}
+                    <span onClick={user.toggleLoginModalShown} title={locale.definitions.loginModal.close}
                           className={style("w3-button", "w3-xlarge", "w3-hover-red", "w3-display-topright")}>&times;</span>
-            <h1>{locale.definition.loginModal.title}</h1>
+            <h1>{locale.definitions.loginModal.title}</h1>
           </div>
         </div>
 
-        <AlertPanel />
+        <AlertPanel error={this.lastError} clearError={this.clearError} />
 
         <form className={style("w3-container")}>
           <div className={style("w3-section")}>
-            <label><b>{locale.definition.loginModal.username}</b></label>
+            <label><b>{locale.definitions.loginModal.username}</b></label>
             <input className={style("w3-input", "w3-border", "w3-margin-bottom")} type="text" value={this.username}
-                   placeholder={locale.definition.loginModal.pleaseInputUsername}
+                   placeholder={locale.definitions.loginModal.pleaseInputUsername}
                    onChange={this.handleUsernameChange} required/>
-            <label><b>{locale.definition.loginModal.password}</b></label>
+            <label><b>{locale.definitions.loginModal.password}</b></label>
             <input className={style("w3-input", "w3-border")} type="password" value={this.password}
-                   placeholder={locale.definition.loginModal.pleaseInputPassword}
+                   placeholder={locale.definitions.loginModal.pleaseInputPassword}
                    onChange={this.handlePasswordChange} required/>
           </div>
         </form>
 
         <div className={style("w3-container", "w3-border-top", "w3-padding-16", "w3-light-grey")}>
           <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-blue", "w3-padding")}>{locale.definition.loginModal.register}</button>
+                  className={style("w3-button", "w3-blue", "w3-padding")}>{locale.definitions.loginModal.register}</button>
           <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>{locale.definition.loginModal.close}</button>
+                  className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>{locale.definitions.loginModal.close}</button>
           <button onClick={this.login} type="button" disabled={isLoggingIn}
                   className={style("w3-button", "w3-blue", "w3-right", "w3-padding")}>
-            {isLoggingIn ? locale.definition.loginModal.loggingIn : locale.definition.loginModal.login}</button>
+            {isLoggingIn ? locale.definitions.loginModal.loggingIn : locale.definitions.loginModal.login}</button>
         </div>
 
       </div>

@@ -1,7 +1,7 @@
 import {Route, Switch} from "react-router";
 import * as React from "react";
-import { pages } from './pages';
+import { pageConfigs } from './pages';
 
 export const switches = <Switch>
-  {pages.map(x => <Route key={x.path} path={x.path} component={x.component}/>)}
+  {pageConfigs.map(x => <Route exact={x.exact} key={x.path} path={x.path} render={x.render}/>)}
 </Switch>;

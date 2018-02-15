@@ -5,8 +5,8 @@ import { en, cn } from "../src/app/internationalization";
 import { ComponentChildrenType } from "../src/app/stores/LocaleStore";
 import * as React from 'react';
 
-@suite class LocaleStoreTest {
-  private store: LocaleStore = new LocaleStore([en, cn],"en");
+@suite class LocaleStoreFormatTest {
+  private store: LocaleStore = new LocaleStore([en, cn],en.id,en.id);
   @test formatOnlyString() {
     const format = "123{name}456";
     const replacements = { name: "156"};

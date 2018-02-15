@@ -16,7 +16,7 @@ export interface LoggedInIndicatorProps {
 export class LoggedInIndicator extends React.Component<LoggedInIndicatorProps, any> {
   render() {
     const locale = this.props[STORE_LOCALE];
-    const definition = locale.definition.header.navbarLogin;
+    const definition = locale.definitions.header.navbarLogin;
     const user = this.props[STORE_USER];
     return <div className={this.props.className}>
       <button className={style("w3-button")}>

@@ -2,19 +2,20 @@ import * as React from "react";
 import { observer, inject } from "mobx-react";
 import { STORE_LOCALE, STORE_USER } from "../../../constants/stores";
 import { LocaleStore, UserStore } from "../../../stores";
+import { LocaleMessage } from "../../../internationalization";
 
 export interface NotLoggedInIndicatorProps {
-  [STORE_LOCALE]?: LocaleStore
   [STORE_USER]?: UserStore,
   className: string
 }
 
-@inject(STORE_LOCALE, STORE_USER)
+@inject(STORE_USER)
 @observer
 export class NotLoggedInIndicator extends React.Component<NotLoggedInIndicatorProps, any> {
 
   render() {
     return <a className={this.props.className} onClick={this.props[STORE_USER].toggleLoginModalShown}>
-      {this.props[STORE_LOCALE].definitions.header.navbarLogin.notLoggedInPrompt}</a>;
+      <LocaleMessage id={"header.navbarLogin.notLoggedInPrompt"}/>
+    </a>;
   }
 }

@@ -5,6 +5,7 @@ import { LocaleStore, UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import { action, observable, runInAction } from "mobx";
 import { ErrorLoginResult, LoginError, LoginErrorType, LoginServerError, LoginState } from "../../../stores/UserStore";
+import { LocaleMessage } from "../../../internationalization";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
@@ -12,31 +13,35 @@ interface LoginModalProps {
 }
 
 interface AlertPanelProps {
-  [STORE_LOCALE]?: LocaleStore,
   error: LoginError,
   clearError: () => void
 }
 
-@inject(STORE_LOCALE)
-@observer
 export class AlertPanel extends React.Component<AlertPanelProps, any> {
 
   generateAlertPanel = () => {
     const alertMessage = [] as Array<string | JSX.Element>;
-    const locale = this.props[STORE_LOCALE];
-    const { error } = this.props;
+    const {error} = this.props;
 
     switch (error.type) {
       case LoginErrorType.WrongCredential:
-        alertMessage.push(locale.definitions.loginModal.wrongCredential);
+        alertMessage.push(
+          <LocaleMessage id={"loginModal.wrongCredential"}/>
+        );
         break;
       case LoginErrorType.NetworkError:
-        alertMessage.push(locale.definitions.loginModal.networkError);
+        alertMessage.push(
+          <LocaleMessage id={"loginModal.networkError"}/>
+        );
         break;
       case LoginErrorType.ServerError:
         const trueError = error as LoginServerError;
-        alertMessage.push(locale.definitions.loginModal.serverError);
-        alertMessage.push(<br key={0}/>);
+        alertMessage.push(
+          <LocaleMessage id={"loginModal.serverError"}/>
+        );
+        alertMessage.push(
+          <br key={0}/>
+        );
         for (const message of trueError.messages) {
           alertMessage.push(<br key={message}/>);
           alertMessage.push(message);
@@ -48,7 +53,9 @@ export class AlertPanel extends React.Component<AlertPanelProps, any> {
       <div className={style("w3-panel", "w3-red", "w3-display-container")}>
       <span onClick={this.props.clearError}
             className={style("w3-button", "w3-red", "w3-large", "w3-display-topright")}>&times;</span>
-        <h3>{locale.definitions.loginModal.loginFailed}</h3>
+        <h3>
+          <LocaleMessage id={"loginModal.loginFailed"}/>
+        </h3>
         <p>{alertMessage}</p>
       </div>
     </div>
@@ -96,7 +103,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
     } else {
       const error = loginResult as ErrorLoginResult;
       runInAction("Login failed", () => {
-        this.lastError =  error.error;
+        this.lastError = error.error;
       })
     }
   };
@@ -113,19 +120,29 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
           <div className={style("w3-center")}>
                     <span onClick={user.toggleLoginModalShown} title={locale.definitions.loginModal.close}
                           className={style("w3-button", "w3-xlarge", "w3-hover-red", "w3-display-topright")}>&times;</span>
-            <h1>{locale.definitions.loginModal.title}</h1>
+            <h1>
+              <LocaleMessage id={"loginModal.title"}/>
+            </h1>
           </div>
         </div>
 
-        <AlertPanel error={this.lastError} clearError={this.clearError} />
+        <AlertPanel error={this.lastError} clearError={this.clearError}/>
 
         <form className={style("w3-container")}>
           <div className={style("w3-section")}>
-            <label><b>{locale.definitions.loginModal.username}</b></label>
+            <label>
+              <b>
+                <LocaleMessage id={"loginModal.username"}/>
+              </b>
+            </label>
             <input className={style("w3-input", "w3-border", "w3-margin-bottom")} type="text" value={this.username}
                    placeholder={locale.definitions.loginModal.pleaseInputUsername}
                    onChange={this.handleUsernameChange} required/>
-            <label><b>{locale.definitions.loginModal.password}</b></label>
+            <label>
+              <b>
+                <LocaleMessage id={"loginModal.password"}/>
+              </b>
+            </label>
             <input className={style("w3-input", "w3-border")} type="password" value={this.password}
                    placeholder={locale.definitions.loginModal.pleaseInputPassword}
                    onChange={this.handlePasswordChange} required/>
@@ -134,12 +151,20 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
         <div className={style("w3-container", "w3-border-top", "w3-padding-16", "w3-light-grey")}>
           <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-blue", "w3-padding")}>{locale.definitions.loginModal.register}</button>
+                  className={style("w3-button", "w3-blue", "w3-padding")}>
+            <LocaleMessage id={"loginModal.register"}/>
+          </button>
           <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>{locale.definitions.loginModal.close}</button>
+                  className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
+            <LocaleMessage id={"loginModal.close"}/>
+            </button>
           <button onClick={this.login} type="button" disabled={isLoggingIn}
                   className={style("w3-button", "w3-blue", "w3-right", "w3-padding")}>
-            {isLoggingIn ? locale.definitions.loginModal.loggingIn : locale.definitions.loginModal.login}</button>
+            {isLoggingIn
+              ? <LocaleMessage id={"loginModal.loggingIn"}/>
+              : <LocaleMessage id={"loginModal.login"}/>
+            }
+            </button>
         </div>
 
       </div>

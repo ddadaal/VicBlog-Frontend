@@ -3,25 +3,21 @@ import style from '../style';
 import LogoPicture from 'svg-react-loader?name=LogoPicture!../../../assets/logo.svg';
 import * as logoStyle from "./style.css";
 import * as classNames from "classnames";
-import { inject, observer } from "mobx-react";
-import { STORE_LOCALE } from "../../constants/stores";
-import { LocaleStore } from "../../stores";
+import { LoginModal } from "../Modals/LoginModal";
+import { LocaleMessage } from "../../internationalization";
 
-interface HeaderProps {
-  [STORE_LOCALE]?: LocaleStore
-}
-
-@inject(STORE_LOCALE)
-@observer
-export class Header extends React.Component<HeaderProps, any> {
+export class Header extends React.Component<any, any> {
 
   render() {
     return <div className={classNames(style("w3-cell-row"), logoStyle.header)}>
+      <LoginModal/>
       <div className={style("w3-container","w3-cell","w3-cell-bottom")}>
       <LogoPicture className={logoStyle.logo}/>
       </div>
       <div className={style("w3-container","w3-right", "w3-cell", "w3-cell-bottom")}>
-        <p>{this.props[STORE_LOCALE].definitions.header.blogBrief}</p>
+        <p>
+          <LocaleMessage id={"header.blogBrief"}/>
+        </p>
       </div>
     </div>;
   }

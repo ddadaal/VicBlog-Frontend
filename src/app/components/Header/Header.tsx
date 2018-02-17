@@ -3,7 +3,7 @@ import style from '../style';
 import LogoPicture from 'svg-react-loader?name=LogoPicture!../../../assets/logo.svg';
 import * as logoStyle from "./style.css";
 import * as classNames from "classnames";
-import { LoginModal } from "../Modals/LoginModal";
+import { LoginModal } from "../Modals/LoginModal/LoginModal";
 import { LocaleMessage } from "../../internationalization";
 
 export class Header extends React.Component<any, any> {

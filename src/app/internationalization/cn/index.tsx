@@ -26,7 +26,7 @@ export const cn: Language = {
       backendVersion: "后端版本：{version}，构建时间：{buildTime}"
     },
     loginModal: {
-      title: "登录",
+      // title: "登录",
       username: "用户名",
       password: "密码",
       pleaseInputUsername: "请输入用户名",

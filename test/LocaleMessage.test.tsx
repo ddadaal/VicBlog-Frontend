@@ -23,28 +23,36 @@ const partialLanguage: Language = {
         // logout: "Logout",
       },
     },
+    footer: {
+      codeProudlyByVicCrubs: "由 {viccrubs} 强力编写",
+    }
   }
 };
 
-// @suite class LocaleMessageTest {
-//   private store: LocaleStore = new LocaleStore([cn, partialLanguage], partialLanguage.id, cn.id);
-//   private props = { locale: this.store };
-//   @test test_existsInPartial() {
-//     const expected = "Home";
-//     const actual = <LocaleMessage id={"header.home"} locale={this.store} />;
-//     expect(actual[0]).eq(expected);
-//   }
-//
-//   @test test_notExistInPartial() {
-//     const expected = "登出";
-//     const actual = <LocaleMessage id={"header.navbarLogin.logout"} locale={this.store}/>;
-//     expect(actual[0]).eq(expected);
-//   }
-//
-//   @test test_stringReplacement() {
-//     const expected = "Welcome, replaced";
-//     const actual = <LocaleMessage id={"header.navbarLogin.loggedInPrompt"} locale={this.store}/>;
-//     expect(actual).eq(expected);
-//   }
-//
-// }
+@suite class LocaleMessageTest {
+  private store: LocaleStore = new LocaleStore([cn, partialLanguage], partialLanguage.id, cn.id);
+  @test test_existsInPartial() {
+    const expected = "Home";
+    const actual = this.store.get("header.home");
+    expect(actual).eq(expected);
+  }
+
+  @test test_notExistInPartial() {
+    const expected = "登出";
+    const actual = this.store.get("header.navbarLogin.logout");
+    expect(actual).eq(expected);
+  }
+
+  @test test_stringReplacement() {
+    const expected = "Welcome, replaced";
+    const actual = this.store.get("header.navbarLogin.loggedInPrompt", {username: "replaced"});
+    expect(actual).eq(expected);
+  }
+
+  @test test_elementReplacement() {
+    const expected = [ "由 ", <a key={1}/>, " 强力编写"];
+    const actual = this.store.get("footer.codeProudlyByVicCrubs", {viccrubs: <a/>});
+    expect(actual).deep.eq(expected);
+  }
+
+}

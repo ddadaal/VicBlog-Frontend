@@ -10,7 +10,7 @@ import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
 import * as ReactDOM from "react-dom";
 import * as localStyle from './style.css';
-import { LoginModal } from "../Modals/LoginModal";
+import { LoginModal } from "../Modals/LoginModal/LoginModal";
 import { LocaleMessage } from "../../internationalization";
 
 export interface HeaderContainerProps {

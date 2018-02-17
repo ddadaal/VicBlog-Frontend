@@ -23,7 +23,7 @@ export class LoggedInIndicator extends React.Component<LoggedInIndicatorProps, a
         {user.isAdmin
           ? <a className={style("w3-bar-item","w3-button")}>
             <LocaleMessage id={"header.navbarLogin.composeNewArticle"} />
-          </a>
+            </a>
           : undefined }
         <a onClick={user.logout} className={style("w3-bar-item","w3-button")}>
           <LocaleMessage id={"header.navbarLogin.logout"} />

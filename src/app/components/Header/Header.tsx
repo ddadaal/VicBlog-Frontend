@@ -10,7 +10,6 @@ export class Header extends React.Component<any, any> {
 
   render() {
     return <div className={classNames(style("w3-cell-row"), logoStyle.header)}>
-      <LoginModal/>
       <div className={style("w3-container","w3-cell","w3-cell-bottom")}>
       <LogoPicture className={logoStyle.logo}/>
       </div>

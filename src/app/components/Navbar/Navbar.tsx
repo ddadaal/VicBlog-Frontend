@@ -12,6 +12,7 @@ import * as ReactDOM from "react-dom";
 import * as localStyle from './style.css';
 import { LoginModal } from "../Modals/LoginModal/LoginModal";
 import { LocaleMessage } from "../../internationalization";
+import { RegisterModal } from "../Modals/RegisterModal/RegisterModal";
 
 export interface HeaderContainerProps {
   [STORE_ROUTER]?: RouterStore,
@@ -50,8 +51,11 @@ export class Navbar extends React.Component<HeaderContainerProps, any> {
 
   render() {
     const route = this.props[STORE_ROUTER];
+    const user = this.props[STORE_USER];
+
     return <div >
-      <LoginModal/>
+      { user.loginModalShown ? <LoginModal/> : null}
+      { user.registerModalShown ? <RegisterModal/> : null}
       <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
         <LanguageSelector className={style("w3-dropdown-hover")}/>
         <a onClick={route.jumpToHome} className={style("w3-bar-item","w3-button","w3-hide-small")}>

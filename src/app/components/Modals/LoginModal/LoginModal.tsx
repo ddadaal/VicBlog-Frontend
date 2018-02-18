@@ -3,17 +3,17 @@ import style from '../../style';
 import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
-import { action, observable, runInAction } from "mobx";
-import { ErrorLoginResult, LoginError, LoginState } from "../../../stores/UserStore";
+import { action, computed, observable, runInAction } from "mobx";
 import { LocaleMessage } from "../../../internationalization";
-import { AlertPanel } from "./AlertPanel";
-import { LocaleInput } from "./LocaleInput";
+import { LocaleInput } from "../LocaleInput";
+import { Modal, ModalBottom } from "../Modal";
+import { LoginAlertPanel } from "./LoginAlertPanel";
+import { LoginError, LoginState, LoginStore } from "./LoginStore";
+import { Checkbox } from "../Checkbox";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
 }
-
-
 
 @inject(STORE_USER)
 @observer
@@ -21,7 +21,24 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
   @observable username: string = "";
   @observable password: string = "";
+  @observable loginAttempted: boolean = false;
+  @observable rememberMe: boolean = false;
+  loggedIn: boolean = false;
   @observable lastError: LoginError = null;
+
+  @observable loginStore: LoginStore = new LoginStore();
+
+  @action rememberMeClicked = () => {
+    this.rememberMe = !this.rememberMe;
+  };
+
+  @computed get usernameValid() {
+    return !this.loginAttempted || this.username !== "";
+  }
+
+  @computed get passwordValid() {
+    return !this.loginAttempted || this.password !== "";
+  }
 
   @action handleUsernameChange = (e) => {
     this.username = e.target.value;
@@ -31,9 +48,9 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
     this.password = e.target.value;
   };
 
-  @action reset = () => {
-    this.password = "";
-    this.username = "";
+
+  @action validate = () => {
+    return this.usernameValid && this.passwordValid;
   };
 
   @action clearError = () => {
@@ -41,81 +58,119 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   };
 
   @action login = async () => {
+    this.loginAttempted = true;
+    if (!this.validate()) {
+      return;
+    }
     const user = this.props[STORE_USER];
     this.clearError();
-    const loginResult = await user.login(this.username, this.password);
-    if (loginResult.success) {
+    try {
+      const loginResult = await this.loginStore.requestLogin(this.username, this.password);
       runInAction("Login successful", () => {
+        this.loggedIn = true;
+        user.login(loginResult);
+        if (this.rememberMe) {
+          user.remember();
+        }
         user.toggleLoginModalShown();
-        this.reset();
       });
-    } else {
-      const error = loginResult as ErrorLoginResult;
+    } catch (e) {
+      console.log(e);
       runInAction("Login failed", () => {
-        this.lastError = error.error;
+        this.lastError = e;
       })
     }
   };
 
+  @action openRegisterModal = () => {
+    const user = this.props[STORE_USER];
+    user.toggleLoginModalShown();
+    user.toggleRegisterModalShown()
+  };
+
+  componentWillUnmount() {
+    const user = this.props[STORE_USER];
+    if (!this.loggedIn) {
+      user.saveLoginPanelFields({
+        username: this.username,
+        password: this.password,
+        remember: this.rememberMe
+      });
+    } else {
+      user.clearLoginPanelFields();
+    }
+  }
+
+  componentDidMount() {
+    const user = this.props[STORE_USER];
+    const fields = user.temporaryLoginPanelFields;
+    if (fields) {
+      runInAction("Initialize fields", () => {
+        this.username = fields.username;
+        this.password = fields.password;
+        this.rememberMe = fields.remember;
+      });
+    }
+  }
+
   render() {
     const user = this.props[STORE_USER];
-    const isLoggingIn = user.state === LoginState.LoggingIn;
+    const isLoggingIn = this.loginStore.state === LoginState.LoggingIn;
 
-    return <div className={style("w3-modal")} style={{display: user.loginModalShown ? "block" : "none"}}>
-      <div className={style("w3-modal-content", "w3-card-4", "w3-animate-zoom")} style={{maxWidth: "600px"}}>
-        <div className={style("w3-container")}>
+    return <Modal titleId={"loginModal.title"}
+                  toggleShown={user.toggleLoginModalShown}
+    >
 
-          <div className={style("w3-center")}>
-                    <span onClick={user.toggleLoginModalShown}
-                          className={style("w3-button", "w3-xlarge", "w3-hover-red", "w3-display-topright")}>&times;</span>
-            <h1>
-              <LocaleMessage id={"loginModal.title"}/>
-            </h1>
-          </div>
+      <LoginAlertPanel error={this.lastError} clearError={this.clearError}/>
+
+      <form className={style("w3-container")}>
+        <div className={style("w3-section")}>
+          <LocaleInput className={style("w3-input", "w3-border", "w3-margin-bottom")}
+                       type={"text"}
+                       placeholderTextId={"loginModal.pleaseInputUsername"}
+                       labelTextId={"loginModal.username"}
+                       invalid={!this.usernameValid}
+                       invalidPromptId={"loginModal.pleaseInputUsername"}
+                       onChange={this.handleUsernameChange}
+                       value={this.username}
+          />
+
+          <LocaleInput className={style("w3-input", "w3-border")}
+                       type={"password"}
+                       placeholderTextId={"loginModal.pleaseInputPassword"}
+                       labelTextId={"loginModal.password"}
+                       invalid={!this.passwordValid}
+                       invalidPromptId={"loginModal.pleaseInputPassword"}
+                       onChange={this.handlePasswordChange}
+                       value={this.password}
+          />
+          <p>
+            <Checkbox checked={this.rememberMe} onClicked={this.rememberMeClicked}/>
+            <span>
+              <LocaleMessage id={"loginModal.rememberMe"}/>
+            </span>
+          </p>
         </div>
+      </form>
 
-        <AlertPanel error={this.lastError} clearError={this.clearError}/>
+      <ModalBottom>
+        <button onClick={this.openRegisterModal} type="button"
+                className={style("w3-button", "w3-blue", "w3-padding")}>
+          <LocaleMessage id={"loginModal.register"}/>
+        </button>
+        <button onClick={user.toggleLoginModalShown} type="button"
+                className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
+          <LocaleMessage id={"loginModal.close"}/>
+        </button>
 
-        <form className={style("w3-container")}>
-          <div className={style("w3-section")}>
-            <label>
-              <b>
-                <LocaleMessage id={"loginModal.username"}/>
-              </b>
-            </label>
-            <LocaleInput type={"text"} required={true} className={style("w3-input", "w3-border", "w3-margin-bottom")}
-                         placeholderTextId={"loginModal.pleaseInputUsername"}
-                         onChange={this.handleUsernameChange}/>
-            <label>
-              <b>
-                <LocaleMessage id={"loginModal.password"}/>
-              </b>
-            </label>
-            <LocaleInput type={"password"} required={true} className={style("w3-input", "w3-border")}
-                         placeholderTextId={"loginModal.pleaseInputPassword"}
-                         onChange={this.handlePasswordChange}/>
-          </div>
-        </form>
-
-        <div className={style("w3-container", "w3-border-top", "w3-padding-16", "w3-light-grey")}>
-          <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-blue", "w3-padding")}>
-            <LocaleMessage id={"loginModal.register"}/>
-          </button>
-          <button onClick={user.toggleLoginModalShown} type="button"
-                  className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
-            <LocaleMessage id={"loginModal.close"}/>
-            </button>
-          <button onClick={this.login} type="button" disabled={isLoggingIn}
-                  className={style("w3-button", "w3-blue", "w3-right", "w3-padding")}>
-            {isLoggingIn
-              ? <LocaleMessage id={"loginModal.loggingIn"}/>
-              : <LocaleMessage id={"loginModal.login"}/>
-            }
-            </button>
-        </div>
-
-      </div>
-    </div>;
+        <button onClick={this.login} type="button" disabled={isLoggingIn}
+                className={style("w3-button", "w3-blue", "w3-right", "w3-padding")}>
+          {isLoggingIn
+            ? <LocaleMessage id={"loginModal.loggingIn"}/>
+            : <LocaleMessage id={"loginModal.login"}/>
+          }
+        </button>
+      </ModalBottom>
+    </Modal>;
   }
 }

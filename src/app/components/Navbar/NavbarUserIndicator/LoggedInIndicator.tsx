@@ -11,6 +11,7 @@ export interface LoggedInIndicatorProps {
   className: string,
 }
 
+@inject(STORE_USER)
 @observer
 export class LoggedInIndicator extends React.Component<LoggedInIndicatorProps, any> {
   render() {

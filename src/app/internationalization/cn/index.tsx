@@ -21,12 +21,10 @@ export const cn: Language = {
     footer: {
       codeProudlyByVicCrubs: "由 {viccrubs} 强力编写",
       themedWith: "由 {w3css} 和 {fabric} 强势驱动",
-      deployedOn: "部署于 {githubPages} 和 {azure}",
-      frontendVersion: "前端版本：{version}，构建时间：{buildTime}",
-      backendVersion: "后端版本：{version}，构建时间：{buildTime}"
+      frontend: "前端版本 {build}. 构建于 {buildTime}. 部署于 {frontendDeployment}."
     },
     loginModal: {
-      // title: "登录",
+      title: "登录",
       username: "用户名",
       password: "密码",
       pleaseInputUsername: "请输入用户名",
@@ -38,7 +36,33 @@ export const cn: Language = {
       loginFailed: "登录失败",
       wrongCredential: "用户名和（或）密码无效。",
       networkError: "网络错误，请检查网络连接。",
-      serverError: "服务器错误："
+      serverError: "服务器错误：",
+      rememberMe: "记住我",
+    },
+    registerModal: {
+      title: "注册",
+      username: "用户名",
+      password: "密码",
+      pleaseInputUsername: "请输入用户名",
+      pleaseInputPassword: "请输入密码",
+      register: "注册",
+      registering: "注册中……",
+      close: "关闭",
+      registerFailed: "注册失败",
+      usernameConflict: "用户名已经被占用。请重新输入。",
+      networkError: "网络错误，请检查网络连接。",
+      serverError: "服务器错误：",
+      complete: {
+        congrats: "祝贺!",
+        content: "注册完成！点击“登录”，以{username}的身份登录！",
+        clickToLogin: "登录"
+      },
+      registerAttention: {
+        link: "注册前读我！",
+        fileName: "cn",
+        title: "注册前请读",
+        acknowledged: "了解了"
+      }
     }
   }
 };

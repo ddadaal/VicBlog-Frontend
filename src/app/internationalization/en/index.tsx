@@ -21,9 +21,7 @@ export const en: Language = {
     footer: {
       codeProudlyByVicCrubs: "Coded Proudly by {viccrubs}",
       themedWith: "Themed with {w3css} and {fabric}",
-      deployedOn: "Deployed on {githubPages} and {azure}",
-      frontendVersion: "Frontend version: {version}. Built at {buildTime}",
-      backendVersion: "Backend version: {version}. Built at {buildTime}"
+      frontend: "Frontend build {build}. Built at {buildTime}. Deployed on {frontendDeployment}."
     },
     loginModal: {
       title: "Login",
@@ -37,8 +35,34 @@ export const en: Language = {
       close: "Close",
       loginFailed: "Login failed.",
       wrongCredential: "Username/Password is not valid.",
-      networkError: "NetworkError error. Please check your network connection.",
-      serverError: "ServerError responds with error(s):"
+      networkError: "Network error. Please check your network connection.",
+      serverError: "Server responds with error(s):",
+      rememberMe: "Remember me",
+    },
+    registerModal: {
+      title: "Register",
+      username: "Username",
+      password: "Password",
+      pleaseInputUsername: "Please input Username",
+      pleaseInputPassword: "Please input Password",
+      register: "Register",
+      registering: "Registering...",
+      close: "Close",
+      registerFailed: "Register failed.",
+      usernameConflict: "Username has been token. Please select another one.",
+      networkError: "Network error. Please check your network connection.",
+      serverError: "Server responds with error(s):",
+      complete: {
+        congrats: "Congratulations!",
+        content: "You have just registered. Click \"Click to Login\" to login as {username}.",
+        clickToLogin: "Click to Login"
+      },
+      registerAttention: {
+        link: "READ ME BEFORE YOU REGISTER!",
+        fileName: "en",
+        title: "Read before register",
+        acknowledged: "Acknowledged"
+      }
     }
   }
 };

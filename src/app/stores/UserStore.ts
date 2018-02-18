@@ -1,47 +1,41 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { User, UserRole } from "../models/User";
-import * as queryString from "querystring";
-import md5 from 'md5';
-import { APIs } from "./ApiDefinition";
 
-
-export enum LoginErrorType {
-  WrongCredential, ServerError, NetworkError
-}
 
 export interface LoginResult {
-  success: boolean,
+  token: string,
+  username: string,
+  role: string
 }
 
-export interface ErrorLoginResult extends LoginResult {
-  success: false,
-  error: LoginError
+
+export function encryptPassword(password: string) {
+  return password;
 }
 
-export interface LoginError  {
-  type: LoginErrorType
-}
-
-export interface LoginServerError extends LoginError {
-  type: LoginErrorType.ServerError,
-  messages: string[]
-}
-
-export enum LoginState {
-  NotLoggedIn,
-  LoggingIn,
-  LoggedIn
+interface LoginPanelFields {
+  username: string,
+  password: string,
+  remember: boolean
 }
 
 export class UserStore {
-  @observable public user: User = null;
-  @observable public state: LoginState = LoginState.NotLoggedIn;
-  @observable public loginModalShown: boolean = false;
-  @observable public registerModalShown: boolean = false;
+  @observable user: User = null;
+  @observable loginModalShown: boolean = false;
+  @observable registerModalShown: boolean = false;
+  @observable temporaryLoginPanelFields: LoginPanelFields = null;
+
+  @action saveLoginPanelFields = (fields: LoginPanelFields) => {
+    this.temporaryLoginPanelFields = fields;
+  };
+
+  @action clearLoginPanelFields = () => {
+    this.temporaryLoginPanelFields = null;
+  };
 
   @computed
   public get loggedIn() {
-    return this.user && this.state === LoginState.LoggedIn;
+    return !!this.user;
   }
 
   @computed
@@ -50,8 +44,8 @@ export class UserStore {
   }
 
   @action public logout = () => {
-    this.state = LoginState.NotLoggedIn;
     this.user = null;
+    this.clearUser();
   };
 
   @action public toggleLoginModalShown = () => {
@@ -62,42 +56,31 @@ export class UserStore {
     this.registerModalShown = !this.registerModalShown;
   };
 
-  private encryptPassword(password: string) {
-    return password;
-    // return md5(password).toUpperCase();
-  }
+  @action login = async (response: LoginResult) => {
+    this.user = new User(response.username, response.role, response.token);
+  };
 
-  @action public login = async (username: string, password: string): Promise<LoginResult> => {
-    this.state = LoginState.LoggingIn;
-    password = this.encryptPassword(password);
-    const getUrl = APIs.login + '?' + queryString.stringify({username, password});
-    try {
-      const res = await fetch(getUrl);
-      if (res.ok) {
-        const user = await res.json();
-        runInAction("login successfully", () => {
-          this.state = LoginState.LoggedIn;
-          this.user = new User(user);
-        });
-        return { success: true };
-      } else {
-        const resJson = await res.json();
-        return runInAction("login failed", () => {
-          this.logout();
-          console.log(res.status);
-          if (res.status === 401) {
-            return { success: false, error: { type: LoginErrorType.WrongCredential } };
-          } else {
-            return { success: false, error: { type: LoginErrorType.ServerError, messages: resJson.errorDescriptions }};
-          }
-        });
+  remember = () => {
+    if (window) {
+      window.localStorage.setItem("user", JSON.stringify(this.user));
+    }
+  };
+
+  clearUser = () => {
+    if (window) {
+      window.localStorage.removeItem("user");
+    }
+  };
+
+  constructor(detectLocalStorage: boolean = true) {
+    if (detectLocalStorage && window) {
+      const user = window.localStorage.getItem("user");
+      if (user) {
+        try {
+          this.user = User.parse(JSON.parse(user));
+        } catch (ignored) {
+        }
       }
-
-    } catch (e) {
-      return runInAction("login failed", () => {
-        this.logout();
-        return {success: false, error: {type: LoginErrorType.NetworkError}};
-      });
     }
   }
 }

@@ -1,18 +1,23 @@
 export enum UserRole {
-  Unclear,
-  User,
-  Admin,
+  Unclear = "Unclear",
+  User = "User",
+  Admin = "Admin",
 }
 
 
 export class User {
-  public token: string;
   public name: string;
   public role: UserRole;
+  public token: string;
 
-  constructor(json: any) {
-    this.token = json.token;
-    this.name = json.username;
-    this.role = json.role;
+
+  constructor(name: string, role: string, token: string) {
+    this.name = name;
+    this.role = UserRole[role];
+    this.token = token;
+  }
+
+  static parse(obj: any) {
+    return new User(obj.name, obj.role, obj.token);
   }
 }

@@ -1,0 +1,55 @@
+import { LocaleMessage } from "../../../internationalization";
+import * as React from "react";
+import style from "../../style";
+import { AlertPanel } from "../AlertPanel";
+import { RegisterError, RegisterErrorType, RegisterServerError } from "./RegisterStore";
+import { LoginErrorType } from "../LoginModal/LoginStore";
+
+interface RegisterAlertPanelProps {
+  error: RegisterError,
+  clearError: () => void
+}
+
+
+export class RegisterAlertPanel extends React.Component<RegisterAlertPanelProps, any> {
+  render() {
+    const {error} = this.props;
+    if (!error) {
+      return null;
+    }
+
+    const alertMessage = [] as Array<string | JSX.Element>;
+    switch (error.type) {
+      case RegisterErrorType.UsernameConflict:
+        alertMessage.push(
+          <LocaleMessage key={"usernameConflict"} id={"registerModal.usernameConflict"}/>
+        );
+        break;
+      case RegisterErrorType.NetworkError:
+        alertMessage.push(
+          <LocaleMessage key={"networkError"} id={"registerModal.networkError"}/>
+        );
+        break;
+      case RegisterErrorType.ServerError:
+        const trueError = error as RegisterServerError;
+        alertMessage.push(
+          <LocaleMessage key={"serverError"} id={"registerModal.serverError"}/>
+        );
+        alertMessage.push(
+          <br key={0}/>
+        );
+        for (const message of trueError.messages) {
+          alertMessage.push(<br key={message}/>);
+          alertMessage.push(message);
+        }
+        break;
+    }
+
+    return <AlertPanel clearError={this.props.clearError}>
+      <h3>
+        <LocaleMessage id={"registerModal.registerFailed"}/>
+      </h3>
+      <p>{alertMessage}</p>
+    </AlertPanel>;
+  }
+}

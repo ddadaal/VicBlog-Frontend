@@ -1,8 +1,8 @@
 import * as React from "react";
 import style from '../style';
-import { STORE_LOCALE, STORE_ROUTER } from "../../constants/stores";
+import { STORE_ROUTER } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
-import { LocaleStore, RouterStore } from "../../stores";
+import { RouterStore } from "../../stores";
 import { FaGithub } from 'react-icons/lib/fa';
 import { LocaleMessage } from "../../internationalization";
 
@@ -39,15 +39,10 @@ export class Footer extends React.Component<FooterProps, any> {
           }}/>
         </p>
         <p>
-          <LocaleMessage id={"footer.deployedOn"} replacements={{
-            githubPages: <a href={githubPages}>GitHub Pages</a>,
-            azure: <a href={azure}>Microsoft Azure Global</a>
-          }}/>
-        </p>
-        <p>
-        <LocaleMessage id={"footer.frontendVersion"} replacements={{
-          version: FRONT_END_BUILD,
-          buildTime: FRONT_END_BUILD_TIME
+        <LocaleMessage id={"footer.frontend"} replacements={{
+          build: FRONT_END_BUILD,
+          buildTime: FRONT_END_BUILD_TIME,
+          frontendDeployment: <a href={githubPages}>GitHub Pages</a>
         }}/>
         </p>
       </div>

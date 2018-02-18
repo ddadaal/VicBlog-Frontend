@@ -44,7 +44,7 @@ export class LocaleStore {
     return this.format(definition, replacements);
   };
 
-  private format = (content: string, replacements?: {[s: string]: ComponentChildrenType}) : Array<ComponentChildrenType> | string => {
+  format = (content: string, replacements?: {[s: string]: ComponentChildrenType}) : Array<ComponentChildrenType> | string => {
     const splitter = /({[0-9a-zA-Z]+})/;
     let array = content.split(splitter);
     let newArray = array as Array<ComponentChildrenType>;

@@ -8,11 +8,3 @@ export class HomePage extends React.Component<any, any> {
   }
 }
 
-export const homePageConfig: PageConfig = {
-  path: "/",
-  render: props => <HomePage/>,
-  isThisPage: (pathname: string) => {
-    return pathname === '/';
-  },
-  exact: true
-};

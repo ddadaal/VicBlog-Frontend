@@ -21,7 +21,7 @@ const basePlugins = [
   }),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
-    filename: 'vendor.bundle.[hash:5].js',
+    filename: 'vendor.bundle.js',
     minChunks: Infinity
   }),
   new webpack.optimize.AggressiveMergingPlugin(),
@@ -49,7 +49,8 @@ const devPlugins = [
   }),
   new ExtractTextPlugin({
     filename: 'styles.css',
-  })
+  }),
+  new webpack.NamedModulesPlugin()
 ];
 
 const prodPlugins = [

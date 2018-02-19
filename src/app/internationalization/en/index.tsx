@@ -63,6 +63,9 @@ export const en: Language = {
         title: "Read before register",
         acknowledged: "Acknowledged"
       }
+    },
+    articleList: {
+      loading: "Loading..."
     }
   }
 };

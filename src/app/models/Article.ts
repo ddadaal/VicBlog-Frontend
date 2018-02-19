@@ -1,12 +1,11 @@
 export class ArticleBrief {
-  id: string;
+  id: number;
   username: string;
-  submitTime: number;
+  createTime: number;
   lastEditedTime: number;
-  category: string;
   tags: string[];
   title: string;
-  rate: number;
+  like: number;
 
 }
 

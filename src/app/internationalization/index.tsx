@@ -57,6 +57,9 @@ type LanguageDefinition = {
       acknowledged: string
     }
   }
+  articleList: {
+    loading: string
+  }
 }
 
 export interface Language {

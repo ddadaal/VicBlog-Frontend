@@ -34,11 +34,3 @@ export class AboutPage extends React.Component<any, any> {
   }
 }
 
-export const aboutPageConfig: PageConfig = {
-  path: "/about",
-  render: props => <AboutPage/>,
-  isThisPage: (pathname: string): boolean => {
-    return pathname.startsWith("/about");
-  },
-  exact: true
-};

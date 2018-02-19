@@ -63,6 +63,9 @@ export const cn: Language = {
         title: "注册前请读",
         acknowledged: "了解了"
       }
+    },
+    articleList: {
+      loading: "加载中"
     }
   }
 };

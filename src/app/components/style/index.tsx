@@ -6,6 +6,6 @@ import * as classNames from 'classnames';
 //   return classNames(...(args.map(x => style[x])));
 // };
 
-export default function (...args: string[]) {
+export default function (...args: string[]): string {
   return classNames(...(args.map(x => style[x])));
 }

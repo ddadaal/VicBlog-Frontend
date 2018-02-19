@@ -58,7 +58,14 @@ type LanguageDefinition = {
     }
   }
   articleList: {
-    loading: string
+    loading: string,
+    tags: string,
+    createTime: string,
+    lastEditedTime: string,
+    likeCount: string,
+    commentCount: string,
+    author: string,
+    dateFormat: string
   }
 }
 

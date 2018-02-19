@@ -14,18 +14,17 @@ interface ArticleListProps {
 @observer
 export class ArticleList extends React.Component<ArticleListProps, any> {
 
-  loadingComponent = <div className={style("w3-container")}>
-    <h3><LocaleMessage id={"articleList.loading"}/></h3>
-  </div>;
+  componentDidMount() {
+    const articleList = this.props[STORE_ARTICLE_LIST];
+    articleList.startFetch();
+  }
 
   render() {
     const articleList = this.props[STORE_ARTICLE_LIST];
-    switch (articleList.fetchState) {
-      case ArticleListFetchState.Standby:
-        articleList.startFetch();
-        return this.loadingComponent;
-      case ArticleListFetchState.Fetching:
-        return this.loadingComponent;
+    if (!articleList.fetched) {
+      return <div className={style("w3-container")}>
+        <h3><LocaleMessage id={"articleList.loading"}/></h3>
+      </div>;
     }
     // fetched
     console.log("fetched");

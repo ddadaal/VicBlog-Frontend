@@ -1,4 +1,4 @@
-import { action, isObservableArray, observable } from "mobx";
+import { action, computed, isObservableArray, observable } from "mobx";
 import { ArticleBrief } from "../models/Article";
 
 export enum ArticleListFetchState {
@@ -7,18 +7,23 @@ export enum ArticleListFetchState {
 
 export class ArticleListStore {
   list: ArticleBrief[] = [];
-  @observable lastUpdated: Date;
+  lastUpdated: Date;
   @observable fetchState: ArticleListFetchState = ArticleListFetchState.Standby;
+
+  @computed get fetched() {
+    return this.fetchState === ArticleListFetchState.Fetched;
+  }
 
   pushMockBriefs(num: number) {
     for (let i =0;i<num;i++) {
       let mock = new ArticleBrief();
       mock.id = i;
       mock.title = "mock" + i;
-      mock.tags = ["tag"];
+      mock.tags = ["tag1","tag2"];
       mock.lastEditedTime = Date.now();
       mock.createTime = Date.now();
       mock.like = i;
+      mock.comment = i;
       this.list.push(mock);
     }
   }

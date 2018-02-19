@@ -18,7 +18,7 @@ export class RouterStore extends BaseRouterStore {
     return getPage(this.location.pathname);
   }
 
-  jumpTo = (path: string) => {
+  @action jumpTo = (path: string) => {
     this.push(path);
   };
 

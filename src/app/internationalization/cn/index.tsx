@@ -65,7 +65,14 @@ export const cn: Language = {
       }
     },
     articleList: {
-      loading: "加载中"
+      loading: "加载中",
+      tags: "标签",
+      createTime: "创建日期",
+      lastEditedTime: "最近更新日期",
+      likeCount: "喜欢数",
+      commentCount: "评论数",
+      author: "作者",
+      dateFormat: "YYYY/M/D HH:mm:ss ZZ"
     }
   }
 };

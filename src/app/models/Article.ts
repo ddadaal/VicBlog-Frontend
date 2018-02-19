@@ -6,7 +6,7 @@ export class ArticleBrief {
   tags: string[];
   title: string;
   like: number;
-
+  comment: number
 }
 
 export class Article extends ArticleBrief {

@@ -8,47 +8,20 @@ import { termsAndConditionsRoot } from "../../../constants/config";
 import style from '../../style';
 import { Modal, ModalBottom } from "../Modal";
 import { LocaleMessage } from "../../../internationalization";
+import { AsyncComponent } from "../../../routes/AsyncComponent";
 
 interface TermsModalContentProps {
-  [STORE_LOCALE]?: LocaleStore
+  [STORE_LOCALE]?: LocaleStore,
+  content: string
 }
 
 const MarkdownIt = require("markdown-it");
 
-enum LoadingStatus {
-  Standby, Loading, Loaded
-}
 
-@inject(STORE_LOCALE)
-@observer
 export class AttentionModalContent extends React.Component<TermsModalContentProps, any> {
-
-  @observable loadingStatus = LoadingStatus.Standby;
-
-  content: string = null;
-
-  @action startLoading = async () => {
-    this.loadingStatus = LoadingStatus.Loading;
-    const locale = this.props[STORE_LOCALE];
-    const res = await import(`../../../../assets/registerAttention/${locale.get("registerModal.registerAttention.fileName")}.md`);
-
-    const md = new MarkdownIt();
-    this.content = md.render(res);
-    runInAction("Register Attention loaded", () =>{
-      this.loadingStatus = LoadingStatus.Loaded;
-    });
-  };
-
   render() {
-    switch (this.loadingStatus) {
-      case LoadingStatus.Standby:
-        this.startLoading();
-        return "Loading...";
-      case LoadingStatus.Loading:
-        return "Loading...";
-    }
     // loaded
-    return <div dangerouslySetInnerHTML={{__html: this.content}}/>;
+    return <div dangerouslySetInnerHTML={{__html: this.props.content}}/>;
   };
 }
 
@@ -56,13 +29,25 @@ interface TermsModalProps {
   toggleModalShown: () => void
 }
 
+@inject(STORE_LOCALE)
+@observer
 export class AttentionModal extends React.Component<TermsModalProps, any> {
+
+  @action startLoading = async () => {
+    const locale = this.props[STORE_LOCALE];
+    const res = await import(`../../../../assets/registerAttention/${locale.get("registerModal.registerAttention.fileName")}.md`);
+
+    const md = new MarkdownIt();
+    const content = md.render(res);
+    return <AttentionModalContent content={content}/>;
+  };
+
   render() {
     return <Modal shown={true}
                   titleId={"registerModal.registerAttention.title"}
                   toggleShown={this.props.toggleModalShown}>
       <div className={style("w3-container")}>
-        <AttentionModalContent/>
+        <AsyncComponent render={this.startLoading} componentWhenLoading={"Loading..."}/>
       </div>
       <ModalBottom>
         <button onClick={this.props.toggleModalShown} type="button"

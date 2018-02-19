@@ -65,7 +65,14 @@ export const en: Language = {
       }
     },
     articleList: {
-      loading: "Loading..."
+      loading: "Loading...",
+      tags: "Tags",
+      createTime: "Create time",
+      lastEditedTime: "Last edited time",
+      likeCount: "Likes",
+      commentCount: "Comments",
+      author: "Author",
+      dateFormat: "YYYY/M/D HH:mm:ss ZZ"
     }
   }
 };

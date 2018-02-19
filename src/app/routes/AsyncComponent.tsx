@@ -1,32 +1,26 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router";
+import { observer } from "mobx-react";
+import { action, observable, runInAction } from "mobx";
 
 
-interface AsyncComponentProps {
-  render: (props: RouteComponentProps<any>) => Promise<JSX.Element>,
-  props: RouteComponentProps<any>
+interface AsyncComponentProps<T> {
+  render: (props: T) => Promise<JSX.Element>,
+  props?: T,
+  componentWhenLoading?: JSX.Element | string
 }
 
-interface AsyncComponentState {
-  component: JSX.Element;
-}
+@observer
+export class AsyncComponent<T> extends React.Component<AsyncComponentProps<T>, any> {
+  @observable component: JSX.Element | string = this.props.componentWhenLoading || null;
 
-export class AsyncComponent extends React.Component<AsyncComponentProps, AsyncComponentState> {
-  constructor(props){
-    super(props);
-    this.state = {
-      component: null
-    }
-  }
-
-  async componentDidMount() {
+  @action async componentDidMount() {
     const component = await this.props.render(this.props.props);
-    this.setState({
-      component: component
+    runInAction("async component loaded", () => {
+      this.component = component;
     });
   }
 
   render() {
-    return this.state.component;
+    return this.component;
   }
 }

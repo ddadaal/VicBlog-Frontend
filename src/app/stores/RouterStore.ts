@@ -1,10 +1,14 @@
 import { History } from 'history';
 import { RouterStore as BaseRouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import {
-  aboutPageConfig, articleListPageConfig, getPage, homePageConfig, notFoundPageConfig,
+  aboutPageConfig,
+  articleListPageConfig,
+  getPage,
+  homePageConfig,
+  notFoundPageConfig,
   PageConfig
 } from "../pages";
-import {action, computed} from "mobx";
+import { action, computed } from "mobx";
 
 export class RouterStore extends BaseRouterStore {
   constructor(history?: History) {

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Modal, ModalBottom } from "../Modal";
+import { Modal } from "../Modal";
 import { inject, observer } from "mobx-react";
 import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
-import { action, computed, observable, runInAction } from "mobx";
+import { action, observable } from "mobx";
 import { RegisteringContent } from "./RegisteringContent";
 import { RegisteredContent } from "./RegisteredContent";
 import { AttentionModal } from "./AttentionModal";

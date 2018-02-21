@@ -79,4 +79,3 @@ export interface Language {
 
 export { cn } from './cn/index';
 export { en } from './en/index';
-export { LocaleMessage } from './LocaleMessage';

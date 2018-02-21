@@ -1,6 +1,5 @@
 import * as React from "react";
 import style from '../../components/style';
-import { PageConfig } from "../index";
 import { ArticleList } from "../../components/ArticleList";
 
 export class ArticleListPage extends React.Component<any, any> {

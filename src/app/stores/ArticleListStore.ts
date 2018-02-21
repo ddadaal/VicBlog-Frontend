@@ -1,4 +1,4 @@
-import { action, computed, isObservableArray, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { ArticleBrief } from "../models/Article";
 
 export enum ArticleListFetchState {

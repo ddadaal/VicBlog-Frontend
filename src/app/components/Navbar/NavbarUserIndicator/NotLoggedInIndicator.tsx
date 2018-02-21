@@ -1,8 +1,8 @@
 import * as React from "react";
-import { observer, inject } from "mobx-react";
-import { STORE_LOCALE, STORE_USER } from "../../../constants/stores";
-import { LocaleStore, UserStore } from "../../../stores";
-import { LocaleMessage } from "../../../internationalization";
+import { inject, observer } from "mobx-react";
+import { STORE_USER } from "../../../constants/stores";
+import { UserStore } from "../../../stores";
+import { LocaleMessage } from "../../Common/Locale";
 
 export interface NotLoggedInIndicatorProps {
   [STORE_USER]?: UserStore,

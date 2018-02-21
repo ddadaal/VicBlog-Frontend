@@ -1,4 +1,4 @@
-import {Route, Switch} from "react-router";
+import { Route, Switch } from "react-router";
 import * as React from "react";
 import { pageConfigs } from '../pages';
 import { AsyncComponent } from "./AsyncComponent";

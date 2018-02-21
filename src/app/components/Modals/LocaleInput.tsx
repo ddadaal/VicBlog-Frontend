@@ -1,9 +1,9 @@
 import * as React from "react";
+import { ChangeEventHandler } from "react";
 import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
 import { action } from "mobx";
 import { LocaleStore } from "../../stores";
-import { ChangeEventHandler } from "react";
 
 interface LocaleInputProps {
   className: string,

@@ -4,7 +4,6 @@ import { createBrowserHistory } from 'history';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router';
-import { BlogApp } from './root';
 import { LocaleStore, RouterStore, UserStore } from './stores';
 import { STORE_ARTICLE_LIST, STORE_LOCALE, STORE_ROUTER, STORE_USER } from './constants/stores';
 import { switches } from "./routes/routes";

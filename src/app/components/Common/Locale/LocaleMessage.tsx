@@ -1,13 +1,14 @@
-import { STORE_LOCALE } from "../constants/stores";
-import { LocaleStore } from "../stores";
-import * as React from "react";
+import { STORE_LOCALE } from "../../../constants/stores";
+import { LocaleStore } from "../../../stores";
+import { ComponentChildrenType } from "../../../stores/LocaleStore";
 import { inject, observer } from "mobx-react";
-import { ComponentChildrenType } from "../stores/LocaleStore"
+import * as React from "react";
+
 
 interface LocaleMessageProps {
   [STORE_LOCALE]?: LocaleStore,
   id: string,
-  replacements?: {[s:string] : ComponentChildrenType }
+  replacements?: {[id:string] : ComponentChildrenType }
 
 }
 

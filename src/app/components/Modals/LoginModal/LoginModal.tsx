@@ -4,12 +4,12 @@ import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
-import { LocaleMessage } from "../../../internationalization";
 import { LocaleInput } from "../LocaleInput";
 import { Modal, ModalBottom } from "../Modal";
 import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
-import { Checkbox } from "../Checkbox";
+import { Checkbox } from "../../Common/Checkbox";
+import { LocaleMessage } from "../../Common/Locale";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,

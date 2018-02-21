@@ -1,7 +1,7 @@
-import { LocaleMessage } from "../../../internationalization";
 import * as React from "react";
 import { AlertPanel } from "../AlertPanel";
 import { LoginError, LoginErrorType, LoginNetworkError, LoginServerError } from "./LoginStore";
+import { LocaleMessage } from "../../Common/Locale";
 
 interface LoginAlertPanelProps {
   error: LoginError,

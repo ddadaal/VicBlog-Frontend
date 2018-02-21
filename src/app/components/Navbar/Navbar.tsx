@@ -1,23 +1,17 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import { STORE_LOCALE, STORE_ROUTER, STORE_USER } from "../../constants/stores";
-import { LocaleStore, RouterStore } from "../../stores";
-import { UserStore } from "../../stores";
-import { LoggedInIndicator, NotLoggedInIndicator } from "./NavbarUserIndicator";
+import { STORE_ROUTER } from "../../constants/stores";
+import { RouterStore } from "../../stores";
 import * as classNames from "classnames";
 import style from '../style';
 import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
 import * as localStyle from './style.css';
-import { LoginModal } from "../Modals/LoginModal";
-import { LocaleMessage } from "../../internationalization";
-import { RegisterModal } from "../Modals/RegisterModal";
 import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } from "../../pages";
+import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
+import { AsyncComponent } from "../../routes/AsyncComponent";
+import { LocaleMessage } from "../Common/Locale";
 
-export interface HeaderContainerProps {
-  [STORE_ROUTER]?: RouterStore,
-  [STORE_USER]? : UserStore
-}
 
 interface NavbarLinkItemProps {
   [STORE_ROUTER]?: RouterStore,
@@ -51,24 +45,17 @@ class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
   }
 }
 
-@inject(STORE_USER)
+
 @observer
-export class Navbar extends React.Component<HeaderContainerProps, any> {
+export class Navbar extends React.Component<any, any> {
 
   @observable collapsed = false;
   @observable sticky = false;
-
-  private dom;
+  dom: Element;
 
   get stickyApplicable() {
     return !!window && this.dom;
   }
-
-  renderUserIndicator = (notLoggedinStyle: string, loginStyle: string) => {
-    return this.props[STORE_USER].loggedIn
-      ? <LoggedInIndicator className={loginStyle}/>
-      : <NotLoggedInIndicator className={notLoggedinStyle}/>;
-  };
 
   @action handleScroll = () => {
     if (this.stickyApplicable) {
@@ -93,22 +80,29 @@ export class Navbar extends React.Component<HeaderContainerProps, any> {
     this.collapsed = !this.collapsed;
   };
 
-  render() {
-    const user = this.props[STORE_USER];
+  renderModalsAsync = async () => {
+    const Modals = (await import("./NavbarModals")).NavbarModals;
+    return <Modals/>;
+  };
 
-    return <div ref={dom => this.dom = dom}>
-      { user.loginModalShown ? <LoginModal/> : null}
-      { user.registerModalShown ? <RegisterModal/> : null}
+  ref = (dom) => {
+    this.dom = dom;
+  };
+
+
+  render() {
+    return <div ref={this.ref}>
+      <AsyncComponent componentWhenLoading={"Loading..."} render={this.renderModalsAsync}/>
+
       <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
-        <LanguageSelector className={style("w3-dropdown-hover")}/>
+        <LanguageSelector sticky={this.sticky} navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>
         <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={true}/>
         <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={true}/>
         <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={true}/>
 
-        {this.renderUserIndicator(
-          style("w3-bar-item","w3-button","w3-hide-small","w3-right"),
-          style("w3-dropdown-hover","w3-right","w3-hide-small")
-        )}
+        <UserIndicator notLoggedInStyle={style("w3-bar-item","w3-button","w3-hide-small","w3-right")}
+                       loggedInStyle={style("w3-dropdown-hover","w3-right","w3-hide-small")}/>
+
         <a className={style("w3-bar-item","w3-button","w3-right","w3-hide-large","w3-hide-medium")}
            onClick={this.toggleCollapse}>&#9776;</a>
       </div>
@@ -117,10 +111,7 @@ export class Navbar extends React.Component<HeaderContainerProps, any> {
         <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={false}/>
         <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={false}/>
         <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={false}/>
-        {this.renderUserIndicator(
-          style("w3-bar-item","w3-button"),
-          style("w3-dropdown-hover")
-        )}
+        <UserIndicator notLoggedInStyle={style("w3-bar-item","w3-button")} loggedInStyle={style("w3-dropdown-hover")}/>
       </div>) : null}
     </div>;
   }

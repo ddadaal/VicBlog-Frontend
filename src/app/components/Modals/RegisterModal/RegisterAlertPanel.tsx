@@ -1,7 +1,7 @@
-import { LocaleMessage } from "../../../internationalization";
 import * as React from "react";
 import { AlertPanel } from "../AlertPanel";
 import { RegisterError, RegisterErrorType, RegisterServerError } from "./RegisterStore";
+import { LocaleMessage } from "../../Common/Locale";
 
 interface RegisterAlertPanelProps {
   error: RegisterError,

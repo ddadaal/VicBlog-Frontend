@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { LoginResult } from "../../../stores/UserStore";
 import style from "../../style";
-import { LocaleMessage } from "../../../internationalization";
 import { ModalBottom } from "../Modal";
-import { Checkbox } from "../Checkbox";
+import { Checkbox } from "../../Common/Checkbox";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
+import { LocaleMessage } from "../../Common/Locale";
 
 interface RegisteredContentProps {
   toggleModalShown: () => void,

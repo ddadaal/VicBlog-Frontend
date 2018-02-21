@@ -1,16 +1,13 @@
-import { RegisterError, RegisterState, RegisterStore,
-} from "./RegisterStore";
+import { RegisterError, RegisterState, RegisterStore, } from "./RegisterStore";
 import style from "../../style";
-import { STORE_USER } from "../../../constants/stores";
 import * as React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
 import { LocaleInput } from "../LocaleInput";
 import { ModalBottom } from "../Modal";
-import { LocaleMessage } from "../../../internationalization";
-import { UserStore } from "../../../stores";
 import { LoginResult } from "../../../stores/UserStore";
+import { LocaleMessage } from "../../Common/Locale";
 
 export interface RegisteringContentProps {
   onRegisterSuccess: (result: LoginResult) => void,

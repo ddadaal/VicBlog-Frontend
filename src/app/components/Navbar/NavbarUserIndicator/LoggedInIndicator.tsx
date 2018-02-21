@@ -1,10 +1,9 @@
 import * as React from "react";
 import style from '../../style';
 import { inject, observer } from "mobx-react";
-import { STORE_LOCALE, STORE_USER } from "../../../constants/stores";
-import { LocaleStore, UserStore } from "../../../stores";
-import * as classNames from 'classnames';
-import { LocaleMessage } from "../../../internationalization";
+import { STORE_USER } from "../../../constants/stores";
+import { UserStore } from "../../../stores";
+import { LocaleMessage } from "../../Common/Locale";
 
 export interface LoggedInIndicatorProps {
   [STORE_USER]? :UserStore,

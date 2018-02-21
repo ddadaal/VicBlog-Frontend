@@ -1,5 +1,4 @@
 import * as React from "react";
-import { PageConfig } from "../index";
 
 interface ArticlePageProps {
   articleId: number

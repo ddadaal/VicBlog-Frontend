@@ -1,8 +1,7 @@
-import { cn, en, Language } from "../internationalization";
+import { Language } from "../internationalization";
 import { action, computed, observable } from "mobx";
 import * as React from "react";
 import { cloneElement } from "react";
-import { STORE_LOCALE } from "../constants/stores";
 
 export type ComponentChildrenType = string | JSX.Element;
 

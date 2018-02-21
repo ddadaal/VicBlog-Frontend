@@ -2,10 +2,10 @@ import * as React from "react";
 import { ArticleBrief } from "../../../models/Article";
 import style from '../../style';
 import { inject, observer } from "mobx-react";
-import { LocaleMessage } from "../../../internationalization";
 import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
-import { LocaleDate } from "../../../internationalization/LocaleDate";
+import { LocaleDate } from "../../Common/Locale";
+import { LocaleMessage } from "../../Common/Locale";
 
 interface ArticleListItemProps {
   brief: ArticleBrief,
@@ -34,10 +34,10 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
     const { brief } = this.props;
 
     return <div>
-      <h2 onClick={this.jumpTo}>{brief.title}</h2>
+      <h2><a style={{ cursor: "pointer" }} onClick={this.jumpTo}>{brief.title}</a></h2>
       <p>
         {brief.tags.map(x =>
-          <Tag text={x}/>
+          <Tag key={x} text={x}/>
         )}
       </p>
       <p>

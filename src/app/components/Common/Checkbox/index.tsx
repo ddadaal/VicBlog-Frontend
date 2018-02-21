@@ -1,8 +1,5 @@
 import * as React from "react";
-import style from '../style';
-import { inject, observer } from "mobx-react";
-import { LocaleMessage } from "../../internationalization";
-import { action, observable } from "mobx";
+import style from '../../style/index';
 
 interface CheckboxProps {
   checked: boolean,

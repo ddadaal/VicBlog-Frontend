@@ -106,13 +106,12 @@ export class Navbar extends React.Component<any, any> {
         <a className={style("w3-bar-item","w3-button","w3-right","w3-hide-large","w3-hide-medium")}
            onClick={this.toggleCollapse}>&#9776;</a>
       </div>
-      { this.collapsed ? (
-      <div className={style("w3-bar-block","w3-blue","w3-hide-large","w3-hide-medium")}>
+      <div className={style("w3-bar-block","w3-blue","w3-hide-large","w3-hide-medium")} style={{display: this.collapsed ? "block" : "none"}}>
         <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={false}/>
         <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={false}/>
         <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={false}/>
         <UserIndicator notLoggedInStyle={style("w3-bar-item","w3-button")} loggedInStyle={style("w3-dropdown-hover")}/>
-      </div>) : null}
+      </div>
     </div>;
   }
 }

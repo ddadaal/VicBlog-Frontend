@@ -72,7 +72,7 @@ export const cn: Language = {
       likeCount: "喜欢数",
       commentCount: "评论数",
       author: "作者",
-      dateFormat: "YYYY/M/D HH:mm:ss ZZ"
+      dateFormat: "YYYY[年]M[月]D[日] HH:mm:ss ZZ"
     }
   }
 };

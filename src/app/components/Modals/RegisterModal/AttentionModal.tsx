@@ -15,16 +15,13 @@ import {
 } from "../../../constants/configs/registerAttentionLanguageSettings";
 
 
-
 const MarkdownIt = require("markdown-it");
-
 
 
 interface TermsModalProps {
   [STORE_LOCALE]?: LocaleStore,
   toggleModalShown: () => void
 }
-
 
 
 function getLanguage(id: string) {
@@ -46,8 +43,12 @@ export class AttentionModalContent extends React.Component<AttentionModalContent
     return <div className={style("w3-container")} dangerouslySetInnerHTML={{__html: content}}/>;
   };
 
+  componentWhenLoading = <div className={style("w3-container")}>Loading...</div>;
+
   render() {
-    return <AsyncComponent key={this.props.language.id} render={this.load} componentWhenLoading={"Loading..."}/>
+
+    return <AsyncComponent key={this.props.language.id} render={this.load}
+                           componentWhenLoading={this.componentWhenLoading}/>
   };
 }
 
@@ -73,9 +74,7 @@ export class AttentionModal extends React.Component<TermsModalProps, any> {
   render() {
     const dropdownButton = <button className={style("w3-button")}>{this.selectedLanguage.name}</button>;
 
-    return <Modal shown={true}
-                  titleId={"registerModal.registerAttention.title"}
-                  toggleShown={this.props.toggleModalShown}>
+    return <Modal titleId={"registerModal.registerAttention.title"} toggleShown={this.props.toggleModalShown}>
       <AttentionModalContent language={this.selectedLanguage}/>
       <ModalBottom>
         <Dropdown entry={dropdownButton}>
@@ -86,6 +85,6 @@ export class AttentionModal extends React.Component<TermsModalProps, any> {
           <LocaleMessage id={"registerModal.registerAttention.acknowledged"}/>
         </button>
       </ModalBottom>
-  </Modal>;
+    </Modal>;
   }
 }

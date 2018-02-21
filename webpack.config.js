@@ -79,7 +79,7 @@ module.exports = {
   },
   output: {
     path: outPath,
-    filename: 'entry.bundle.[hash:5].js',
+    filename: 'index.bundle.[hash:5].js',
     chunkFilename: '[name].bundle.[hash:5].js',
     publicPath: '/'
   },

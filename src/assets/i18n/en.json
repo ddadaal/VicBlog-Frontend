@@ -4,6 +4,7 @@
     "about": "About",
     "articleList": "Articles",
     "blogBrief": "VicBlog - A Personal Blog",
+    "languageSwitchingTo": "Loading...",
     "navbarLogin": {
       "notLoggedInPrompt": "Login",
       "loggedInPrompt": "Welcome, {username}",
@@ -14,7 +15,8 @@
   "footer": {
     "codeProudlyByVicCrubs": "Coded Proudly by {viccrubs}",
     "themedWith": "Themed with {w3css} and {fabric}",
-    "frontend": "Frontend build {build}. Built at {buildTime}. Deployed on {frontendDeployment}."
+    "frontend": "Frontend build {build}. Built at {buildTime}. Deployed on {frontendDeployment}.",
+    "dateFormat": "YYYY/M/D HH:mm:ss ZZ"
   },
   "loginModal": {
     "title": "Login",
@@ -65,6 +67,14 @@
     "likeCount": "Likes",
     "commentCount": "Comments",
     "author": "Author",
-    "dateFormat": "YYYY/M/D HH:mm:ss ZZ"
+    "dateFormat": "YYYY/M/D HH:mm:ss ZZ",
+    "filter": {
+      "title": "Filter",
+      "textsInTitle": "Texts in title",
+      "tags": "Tags",
+      "createTimeRange": "Create time range",
+      "lastEditTimeRange": "Last edited time range",
+      "minLikes": "Minimum like count"
+    }
   }
 }

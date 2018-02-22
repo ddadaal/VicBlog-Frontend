@@ -4,6 +4,7 @@
     "about": "关于",
     "articleList": "文章列表",
     "blogBrief": "VicBlog - 一个个人博客",
+    "languageSwitchingTo": "加载中...",
     "navbarLogin": {
       "notLoggedInPrompt": "登录",
       "loggedInPrompt": "欢迎，{username}",
@@ -14,7 +15,8 @@
   "footer": {
     "codeProudlyByVicCrubs": "由 {viccrubs} 强力编写",
     "themedWith": "由 {w3css} 和 {fabric} 强势驱动",
-    "frontend": "前端版本 {build}. 构建于 {buildTime}. 部署于 {frontendDeployment}."
+    "frontend": "前端版本 {build}. 构建于 {buildTime}. 部署于 {frontendDeployment}.",
+    "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ"
   },
   "loginModal": {
     "title": "登录",
@@ -65,6 +67,14 @@
     "likeCount": "喜欢数",
     "commentCount": "评论数",
     "author": "作者",
-    "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ"
+    "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ",
+    "filter": {
+      "title": "筛选",
+      "textsInTitle": "标题包含文字",
+      "tags": "标签",
+      "createTimeRange": "创建时间范围",
+      "lastEditTimeRange": "最后更新时间范围",
+      "minLikes": "最少赞"
+    }
   }
 }

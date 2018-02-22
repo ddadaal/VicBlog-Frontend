@@ -42,11 +42,11 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
       </p>
       <p>
         <PHeader id={"articleList.createTime"}/>
-        <LocaleDate formatId={"articleList.dateFormat"} timestamp={brief.createTime}/>
+        <LocaleDate formatId={"articleList.dateFormat"} input={brief.createTime}/>
       </p>
       <p>
         <PHeader id={"articleList.lastEditedTime"}/>
-        <LocaleDate formatId={"articleList.dateFormat"} timestamp={brief.lastEditedTime}/>
+        <LocaleDate formatId={"articleList.dateFormat"} input={brief.lastEditedTime}/>
       </p>
       <p>
         <PHeader id={"articleList.likeCount"}/>

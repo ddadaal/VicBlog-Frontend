@@ -12,6 +12,7 @@ const blogConfig = require("./blog.config");
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const buildTime = moment();
 
 const basePlugins = [
   new webpack.LoaderOptionsPlugin({
@@ -38,8 +39,8 @@ const basePlugins = [
     filename: '404.html'
   }),
   new webpack.DefinePlugin({
-    FRONT_END_BUILD: JSON.stringify(moment().format(blogConfig.buildFormat)),
-    FRONT_END_BUILD_TIME: JSON.stringify(moment().format(blogConfig.buildTimeFormat))
+    FRONT_END_BUILD: JSON.stringify(buildTime.format(blogConfig.buildFormat)),
+    FRONT_END_BUILD_TIME: JSON.stringify(buildTime.format())
   })
 ];
 

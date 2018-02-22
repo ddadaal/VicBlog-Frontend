@@ -32,9 +32,11 @@ class LanguageSelectorItem extends React.Component<LanguageSelectorItemProps, an
   render() {
     const { language } = this.props;
     const locale = this.props[STORE_LOCALE];
+    const current = language.id === locale.currentLanguage.id;
+    const beingSwitchedTo = this.props.switchingTo;
     return <a key={language.id} onClick={() => this.props.switchTo(language.id)}
        className={style("w3-bar-item", "w3-button")}>
-      {language.name}{language.id === locale.currentLanguage.id ? " (✔)" : ""}{this.props.switchingTo ? "(loading...)":""}
+      {language.name}{current ? " (✔)" : ""}{beingSwitchedTo ? `(${locale.get("header.languageSwitchingTo")}...)`:""}
     </a>;
   }
 }

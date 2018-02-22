@@ -1,0 +1,20 @@
+.left {
+    order: 1
+}
+
+.right {
+    order: 2
+}
+
+.container {
+
+}
+
+@media (max-width: 601px) {
+    .left { order: 2}
+    .right { order: 1}
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}

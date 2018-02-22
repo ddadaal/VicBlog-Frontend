@@ -35,7 +35,7 @@ const history = createBrowserHistory();
 const routerStore = new RouterStore(history);
 
 async function resetStore() {
-  const fallbackLanguage = cn.id;
+  const fallbackLanguage = en.id;
   const userLanguage = window ? window.navigator.language : en.id;
   const userStore = new UserStore();
   const articleListStore = new ArticleListStore();

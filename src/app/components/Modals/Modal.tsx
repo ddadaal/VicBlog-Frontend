@@ -11,7 +11,8 @@ interface ModalProps {
 export class Modal extends React.Component<ModalProps, any> {
 
   render() {
-    const show = this.props.shown || true;
+    const show = this.props.shown === undefined ? true : this.props.shown;
+
     return <div className={style("w3-modal")} style={{display: show ? "block" : "none"}}>
       <div className={style("w3-modal-content", "w3-card-4", "w3-animate-zoom")} style={{maxWidth: "600px"}}>
         <div className={style("w3-center","w3-container")}>

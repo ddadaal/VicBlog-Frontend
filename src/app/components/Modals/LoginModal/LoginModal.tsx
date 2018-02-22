@@ -4,7 +4,7 @@ import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
-import { LocaleInput } from "../LocaleInput";
+import { FormInput } from "../FormInput";
 import { Modal, ModalBottom } from "../Modal";
 import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
@@ -125,7 +125,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
       <form className={style("w3-container")}>
         <div className={style("w3-section")}>
-          <LocaleInput className={style("w3-input", "w3-border", "w3-margin-bottom")}
+          <FormInput className={style("w3-input", "w3-border", "w3-margin-bottom")}
                        type={"text"}
                        placeholderTextId={"loginModal.pleaseInputUsername"}
                        labelTextId={"loginModal.username"}
@@ -135,7 +135,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
                        value={this.username}
           />
 
-          <LocaleInput className={style("w3-input", "w3-border")}
+          <FormInput className={style("w3-input", "w3-border")}
                        type={"password"}
                        placeholderTextId={"loginModal.pleaseInputPassword"}
                        labelTextId={"loginModal.password"}

@@ -4,8 +4,10 @@ import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
 import { action } from "mobx";
 import { LocaleStore } from "../../stores";
+import { LocaleInput } from "../Common/Locale/LocaleInput";
+import { LocaleMessage } from "../Common/Locale";
 
-interface LocaleInputProps {
+interface FormInputProps {
   className: string,
   type: string,
   placeholderTextId: string,
@@ -17,9 +19,7 @@ interface LocaleInputProps {
   [STORE_LOCALE]?: LocaleStore
 }
 
-@inject(STORE_LOCALE)
-@observer
-export class LocaleInput extends React.Component<LocaleInputProps, any> {
+export class FormInput extends React.Component<FormInputProps, any> {
   @action handleChange = (e) => {
     if (this.props.onChange) {
       this.props.onChange(e);
@@ -27,17 +27,17 @@ export class LocaleInput extends React.Component<LocaleInputProps, any> {
   };
 
   render() {
-    const locale = this.props[STORE_LOCALE];
     return <div>
       <label>
         <b>
-          {locale.get(this.props.labelTextId)}
+          <LocaleMessage id={this.props.labelTextId}/>
           &emsp;
-          { this.props.invalid ? locale.get(this.props.invalidPromptId) : null }
+          { this.props.invalid ? <LocaleMessage id={this.props.invalidPromptId}/> : null }
         </b>
       </label>
-      <input className={this.props.className} type={this.props.type} value={this.props.value}
-             placeholder={locale.get(this.props.placeholderTextId) as string}
+      <LocaleInput className={this.props.className} type={this.props.type}
+                   value={this.props.value}
+             placeholderTextId={this.props.placeholderTextId}
              onChange={this.handleChange} />
     </div>
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 import style from '../style';
-import { STORE_ROUTER } from "../../constants/stores";
+import { STORE_LOCALE, STORE_ROUTER } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
-import { RouterStore } from "../../stores";
+import { LocaleStore, RouterStore } from "../../stores";
 import { FaGithub } from 'react-icons/lib/fa';
-import { LocaleMessage } from "../Common/Locale";
+import { LocaleDate, LocaleMessage } from "../Common/Locale";
 
 declare var FRONT_END_BUILD: string;
 declare var FRONT_END_BUILD_TIME: string;
@@ -41,7 +41,7 @@ export class Footer extends React.Component<FooterProps, any> {
         <p>
         <LocaleMessage id={"footer.frontend"} replacements={{
           build: FRONT_END_BUILD,
-          buildTime: FRONT_END_BUILD_TIME,
+          buildTime: <LocaleDate formatId={"footer.dateFormat"} input={FRONT_END_BUILD_TIME}/>,
           frontendDeployment: <a href={githubPages}>GitHub Pages</a>
         }}/>
         </p>

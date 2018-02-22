@@ -4,6 +4,7 @@ export type LanguageDefinition = {
     about: string,
     blogBrief: string,
     articleList: string,
+    languageSwitchingTo: string,
     navbarLogin: {
       notLoggedInPrompt: string,
       loggedInPrompt: string,
@@ -15,6 +16,7 @@ export type LanguageDefinition = {
     codeProudlyByVicCrubs: string,
     themedWith: string,
     frontend: string,
+    dateFormat: string
   },
   loginModal: {
     title: string,
@@ -65,7 +67,14 @@ export type LanguageDefinition = {
     likeCount: string,
     commentCount: string,
     author: string,
-    dateFormat: string
+    dateFormat: string,
+    filter: {
+      title: string,
+      textsInTitle: string,
+      tags: string,
+      createTimeRange: string,
+      minLikes: string
+    }
   }
 }
 

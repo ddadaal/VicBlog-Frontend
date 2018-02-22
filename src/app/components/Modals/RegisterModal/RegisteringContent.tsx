@@ -4,7 +4,7 @@ import * as React from "react";
 import { observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
-import { LocaleInput } from "../LocaleInput";
+import { FormInput } from "../FormInput";
 import { ModalBottom } from "../Modal";
 import { LoginResult } from "../../../stores/UserStore";
 import { LocaleMessage } from "../../Common/Locale";
@@ -85,7 +85,7 @@ export class RegisteringContent extends React.Component<RegisteringContentProps,
 
       <form className={style("w3-container")}>
         <div className={style("w3-section")}>
-          <LocaleInput className={style("w3-input", "w3-border", "w3-margin-bottom")}
+          <FormInput className={style("w3-input", "w3-border", "w3-margin-bottom")}
                        type={"text"}
                        placeholderTextId={"registerModal.pleaseInputUsername"}
                        labelTextId={"registerModal.username"}
@@ -95,7 +95,7 @@ export class RegisteringContent extends React.Component<RegisteringContentProps,
                        value={this.username}
           />
 
-          <LocaleInput className={style("w3-input", "w3-border")}
+          <FormInput className={style("w3-input", "w3-border")}
                        type={"password"}
                        placeholderTextId={"registerModal.pleaseInputPassword"}
                        labelTextId={"registerModal.password"}

@@ -1,4 +1,4 @@
-type LanguageDefinition = {
+export type LanguageDefinition = {
   header: {
     home: string,
     about: string,
@@ -73,7 +73,7 @@ export interface Language {
   id: string,
   name: string,
   languagePrompt: string,
-  definitions: LanguageDefinition
+  definitionName: string
 }
 
 

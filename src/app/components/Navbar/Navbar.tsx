@@ -92,7 +92,7 @@ export class Navbar extends React.Component<any, any> {
 
   render() {
     return <div ref={this.ref}>
-      <AsyncComponent componentWhenLoading={"Loading..."} render={this.renderModalsAsync}/>
+      <AsyncComponent render={this.renderModalsAsync}/>
 
       <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
         <LanguageSelector sticky={this.sticky} navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>

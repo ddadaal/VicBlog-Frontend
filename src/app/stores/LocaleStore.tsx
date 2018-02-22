@@ -1,17 +1,19 @@
-import { Language } from "../internationalization";
-import { action, computed, observable } from "mobx";
+import { Language, LanguageDefinition } from "../internationalization";
+import { action, computed, observable, runInAction } from "mobx";
 import * as React from "react";
-import { cloneElement } from "react";
-
-export type ComponentChildrenType = string | JSX.Element;
+import { cloneElement, ReactNode } from "react";
 
 const idSeparator = '.';
 
-export class LocaleStore {
-  private availableLanguages: Map<string ,Language>;
+type LoadedLanguage = Language & { definitions: LanguageDefinition }
 
-  @observable currentLanguage: Language;
-  @observable fallbackLanguage: Language;
+export class LocaleStore {
+  private availableLanguages: Map<string, Language>;
+  private loadedLanguages: Map<string, LoadedLanguage>;
+
+  @observable.ref currentLanguage: LoadedLanguage;
+
+  fallbackLanguage: LoadedLanguage;
 
   @computed get definitions() {
     return this.currentLanguage.definitions;
@@ -22,31 +24,56 @@ export class LocaleStore {
     return Array.from(this.availableLanguages.values());
   }
 
+  loadLanguage = async (id: string): Promise<LoadedLanguage> => {
 
-  constructor(availableLanguages: Language[], defaultLanguageId : string, fallbackLanguageId: string) {
-    this.availableLanguages = new Map();
+    if (!this.availableLanguages.has(id)) {
+      return this.fallbackLanguage;
+    }
+    if (this.loadedLanguages.has(id)) {
+      return this.loadedLanguages.get(id);
+    }
+    const l = this.availableLanguages.get(id);
+    const definitions = await import(`../../assets/i18n/${l.definitionName}.json`);
+    const loaded = { ...l, definitions: definitions};
+    this.loadedLanguages.set(l.id, loaded);
+    return loaded;
+  };
+
+  public static async init(availableLanguages: Language[], defaultLanguageId : string, fallbackLanguageId: string) {
+    const store = new LocaleStore();
+
+    store.availableLanguages = new Map();
+    store.loadedLanguages = new Map();
+
     for (const l of availableLanguages) {
-      this.availableLanguages.set(l.id, l);
+      store.availableLanguages.set(l.id, l);
     }
 
+    store.fallbackLanguage = await store.loadLanguage(fallbackLanguageId);
 
-    this.fallbackLanguage = this.availableLanguages.get(fallbackLanguageId);
+    store.currentLanguage = await store.loadLanguage(defaultLanguageId);
 
-    this.currentLanguage = this.availableLanguages.has(defaultLanguageId)
-      ? this.availableLanguages.get(defaultLanguageId)
-      : this.fallbackLanguage;
+    return runInAction("language initialization complete", () =>{
+      return store;
+    });
 
   }
 
-  public get = (id: string, replacements?: {[s: string]: ComponentChildrenType}) : Array<ComponentChildrenType> | string => {
+
+  private constructor() {
+
+  }
+
+
+  public get = (id: string, replacements?: {[s: string]: ReactNode}) : Array<ReactNode> | string => {
     const definition = this.retrieveDefinition(id);
     return this.format(definition, replacements);
   };
 
-  format = (content: string, replacements?: {[s: string]: ComponentChildrenType}) : Array<ComponentChildrenType> | string => {
+  format = (content: string, replacements?: {[s: string]: ReactNode}) : Array<ReactNode> | string => {
     const splitter = /({[0-9a-zA-Z]+})/;
     let array = content.split(splitter);
-    let newArray = array as Array<ComponentChildrenType>;
+    let newArray = array as Array<ReactNode>;
     let elementReplaced = false;
     if (replacements) {
       for (let i =1;i<array.length;i+=2) {
@@ -91,7 +118,11 @@ export class LocaleStore {
   };
 
 
-  @action public changeLanguage = (id: string) => {
-    this.currentLanguage = this.availableLanguages.get(id);
+  @action public changeLanguage = async (id: string) => {
+    const newLanguage = await this.loadLanguage(id);
+    runInAction(`Language ${newLanguage.name} selected and loaded.`, () => {
+      this.currentLanguage = newLanguage;
+    });
+
   };
 }

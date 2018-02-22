@@ -34,13 +34,12 @@ function render() {
 const history = createBrowserHistory();
 const routerStore = new RouterStore(history);
 
-function resetStore() {
-  const fallbackLanguage = en.id;
+async function resetStore() {
+  const fallbackLanguage = cn.id;
   const userLanguage = window ? window.navigator.language : en.id;
-
-  const localeStore = new LocaleStore([en, cn], userLanguage, fallbackLanguage);
   const userStore = new UserStore();
   const articleListStore = new ArticleListStore();
+  const localeStore = await LocaleStore.init([en, cn], userLanguage, fallbackLanguage);
 
   stores = {
     [STORE_ROUTER]: routerStore,
@@ -51,13 +50,5 @@ function resetStore() {
 }
 // prepare MobX stores
 
-resetStore();
-render();
-
-if (module.hot) {
-  module.hot.accept(["./stores"], () =>{
-    resetStore();
-  });
-  module.hot.accept();
-}
+resetStore().then(render);
 

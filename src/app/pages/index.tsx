@@ -22,7 +22,7 @@ export const notFoundPageConfig: PageConfig =  {
 export const articlePageConfig: PageConfig = {
   path: "/articles/:id",
   render: async (props) => {
-    const ArticlePage = (await import("./Article")).ArticlePage;
+    const ArticlePage = (await import("./ArticlePage")).ArticlePage;
     return <ArticlePage articleId={props.match.params.id}/>;
   },
   isThisPage(pathname: string): boolean {

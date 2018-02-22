@@ -5,10 +5,11 @@ import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router';
 import { LocaleStore, RouterStore, UserStore } from './stores';
-import { STORE_ARTICLE_LIST, STORE_LOCALE, STORE_ROUTER, STORE_USER } from './constants/stores';
+import { STORE_ARTICLE, STORE_ARTICLE_LIST, STORE_LOCALE, STORE_ROUTER, STORE_USER } from './constants/stores';
 import { switches } from "./routes/routes";
 import { cn, en } from "./internationalization";
 import { ArticleListStore } from "./stores/ArticleListStore";
+import { ArticleStore } from "./stores/ArticleStore";
 
 // enable MobX strict mode
 useStrict(true);
@@ -39,13 +40,15 @@ async function resetStore() {
   const userLanguage = window ? window.navigator.language : en.id;
   const userStore = new UserStore();
   const articleListStore = new ArticleListStore();
+  const articleStore = new ArticleStore();
   const localeStore = await LocaleStore.init([en, cn], userLanguage, fallbackLanguage);
 
   stores = {
     [STORE_ROUTER]: routerStore,
     [STORE_LOCALE]: localeStore,
     [STORE_USER]: userStore,
-    [STORE_ARTICLE_LIST]: articleListStore
+    [STORE_ARTICLE_LIST]: articleListStore,
+    [STORE_ARTICLE]: articleStore
   };
 }
 // prepare MobX stores

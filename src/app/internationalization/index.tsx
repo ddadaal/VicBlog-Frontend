@@ -75,6 +75,16 @@ export type LanguageDefinition = {
       createTimeRange: string,
       minLikes: string
     }
+  },
+  article: {
+    loading: string,
+    dateFormat: string,
+    tags: string,
+    createTime: string,
+    lastEditedTime: string,
+    likeCount: string,
+    commentCount: string,
+    author: string,
   }
 }
 

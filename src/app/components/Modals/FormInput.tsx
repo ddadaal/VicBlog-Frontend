@@ -4,8 +4,8 @@ import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
 import { action } from "mobx";
 import { LocaleStore } from "../../stores";
-import { LocaleInput } from "../Common/Locale/LocaleInput";
 import { LocaleMessage } from "../Common/Locale";
+import { Localize } from "../Common/Locale/Localize";
 
 interface FormInputProps {
   className: string,
@@ -35,10 +35,10 @@ export class FormInput extends React.Component<FormInputProps, any> {
           { this.props.invalid ? <LocaleMessage id={this.props.invalidPromptId}/> : null }
         </b>
       </label>
-      <LocaleInput className={this.props.className} type={this.props.type}
-                   value={this.props.value}
-             placeholderTextId={this.props.placeholderTextId}
-             onChange={this.handleChange} />
+      <Localize placeholder={this.props.placeholderTextId}>
+        {(props) => <input className={this.props.className} type={this.props.type}
+               value={this.props.value} onChange={this.handleChange} {...props}/>}
+      </Localize>
     </div>
 
   }

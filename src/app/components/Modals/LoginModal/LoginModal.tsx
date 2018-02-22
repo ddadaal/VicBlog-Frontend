@@ -10,6 +10,7 @@ import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
 import { Checkbox } from "../../Common/Checkbox";
 import { LocaleMessage } from "../../Common/Locale";
+import { Localize } from "../../Common/Locale/Localize";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
@@ -134,7 +135,6 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
                        onChange={this.handleUsernameChange}
                        value={this.username}
           />
-
           <FormInput className={style("w3-input", "w3-border")}
                        type={"password"}
                        placeholderTextId={"loginModal.pleaseInputPassword"}

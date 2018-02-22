@@ -11,6 +11,7 @@ import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } fr
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { LocaleMessage } from "../Common/Locale";
+import { isBrowser } from "../../stores/UiStore";
 
 
 interface NavbarLinkItemProps {
@@ -54,7 +55,7 @@ export class Navbar extends React.Component<any, any> {
   dom: Element;
 
   get stickyApplicable() {
-    return !!window && this.dom;
+    return isBrowser && this.dom;
   }
 
   @action handleScroll = () => {

@@ -76,5 +76,15 @@
       "lastEditTimeRange": "Last edited time range",
       "minLikes": "Minimum like count"
     }
+  },
+  "article": {
+    "loading": "Loading...",
+    "dateFormat": "YYYY/M/D HH:mm:ss",
+    "tags": "Tags",
+    "createTime": "Create time",
+    "lastEditedTime": "Last edited time",
+    "likeCount": "Likes",
+    "commentCount": "Comments",
+    "author": "Author"
   }
 }

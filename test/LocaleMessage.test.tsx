@@ -19,7 +19,7 @@
 //       navbarLogin: {
 //         notLoggedInPrompt: "Login",
 //         loggedInPrompt: "Welcome, {username}",
-//         composeNewArticle: "Compose New Article",
+//         composeNewArticle: "Compose New ArticlePage",
 //         // logout: "Logout",
 //       },
 //     },

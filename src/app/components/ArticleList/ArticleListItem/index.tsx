@@ -6,6 +6,7 @@ import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
 import { LocaleDate } from "../../Common/Locale";
 import { LocaleMessage } from "../../Common/Locale";
+import { Tag } from "../../Common/Tag";
 
 interface ArticleListItemProps {
   brief: ArticleBrief,
@@ -16,9 +17,7 @@ function PHeader(props: {id: string}) {
   return <span style={{fontWeight: "bold"}}><LocaleMessage id={props.id}/>&emsp;</span>;
 }
 
-function Tag(props: {text: string}) {
-  return <span><span className={style("w3-tag","w3-blue")}>{props.text}</span> </span>;
-}
+
 
 @inject(STORE_ROUTER)
 @observer

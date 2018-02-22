@@ -1,11 +1,11 @@
 import * as React from "react";
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { ArticleListStore } from "../../../stores/ArticleListStore";
+import { ArticleListStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import style from '../../style';
 import { action, observable } from "mobx";
 import { LocaleMessage } from "../../Common/Locale";
-import { LocaleInput } from "../../Common/Locale/LocaleInput";
+import { Localize } from "../../Common/Locale/Localize";
 
 
 interface ArticleListFilterProps {
@@ -26,10 +26,10 @@ export class ArticleListFilter extends React.Component<ArticleListFilterProps, a
   render() {
     return <div className={style("w3-container")}>
       <h2><LocaleMessage id={"articleList.filter.title"}/></h2>
-      <LocaleInput placeholderTextId={"articleList.filter.textsInTitle"}
-                   value={this.titleText}
-                   onChange={this.onTitleInputChange} type={"text"} className={style("w3-input")}/>
-
+      <Localize placeholder={"articleList.filter.textsInTitle"}>
+        {props => <input value={this.titleText} type="text"
+               onChange={this.onTitleInputChange}  className={style("w3-input")} {...props}/>}
+      </Localize>
     </div>
   }
 }

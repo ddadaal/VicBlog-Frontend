@@ -6,7 +6,7 @@ import { UserStore } from "../../../stores";
 import { action, observable } from "mobx";
 import { RegisteringContent } from "./RegisteringContent";
 import { RegisteredContent } from "./RegisteredContent";
-import { AttentionModal } from "./AttentionModal";
+import { AttentionModal } from "../AttentionModal";
 import { LoginResult } from "../../../stores/UserStore";
 
 

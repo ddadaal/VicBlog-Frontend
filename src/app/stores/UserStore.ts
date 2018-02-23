@@ -1,7 +1,6 @@
 import { action, computed, observable } from "mobx";
 import { User, UserRole } from "../models/User";
-import { isBrowser, localStorage } from "./UiStore";
-
+import { ui } from "./UiStore";
 
 export interface LoginResult {
   token: string,
@@ -62,17 +61,17 @@ export class UserStore {
   };
 
   remember = () => {
-    localStorage.setItem("user", JSON.stringify(this.user));
+    ui.localStorage.setItem("user", JSON.stringify(this.user));
   };
 
   clearUser = () => {
-    localStorage.removeItem("user");
+    ui.localStorage.removeItem("user");
 
   };
 
   constructor(detectLocalStorage: boolean = true) {
     if (detectLocalStorage) {
-      const user = localStorage.getItem("user");
+      const user = ui.localStorage.getItem("user");
       if (user) {
         try {
           this.user = User.parse(JSON.parse(user));

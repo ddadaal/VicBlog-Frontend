@@ -26,8 +26,6 @@ export class ArticleList extends React.Component<ArticleListProps, any> {
         <h3><LocaleMessage id={"articleList.loading"}/></h3>
       </div>;
     }
-    // fetched
-    console.log("fetched");
     return <div className={style("w3-container")}>
       {articleList.list.map(x => <ArticleListItem brief={x} key={x.id}/>)}
     </div>

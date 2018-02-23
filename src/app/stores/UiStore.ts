@@ -24,14 +24,25 @@ class FakeLocalStorage implements Storage {
 
 }
 
-export const isBrowser = !!window;
+class UiController {
+  private readonly _isBrowser = !!window;
+  private _fakeLocalStorage = new FakeLocalStorage();
 
-export const localStorage = isBrowser ? window.localStorage : new FakeLocalStorage();
+  get isBrowser() {
+    return this._isBrowser;
+  }
 
-export function setDocumentTitle(title: string) {
-  if (isBrowser) {
-    document.title = title;
+  get localStorage() {
+    return this._isBrowser ? window.localStorage : this._fakeLocalStorage;
+  }
+
+  set documentTitle(value: string) {
+    if (this._isBrowser) {
+      document.title = value;
+    }
   }
 }
+
+export const ui = new UiController();
 
 

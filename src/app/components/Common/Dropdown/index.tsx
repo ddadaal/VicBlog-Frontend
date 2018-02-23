@@ -1,8 +1,9 @@
 import * as React from 'react';
 import style from '../../style';
+import { ReactNode } from "react";
 
 interface DropdownProps {
-  entry: JSX.Element,
+  entry: ReactNode,
 }
 
 export class Dropdown extends React.Component<DropdownProps, any> {

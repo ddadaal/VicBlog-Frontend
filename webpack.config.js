@@ -74,8 +74,7 @@ module.exports = {
       'react-router',
       'mobx',
       'mobx-react',
-      'mobx-react-router',
-      'office-ui-fabric-react'
+      'mobx-react-router'
     ]
   },
   output: {

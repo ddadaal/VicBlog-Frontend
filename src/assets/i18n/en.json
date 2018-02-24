@@ -86,6 +86,7 @@
     "likeCount": "Likes",
     "commentCount": "Comments",
     "author": "Author",
-    "backToTop": "Back to top"
+    "backToTop": "Back to top",
+    "toc": "Table of Contents"
   }
 }

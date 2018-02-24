@@ -85,7 +85,8 @@ export type LanguageDefinition = {
     likeCount: string,
     commentCount: string,
     author: string,
-    backToTop: string
+    backToTop: string,
+    toc: string
   }
 }
 

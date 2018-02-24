@@ -1,6 +1,5 @@
 import { Article } from "../models";
 import * as moment from 'moment';
-import * as querystring from 'querystring';
 import { APIs } from "../api/ApiDefinition";
 
 export interface FetchedArticle {

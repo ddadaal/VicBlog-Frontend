@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import style from '../../style';
-import { ReactNode } from "react";
 
 interface DropdownProps {
   entry: ReactNode,

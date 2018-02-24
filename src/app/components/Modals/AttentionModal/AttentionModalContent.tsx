@@ -2,8 +2,7 @@ import * as React from "react";
 import { LanguageSetting } from "./AttentionModalStore";
 import { AsyncComponent } from "../../../routes/AsyncComponent";
 import style from '../../style';
-
-const MarkdownIt = require("markdown-it");
+import { MarkdownDisplay } from "../../Common/MarkdownDisplay";
 
 interface AttentionModalContentProps {
   language: LanguageSetting
@@ -14,9 +13,9 @@ export class AttentionModalContent extends React.Component<AttentionModalContent
   load = async () => {
     const res = await import(`../../../../assets/registerAttention/${this.props.language.filename}.md`);
 
-    const md = new MarkdownIt();
-    const content = md.render(res);
-    return <div className={style("w3-container")} dangerouslySetInnerHTML={{__html: content}}/>;
+    return <div className={style("w3-container")}>
+      <MarkdownDisplay content={res}/>
+    </div>;
   };
 
   componentWhenLoading = <div className={style("w3-container")}>Loading...</div>;

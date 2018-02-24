@@ -85,6 +85,7 @@ export type LanguageDefinition = {
     likeCount: string,
     commentCount: string,
     author: string,
+    backToTop: string
   }
 }
 
@@ -96,5 +97,16 @@ export interface Language {
 }
 
 
-export { cn } from './cn/index';
-export { en } from './en/index';
+export const cn: Language = {
+  id: "zh-CN",
+  name: "简体中文",
+  languagePrompt: "现在的语言：简体中文。点击切换语言。",
+  definitionName: "cn"
+};
+
+export const en: Language = {
+  id: "en-US",
+  name: "English",
+  languagePrompt: "Current Language: English. Click to change.",
+  definitionName: "en"
+};

@@ -1,11 +1,9 @@
 import * as React from "react";
 import { ArticleBrief } from "../../../models/Article";
-import style from '../../style';
 import { inject, observer } from "mobx-react";
 import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
-import { LocaleDate } from "../../Common/Locale";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleDate, LocaleMessage } from "../../Common/Locale";
 import { Tag } from "../../Common/Tag";
 
 interface ArticleListItemProps {

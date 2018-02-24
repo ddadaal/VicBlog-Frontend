@@ -1,8 +1,8 @@
 import * as React from "react";
 import style from '../style';
-import { STORE_LOCALE, STORE_ROUTER } from "../../constants/stores";
+import { STORE_ROUTER } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
-import { LocaleStore, RouterStore } from "../../stores";
+import { RouterStore } from "../../stores";
 import { FaGithub } from 'react-icons/lib/fa';
 import { LocaleDate, LocaleMessage } from "../Common/Locale";
 

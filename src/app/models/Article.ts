@@ -1,5 +1,7 @@
+export type ArticleId = number;
+
 export class ArticleBrief {
-  id: number;
+  id: ArticleId;
   username: string;
   createTime: number;
   lastEditedTime: number;

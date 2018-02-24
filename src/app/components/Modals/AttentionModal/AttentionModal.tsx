@@ -6,12 +6,10 @@ import { action, observable } from "mobx";
 
 import style from '../../style';
 import { Modal, ModalBottom } from "../Modal";
-import { AsyncComponent } from "../../../routes/AsyncComponent";
 import { LocaleMessage } from "../../Common/Locale";
 import { Dropdown } from "../../Common/Dropdown";
 import { AttentionModalContent } from "./AttentionModalContent";
 import { AttentionModalStore, LanguageSetting } from "./AttentionModalStore";
-
 
 
 interface TermsModalProps {

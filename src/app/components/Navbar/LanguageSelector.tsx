@@ -2,13 +2,11 @@ import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
 import { LocaleStore } from "../../stores";
 import * as React from "react";
+import { CSSProperties } from "react";
 import FaLanguage from 'react-icons/lib/fa/language';
 import style from "../style";
 import { Language } from "../../internationalization";
-import { Dropdown } from "../Common/Dropdown";
-import { CSSProperties } from "react";
 import { action, observable, runInAction } from "mobx";
-import { lang } from "moment";
 
 interface LanguageSelectorProps {
   [STORE_LOCALE]?: LocaleStore,

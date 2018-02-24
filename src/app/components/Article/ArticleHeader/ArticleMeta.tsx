@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Article } from "../../../models";
+import { ReactNode } from "react";
+import { Article } from "../../../models/index";
 import FaClockO from 'react-icons/lib/fa/clock-o';
 import FaPencilSquare from "react-icons/lib/fa/pencil-square";
 import FaUser from 'react-icons/lib/fa/user';
 import FaTags from 'react-icons/lib/fa/tags';
 
-import { LocaleDate, LocaleMessage } from "../../Common/Locale";
-import { ReactNode } from "react";
-import style from '../../style';
-import { Tag } from "../../Common/Tag";
+import { LocaleDate, LocaleMessage } from "../../Common/Locale/index";
+import style from '../../style/index';
+import { Tag } from "../../Common/Tag/index";
 
 interface ArticleMetaProps {
   article: Article,

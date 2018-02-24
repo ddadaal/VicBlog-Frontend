@@ -1,6 +1,5 @@
 import { STORE_USER } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
-import { UserStore } from "../../stores";
 import * as React from "react";
 import { LoginModal } from "../Modals/LoginModal";
 import { RegisterModal } from "../Modals/RegisterModal";

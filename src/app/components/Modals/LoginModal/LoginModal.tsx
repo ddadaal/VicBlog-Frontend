@@ -10,7 +10,6 @@ import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
 import { Checkbox } from "../../Common/Checkbox";
 import { LocaleMessage } from "../../Common/Locale";
-import { Localize } from "../../Common/Locale/Localize";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,

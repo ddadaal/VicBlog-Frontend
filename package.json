@@ -16,11 +16,13 @@
     "@types/classnames": "^2.2.3",
     "@types/enzyme": "^3.1.9",
     "@types/markdown-it": "0.0.4",
+    "@types/markdown-it-anchor": "^4.0.1",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.38",
     "@types/react-dom": "^16.0.4",
     "@types/react-router": "^4.0.22",
+    "@types/react-syntax-highlighter": "0.0.4",
     "@types/webpack": "^3.8.8",
     "@types/webpack-env": "^1.13.5",
     "awesome-typescript-loader": "^3.4.1",
@@ -57,6 +59,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "markdown-it": "^8.4.1",
+    "markdown-it-anchor": "^4.0.0",
     "md5": "^2.2.1",
     "mobx": "^3.5.1",
     "mobx-react": "^4.4.2",
@@ -66,7 +69,10 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-icons": "^2.2.7",
+    "react-markdown": "^3.2.1",
     "react-router": "^4.2.0",
+    "react-scroll-up-button": "^1.5.11",
+    "react-syntax-highlighter": "^7.0.0",
     "w3-css": "^4.0.4"
   }
 }

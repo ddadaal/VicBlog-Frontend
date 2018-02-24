@@ -1,22 +1,16 @@
 import * as React from "react";
 import { Article } from "../../../models";
-import { ArticleMeta } from "./ArticleMeta";
-
+import style from '../../style';
+import { EnhancedMarkdownDisplay } from "./EnhancedMarkdownDisplay";
 
 interface ArticleContentProps {
   article: Article,
-  contentHtml: string
 }
 
 export class ArticleContent extends React.Component<ArticleContentProps, any> {
   render() {
-    return <div>
-      <h1>{this.props.article.title}</h1>
-      <ArticleMeta article={this.props.article}/>
-      <hr/>
-      <div dangerouslySetInnerHTML={{__html: this.props.contentHtml}}/>
-      <hr/>
-
+    return <div className={style("w3-container")}>
+      <EnhancedMarkdownDisplay content={this.props.article.content}/>
     </div>;
   }
 }

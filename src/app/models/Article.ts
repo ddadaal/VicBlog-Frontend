@@ -7,10 +7,17 @@ export class ArticleBrief {
   lastEditedTime: number;
   tags: string[];
   title: string;
-  like: number;
-  comment: number
+  likeCount: number;
+  commentCount: number
 }
 
-export class Article extends ArticleBrief {
+export class Article {
+  id: ArticleId;
+  username: string;
+  createTime: number;
+  lastEditedTime: number;
+  tags: string[];
+  title: string;
+  likeCount: number;
   content: string;
 }

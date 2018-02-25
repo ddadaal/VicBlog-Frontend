@@ -4,6 +4,7 @@ import { getTitleNodes } from "./LinksAnalyzer";
 import { TitleNode } from "../../Common/MarkdownDisplay/slugifier";
 import FaBookmark from "react-icons/lib/fa/bookmark";
 import { LocaleMessage } from "../../Common/Locale";
+import * as localStyle from './style.css';
 
 interface ArticleLinksProps {
   content: string
@@ -15,13 +16,13 @@ interface LinkProps {
 
 function Link(props: LinkProps) {
   const x = props.node;
-  return <span style={{whiteSpace: "pre"}}>
-    {" ".repeat(props.node.level*2-2)}
-    <a style={{textDecoration: "none"}} href={`#${x.slug}`}>
-      {x.text}
+  const margin = 16*(x.level-1);
+  return <div style={{wordWrap: "break-word", marginLeft: `${16*(margin)}px`}}>
+    <a className={localStyle.link} href={`#${x.slug}`}>
+      ·&nbsp;{x.text}
       </a>
     <br/>
-  </span>;
+  </div>;
 }
 
 

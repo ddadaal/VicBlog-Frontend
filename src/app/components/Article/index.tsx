@@ -4,6 +4,7 @@ import style from '../../components/style';
 import { ArticleContent } from "./ArticleContent";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleOverview } from "./ArticleOverview";
+import { LikePanel } from "./LikePanel";
 
 interface ArticleContentPageProps {
   article: FetchedArticle;
@@ -24,7 +25,7 @@ export class ArticleContentPage extends React.Component<ArticleContentPageProps,
         <ArticleContent article={this.props.article.article}/>
       </div>
       <div className={style("w3-col","l2")}>
-        some other content
+        <LikePanel likes={this.props.article.article.likeCount}/>
       </div>
     </div>;
   }

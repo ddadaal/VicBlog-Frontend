@@ -1,12 +1,27 @@
-import { action, computed, observable } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { ArticleBrief } from "../models/Article";
+import { APIs } from "../api/ApiDefinition";
+
+enum ArticleListFetchErrorType {
+  NetworkError, Unknown
+}
+
+export interface ArticleListFetchError {
+  type:ArticleListFetchErrorType
+}
+
+export interface ArticleListFetchNetworkError extends ArticleListFetchError {
+  type: ArticleListFetchErrorType.NetworkError,
+  error: any
+}
 
 export enum ArticleListFetchState {
   Standby, Fetching, Fetched
 }
 
 export class ArticleListStore {
-  list: ArticleBrief[] = [];
+  @observable.ref list: ArticleBrief[] = null;
+
   lastUpdated: Date;
   @observable fetchState: ArticleListFetchState = ArticleListFetchState.Standby;
 
@@ -14,26 +29,30 @@ export class ArticleListStore {
     return this.fetchState === ArticleListFetchState.Fetched;
   }
 
-  pushMockBriefs(num: number) {
-    for (let i =0;i<num;i++) {
-      let mock = new ArticleBrief();
-      mock.id = i;
-      mock.title = "mock" + i;
-      mock.tags = ["tag1","tag2"];
-      mock.lastEditedTime = Date.now();
-      mock.createTime = Date.now();
-      mock.like = i;
-      mock.comment = i;
-      this.list.push(mock);
+  async remoteFetch(): Promise<ArticleBrief[]> {
+    const url = `${APIs.articles}`;
+    let error: ArticleListFetchError;
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+      if (res.ok) {
+        return json;
+      } else {
+        error = { type: ArticleListFetchErrorType.Unknown };
+      }
+    } catch (e) {
+      error = {type: ArticleListFetchErrorType.NetworkError, error: e} as ArticleListFetchNetworkError;
     }
+    throw error;
   }
 
-  @action startFetch = () => {
-    // this.fetchState = ArticleListFetchState.Fetching;
+  @action startFetch =  async () => {
     this.fetchState = ArticleListFetchState.Fetching;
-    this.pushMockBriefs(5);
-    this.fetchState = ArticleListFetchState.Fetched;
-
+    this.list = await this.remoteFetch();
+    runInAction("article list fetch complete", () => {
+      this.lastUpdated = new Date();
+      this.fetchState = ArticleListFetchState.Fetched;
+    });
   };
 
 }

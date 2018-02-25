@@ -28,8 +28,7 @@ registerLanguage('json', json);
 registerLanguage('yaml', yaml);
 
 export function SyntaxHighlightedCodeBlock(props: {language: string, value: string}) {
-  const element = <SyntaxHighlighter language={props.language} style={github} showLineNumbers={true}>
+  return <SyntaxHighlighter language={props.language} style={github} showLineNumbers={true}>
     {props.value}
   </SyntaxHighlighter>;
-  return element;
 }

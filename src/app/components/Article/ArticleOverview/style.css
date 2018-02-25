@@ -1,4 +1,13 @@
 .overview-sticky {
     position: fixed;
     top: 50px;
+    max-width: 16.66%;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
 }

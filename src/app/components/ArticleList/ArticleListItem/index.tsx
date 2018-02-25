@@ -47,11 +47,11 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
       </p>
       <p>
         <PHeader id={"articleList.likeCount"}/>
-        {brief.like}
+        {brief.likeCount}
       </p>
       <p>
         <PHeader id={"articleList.commentCount"}/>
-        {brief.comment}
+        {brief.commentCount}
       </p>
       <p>
         <PHeader id={"articleList.author"}/>

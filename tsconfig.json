@@ -18,6 +18,11 @@
       "es6",
       "es7",
       "dom"
+    ],
+    "baseUrl": "types",
+    "typeRoots": [
+      "types",
+      "node_modules/@types"
     ]
   }
 }

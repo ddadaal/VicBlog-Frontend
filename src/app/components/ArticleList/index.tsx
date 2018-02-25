@@ -1,6 +1,6 @@
 import * as React from "react";
 import { STORE_ARTICLE_LIST } from "../../constants/stores";
-import { ArticleListStore } from "../../stores/ArticleListStore";
+import { ArticleListStore } from "../../stores";
 import { inject, observer } from "mobx-react";
 import style from '../style';
 import { ArticleListItem } from "./ArticleListItem";

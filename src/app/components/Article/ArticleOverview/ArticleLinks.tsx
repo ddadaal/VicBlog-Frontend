@@ -1,4 +1,3 @@
-import { Article } from "../../../models";
 import * as React from "react";
 import { getTitleNodes } from "./LinksAnalyzer";
 import { TitleNode } from "../../Common/MarkdownDisplay/slugifier";
@@ -17,7 +16,7 @@ interface LinkProps {
 function Link(props: LinkProps) {
   const x = props.node;
   const margin = 16*(x.level-1);
-  return <div style={{wordWrap: "break-word", marginLeft: `${16*(margin)}px`}}>
+  return <div style={{wordWrap: "break-word", marginLeft: `${margin}px`}}>
     <a className={localStyle.link} href={`#${x.slug}`}>
       ·&nbsp;{x.text}
       </a>

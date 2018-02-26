@@ -1,8 +1,8 @@
 import * as React from "react";
+import { CSSProperties } from "react";
 import { Article } from "../../../models";
 import style from '../../style';
 import { ArticleMeta } from "./ArticleMeta";
-import { CSSProperties } from "react";
 
 interface ArticleHeaderProps {
   article: Article

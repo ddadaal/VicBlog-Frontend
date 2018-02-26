@@ -87,6 +87,25 @@
     "commentCount": "评论数",
     "author": "作者",
     "backToTop": "回到顶部",
-    "toc": "目录"
+    "toc": "目录",
+    "like": {
+      "notLogin": {
+        "buttonText": "喜欢",
+        "description": "{login} 以喜欢一篇文章。"
+      },
+      "notLiked": {
+        "buttonText": "喜欢",
+        "description": "通过点击喜欢，你鼓励我在将来写出更多更好的文章。"
+      },
+      "liked": {
+        "buttonText": "我喜欢它！",
+        "description": "很高兴你能喜欢这篇文章！"
+      },
+      "loginLink": "登录"
+    }
+
+  },
+  "markdownReader": {
+    "copyCode": "复制代码"
   }
 }

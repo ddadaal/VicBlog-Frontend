@@ -1,7 +1,7 @@
-import * as queryString from "querystring";
 import { APIs } from "../../../api/ApiDefinition";
 import { encryptPassword, LoginResult } from "../../../stores/UserStore";
 import { action, observable, runInAction } from "mobx";
+import { NetworkStore } from "../../../stores/NetworkStore";
 
 
 export enum LoginState {
@@ -44,34 +44,27 @@ export class LoginStore {
   @action public requestLogin = async (username: string, password: string): Promise<LoginResult> => {
     this.state = LoginState.LoggingIn;
     password = encryptPassword(password);
-    const getUrl = APIs.login + '?' + queryString.stringify({username, password});
-    let error: LoginError = null;
-    try {
-      const res = await fetch(getUrl);
-      const response = await res.json();
-      if (res.ok) {
-        return runInAction("requestLogin success", () => {
-          this.state = LoginState.LoggedIn;
-          return response;
-        });
-      } else {
-        runInAction("requestLogin failed", async () => {
-          this.state = LoginState.NotLoggedIn;
-        });
-        if (res.status === 401) {
-          error = {type: LoginErrorType.WrongCredential};
-        } else {
-          error = {type: LoginErrorType.ServerError, messages: response.errorDescriptions} as LoginServerError;
-        }
-      }
+    const getUrl = NetworkStore.appendQueryString(APIs.login, {username, password});
 
-    } catch (e) {
-      runInAction("requestLogin failed", () => {
-        this.state = LoginState.NotLoggedIn;
+    const res = await NetworkStore.fetch(getUrl);
+
+    const {statusCode, response, error,ok, isNetworkError} = res;
+
+    if (ok) {
+      return runInAction("requestLogin success", () => {
+        this.state = LoginState.LoggedIn;
+        return response;
       });
-      error = {type: LoginErrorType.NetworkError, error: e} as LoginNetworkError;
     }
-
-    throw error;
+    runInAction("requestLogin failed", async () => {
+      this.state = LoginState.NotLoggedIn;
+    });
+    if (statusCode === 401) {
+      throw {type: LoginErrorType.WrongCredential};
+    } else if (isNetworkError) {
+      throw {type: LoginErrorType.NetworkError, error: error};
+    } else {
+      throw {type: LoginErrorType.ServerError, messages: response.errorDescriptions} as LoginServerError;
+    }
   }
 }

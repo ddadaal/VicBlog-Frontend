@@ -1,6 +1,7 @@
 import { action, observable, runInAction } from "mobx";
 import { encryptPassword, LoginResult, } from "../../../stores/UserStore";
 import { APIs } from "../../../api/ApiDefinition";
+import { HttpMethod, NetworkStore } from "../../../stores/NetworkStore";
 
 export enum RegisterState {
   Standby, Registering, Registered
@@ -28,7 +29,6 @@ export interface RegisterNetworkError extends RegisterError {
 }
 
 
-
 export class RegisterStore {
   @observable state: RegisterState = RegisterState.Standby;
 
@@ -40,37 +40,24 @@ export class RegisterStore {
     this.state = RegisterState.Registering;
     password = encryptPassword(password);
     const getUrl = APIs.register;
-    let error: RegisterError = null;
-    try {
-      const res = await fetch(getUrl, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username, password})
+
+    const res = await NetworkStore.fetch(getUrl, HttpMethod.POST, JSON.stringify({username, password}));
+    const {statusCode, response, error, ok, isNetworkError} = res;
+    if (ok) {
+      return runInAction("requestRegister success", () => {
+        this.state = RegisterState.Registered;
+        return response;
       });
-      const response = await res.json();
-      if (res.ok) {
-        return runInAction("requestRegister success", () => {
-          this.state = RegisterState.Registered;
-          return response;
-        });
-      } else {
-        runInAction("requestRegister failed", async () => {
-          this.state = RegisterState.Standby;
-        });
-        if (res.status === 409) {
-          error = {type: RegisterErrorType.UsernameConflict};
-        } else {
-          error = {type: RegisterErrorType.ServerError, messages: response.errorDescriptions} as RegisterServerError;
-        }
-      }
-    } catch (e) {
-      runInAction("requestRegister failed", () => {
-        this.state = RegisterState.Standby;
-      });
-      error = {type: RegisterErrorType.NetworkError, error: e } as RegisterNetworkError;
     }
-    throw error;
-  };
+    runInAction("requestRegister failed", async () => {
+      this.state = RegisterState.Standby;
+    });
+    if (isNetworkError) {
+      throw {type: RegisterErrorType.NetworkError, error: error} as RegisterNetworkError;
+    } else if (statusCode === 409) {
+      throw {type: RegisterErrorType.UsernameConflict};
+    } else {
+      throw {type: RegisterErrorType.ServerError, messages: response.errorDescriptions} as RegisterServerError;
+    }
+  }
 }

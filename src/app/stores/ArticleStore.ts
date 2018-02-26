@@ -1,6 +1,7 @@
 import { Article } from "../models";
 import * as moment from 'moment';
 import { APIs } from "../api/ApiDefinition";
+import { NetworkStore } from "./NetworkStore";
 
 export interface FetchedArticle {
   fetchTime: moment.Moment,
@@ -12,7 +13,7 @@ export enum ArticleFetchErrorType {
 }
 
 export interface ArticleFetchError {
-  type:ArticleFetchErrorType
+  type: ArticleFetchErrorType
 }
 
 export interface ArticleFetchNetworkError extends ArticleFetchError {
@@ -31,27 +32,19 @@ export class ArticleStore {
 
   async remoteFetch(id: number): Promise<FetchedArticle> {
     const url = `${APIs.articles}/${id}`;
-    let error: ArticleFetchError;
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
-      if (res.ok) {
-        return {
-          fetchTime: moment(),
-          article: json
-        };
-      } else {
-        if (res.status === 404) {
-          error = { type: ArticleFetchErrorType.NotFound };
-        } else {
-          error = {type: ArticleFetchErrorType.Unknown};
-        }
-
-      }
-    } catch (e) {
-      error = {type: ArticleFetchErrorType.NetworkError, error: e} as ArticleFetchNetworkError;
+    const {statusCode, response, error, ok, isNetworkError} = await NetworkStore.fetch(url);
+    if (ok) {
+      return {
+        fetchTime: moment(),
+        article: response
+      };
+    } else if (isNetworkError) {
+      throw {type: ArticleFetchErrorType.NetworkError, error: error}
+    } else if (statusCode === 404) {
+      throw {type: ArticleFetchErrorType.NotFound};
+    } else {
+      throw {type: ArticleFetchErrorType.Unknown}
     }
-    throw error;
   }
 
   async fetchArticle(id: number): Promise<FetchedArticle> {

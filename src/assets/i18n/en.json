@@ -87,6 +87,25 @@
     "commentCount": "Comments",
     "author": "Author",
     "backToTop": "Back to top",
-    "toc": "Table of Contents"
+    "toc": "Table of Contents",
+    "like": {
+      "notLogin": {
+        "buttonText": "Like",
+        "description": "{login} to like this article."
+      },
+      "notLiked": {
+        "buttonText": "Like",
+        "description": "By liking, you encourage me to write more and better articles."
+      },
+      "liked": {
+        "buttonText": "I Liked it!",
+        "description": "Glad you like this article! :D"
+      },
+      "loginLink": "Login"
+    }
+
+  },
+  "markdownReader": {
+    "copyCode": "Copy the code"
   }
 }

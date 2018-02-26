@@ -1,6 +1,7 @@
 import { action, computed, observable, runInAction } from "mobx";
 import { ArticleBrief } from "../models/Article";
 import { APIs } from "../api/ApiDefinition";
+import { NetworkStore } from "./NetworkStore";
 
 enum ArticleListFetchErrorType {
   NetworkError, Unknown
@@ -31,19 +32,15 @@ export class ArticleListStore {
 
   async remoteFetch(): Promise<ArticleBrief[]> {
     const url = `${APIs.articles}`;
-    let error: ArticleListFetchError;
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
-      if (res.ok) {
-        return json;
-      } else {
-        error = { type: ArticleListFetchErrorType.Unknown };
-      }
-    } catch (e) {
-      error = {type: ArticleListFetchErrorType.NetworkError, error: e} as ArticleListFetchNetworkError;
+    const {statusCode, response, isNetworkError, error, ok} = await NetworkStore.fetch(url);
+
+    if (ok) {
+      return response;
+    } else if (isNetworkError) {
+      throw {type: ArticleListFetchErrorType.NetworkError, error: error}
+    } else {
+      throw { type: ArticleListFetchErrorType.Unknown };
     }
-    throw error;
   }
 
   @action startFetch =  async () => {

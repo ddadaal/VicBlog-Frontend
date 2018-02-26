@@ -11,7 +11,7 @@ import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } fr
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { LocaleMessage } from "../Common/Locale";
-import { ui } from "../../stores/UiStore";
+import { Sticky } from "../Common/Sticky/index";
 
 interface NavbarLinkItemProps {
   [STORE_ROUTER]?: RouterStore,
@@ -32,10 +32,10 @@ class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
   render() {
 
     const route = this.props[STORE_ROUTER];
-    const active =  route.currentPage == this.props.pathConfig;
+    const active = route.currentPage == this.props.pathConfig;
     return <a onClick={this.jumpTo}
               className={classNames(
-                style("w3-bar-item","w3-button"),
+                style("w3-bar-item", "w3-button"),
                 {
                   [style("w3-indigo")]: active,
                   [style("w3-hide-small")]: this.props.visibleOnBigScreen
@@ -50,31 +50,7 @@ class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
 export class Navbar extends React.Component<any, any> {
 
   @observable collapsed = false;
-  @observable sticky = false;
-  dom: Element;
-
-  get stickyApplicable() {
-    return ui.isBrowser && this.dom;
-  }
-
-  @action handleScroll = () => {
-    if (this.stickyApplicable) {
-      this.sticky = window.pageYOffset >= this.dom.getBoundingClientRect().top;
-    }
-  };
-
-  componentDidMount(){
-    if (this.stickyApplicable) {
-      window.addEventListener('scroll', this.handleScroll);
-    }
-
-  }
-
-  componentWillUnmount() {
-    if (this.stickyApplicable) {
-      window.removeEventListener('scroll', this.handleScroll);
-    }
-  }
+  @observable dom: Element;
 
   @action toggleCollapse = () => {
     this.collapsed = !this.collapsed;
@@ -85,33 +61,39 @@ export class Navbar extends React.Component<any, any> {
     return <Modals/>;
   };
 
-  ref = (dom) => {
+  @action ref = (dom) => {
     this.dom = dom;
   };
-
 
   render() {
     return <div ref={this.ref}>
       <AsyncComponent render={this.renderModalsAsync}/>
+      <Sticky>
+        {(sticky) => <>
+          <div className={classNames(style("w3-bar", "w3-blue"), {[localStyle.sticky]: sticky})}>
+            <LanguageSelector sticky={sticky}
+                              navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>
+            <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={true}/>
+            <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={true}/>
+            <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={true}/>
 
-      <div className={classNames(style("w3-bar","w3-blue"), {[localStyle.sticky]: this.sticky})}>
-        <LanguageSelector sticky={this.sticky} navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>
-        <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={true}/>
-        <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={true}/>
-        <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={true}/>
+            <UserIndicator notLoggedInStyle={style("w3-bar-item", "w3-button", "w3-hide-small", "w3-right")}
+                           loggedInStyle={style("w3-dropdown-hover", "w3-right", "w3-hide-small")}/>
 
-        <UserIndicator notLoggedInStyle={style("w3-bar-item","w3-button","w3-hide-small","w3-right")}
-                       loggedInStyle={style("w3-dropdown-hover","w3-right","w3-hide-small")}/>
-
-        <a className={style("w3-bar-item","w3-button","w3-right","w3-hide-large","w3-hide-medium")}
-           onClick={this.toggleCollapse}>&#9776;</a>
-      </div>
-      <div className={style("w3-bar-block","w3-blue","w3-hide-large","w3-hide-medium")} style={{display: this.collapsed ? "block" : "none"}}>
-        <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={false}/>
-        <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={false}/>
-        <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={false}/>
-        <UserIndicator notLoggedInStyle={style("w3-bar-item","w3-button")} loggedInStyle={style("w3-dropdown-hover")}/>
-      </div>
+            <a className={style("w3-bar-item", "w3-button", "w3-right", "w3-hide-large", "w3-hide-medium")}
+               onClick={this.toggleCollapse}>&#9776;</a>
+          </div>
+          <div className={style("w3-bar-block", "w3-blue", "w3-hide-large", "w3-hide-medium")}
+               style={{display: this.collapsed ? "block" : "none"}}>
+            <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={false}/>
+            <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig}
+                            visibleOnBigScreen={false}/>
+            <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={false}/>
+            <UserIndicator notLoggedInStyle={style("w3-bar-item", "w3-button")}
+                           loggedInStyle={style("w3-dropdown-hover")}/>
+          </div>
+        </>}
+      </Sticky>
     </div>;
   }
 }

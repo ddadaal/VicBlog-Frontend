@@ -25,7 +25,7 @@ class FakeLocalStorage implements Storage {
 }
 
 class UiController {
-  private readonly _isBrowser = !!window;
+  private readonly _isBrowser = typeof window !== 'undefined';
   private _fakeLocalStorage = new FakeLocalStorage();
 
   get isBrowser() {

@@ -87,6 +87,9 @@ export type LanguageDefinition = {
     author: string,
     backToTop: string,
     toc: string
+  },
+  markdownReader: {
+    copyCode: string
   }
 }
 

@@ -4,8 +4,6 @@ import { ArticleFetchError, ArticleStore, FetchedArticle } from "../../stores/Ar
 import { inject, observer } from "mobx-react";
 import { action, observable, runInAction } from "mobx";
 import style from '../../components/style';
-import { LocaleMessage } from "../../components/Common/Locale";
-import { ArticleContent } from "../../components/Article/ArticleContent";
 import { ArticleId } from "../../models/Article";
 import { ArticleFetchErrorContent } from "../../components/Article/ArticleFetchErrorContent";
 import { ArticleFetchingContent } from "../../components/Article/ArticleFetchingContent";

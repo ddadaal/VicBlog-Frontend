@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { ReactNode, ReactType } from "react";
+import { ReactType } from 'react';
 import * as ReactMarkdown from "react-markdown";
 import * as githubStyle from './github-markdown.css';
 import { SyntaxHighlightedCodeBlock } from "./renderers";
-import { ArticleMeta } from "../../Article/ArticleHeader/ArticleMeta";
 import { AsyncComponent } from "../../../routes/AsyncComponent";
 
 export interface MarkdownDisplayProps {

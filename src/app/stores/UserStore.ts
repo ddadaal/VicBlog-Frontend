@@ -9,6 +9,7 @@ export interface LoginResult {
 }
 
 
+
 export function encryptPassword(password: string) {
   return password;
 }
@@ -36,6 +37,10 @@ export class UserStore {
   @computed
   public get loggedIn() {
     return !!this.user;
+  }
+
+  get token() {
+    return this.user ? this.user.token : null;
   }
 
   @computed

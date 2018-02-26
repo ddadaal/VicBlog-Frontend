@@ -1,7 +1,6 @@
 import { getTitleNode } from "../../Common/MarkdownDisplay/slugifier";
 
 
-
 const regex = /(#+(\s)+.*(\n)*)/;
 
 export function getTitleNodes(content: string) {

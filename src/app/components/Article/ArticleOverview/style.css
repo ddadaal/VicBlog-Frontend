@@ -1,7 +1,7 @@
 .overview-sticky {
     position: fixed;
     top: 50px;
-    max-width: 16.66%;
+    width: 16.66%;
 }
 
 .link {

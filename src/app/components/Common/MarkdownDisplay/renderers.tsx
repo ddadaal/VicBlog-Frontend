@@ -13,6 +13,7 @@ import json from 'react-syntax-highlighter/languages/hljs/json';
 import yaml from 'react-syntax-highlighter/languages/hljs/yaml';
 import github from 'react-syntax-highlighter/styles/hljs/github';
 import * as React from "react";
+import { ui } from "../../../stores/UiStore";
 
 registerLanguage('javascript', js);
 registerLanguage('python', python);
@@ -27,8 +28,28 @@ registerLanguage('powershell', powershell);
 registerLanguage('json', json);
 registerLanguage('yaml', yaml);
 
-export function SyntaxHighlightedCodeBlock(props: {language: string, value: string}) {
-  return <SyntaxHighlighter language={props.language} style={github} showLineNumbers={true}>
-    {props.value}
-  </SyntaxHighlighter>;
+export function SyntaxHighlightedCodeBlock(props: { language: string, value: string }) {
+  const onclick = () => {
+    if (ui.isBrowser) {
+      const copyEvent = new ClipboardEvent('copy', {
+        dataType: 'text/plain',
+        data: props.value
+      });
+      document.dispatchEvent(copyEvent);
+    }
+  };
+
+  return <div>
+    {/*<p>*/}
+      {/*<span>{props.language}</span>*/}
+      {/*<a style={{float: "right"}} onClick={onclick}>*/}
+        {/*<LocaleMessage id={"markdownReader.copyCode"}/>*/}
+      {/*</a>*/}
+    {/*</p>*/}
+    <SyntaxHighlighter language={props.language}
+                       style={github}
+                       showLineNumbers={true}>
+      {props.value}
+    </SyntaxHighlighter>
+  </div>;
 }

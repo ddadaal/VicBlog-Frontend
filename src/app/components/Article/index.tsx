@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArticleFetchError, ArticleStore, FetchedArticle } from "../../stores/ArticleStore";
+import { FetchedArticle } from "../../stores/ArticleStore";
 import style from '../../components/style';
 import { ArticleContent } from "./ArticleContent";
 import { ArticleHeader } from "./ArticleHeader";
@@ -15,7 +15,6 @@ export class ArticleContentPage extends React.Component<ArticleContentPageProps,
 
     return <div>
       <ArticleHeader article={this.props.article.article}/>
-      {/*<ScrollUpButton/>*/}
       <hr/>
       <div className={style("w3-col","l2","w3-hide-medium","w3-hide-small")}>
         <p/> {/*keeps the width when the ArticleOverview becomes absolute position*/}
@@ -25,7 +24,8 @@ export class ArticleContentPage extends React.Component<ArticleContentPageProps,
         <ArticleContent article={this.props.article.article}/>
       </div>
       <div className={style("w3-col","l2")}>
-        <LikePanel likes={this.props.article.article.likeCount}/>
+        <hr className={style("w3-hide-large")}/>
+        <LikePanel article={this.props.article.article}/>
       </div>
     </div>;
   }

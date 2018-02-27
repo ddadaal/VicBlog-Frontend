@@ -1,48 +1,34 @@
+import { action, observable } from "mobx";
 
-class FakeLocalStorage implements Storage {
-  [key: string]: any;
-  [index: number]: string;
-
-  length: number;
-
-  clear(): void {
-  }
-
-  getItem(key: string): string | null {
-    return null;
-  }
-
-  key(index: number): string | null {
-    return null;
-  }
-
-  removeItem(key: string): void {
-  }
-
-  setItem(key: string, data: string): void {
-  }
-
+interface LoginPanelFields {
+  username: string,
+  password: string,
+  remember: boolean
 }
 
-class UiController {
-  private readonly _isBrowser = typeof window !== 'undefined';
-  private _fakeLocalStorage = new FakeLocalStorage();
 
-  get isBrowser() {
-    return this._isBrowser;
-  }
+export class UiStore {
+  @observable loginModalShown = false;
+  @observable registerModalShown = false;
+  @observable temporaryLoginPanelFields: LoginPanelFields = null;
 
-  get localStorage() {
-    return this._isBrowser ? window.localStorage : this._fakeLocalStorage;
-  }
+  @observable loginModalLoaded = false;
+  @observable registerModalLoaded = false;
 
-  set documentTitle(value: string) {
-    if (this._isBrowser) {
-      document.title = value;
-    }
-  }
+  @action saveLoginPanelFields = (fields: LoginPanelFields) => {
+    this.temporaryLoginPanelFields = fields;
+  };
+
+  @action clearLoginPanelFields = () => {
+    this.temporaryLoginPanelFields = null;
+  };
+
+  @action toggleLoginModalShown = () => {
+    this.loginModalShown = !this.loginModalShown;
+  };
+
+  @action toggleRegisterModalShown = () => {
+    this.registerModalShown = !this.registerModalShown;
+  };
+
 }
-
-export const ui = new UiController();
-
-

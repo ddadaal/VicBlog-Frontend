@@ -1,7 +1,7 @@
 import * as React from "react";
 import style from '../../style';
-import { STORE_USER } from "../../../constants/stores";
-import { UserStore } from "../../../stores";
+import { STORE_UI, STORE_USER } from "../../../constants/stores";
+import { UiStore, UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { FormInput } from "../FormInput";
@@ -13,9 +13,10 @@ import { LocaleMessage } from "../../Common/Locale";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
+  [STORE_UI]?: UiStore
 }
 
-@inject(STORE_USER)
+@inject(STORE_USER, STORE_UI)
 @observer
 export class LoginModal extends React.Component<LoginModalProps, any> {
 
@@ -72,7 +73,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
         if (this.rememberMe) {
           user.remember();
         }
-        user.toggleLoginModalShown();
+        this.props[STORE_UI].toggleLoginModalShown();
       });
     } catch (e) {
       console.log(e);
@@ -83,27 +84,27 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   };
 
   @action openRegisterModal = () => {
-    const user = this.props[STORE_USER];
-    user.toggleLoginModalShown();
-    user.toggleRegisterModalShown()
+    const ui = this.props[STORE_UI];
+    ui.toggleLoginModalShown();
+    ui.toggleRegisterModalShown()
   };
 
   componentWillUnmount() {
-    const user = this.props[STORE_USER];
+    const ui = this.props[STORE_UI];
     if (!this.loggedIn) {
-      user.saveLoginPanelFields({
+      ui.saveLoginPanelFields({
         username: this.username,
         password: this.password,
         remember: this.rememberMe
       });
     } else {
-      user.clearLoginPanelFields();
+      ui.clearLoginPanelFields();
     }
   }
 
   componentDidMount() {
-    const user = this.props[STORE_USER];
-    const fields = user.temporaryLoginPanelFields;
+    const ui = this.props[STORE_UI];
+    const fields = ui.temporaryLoginPanelFields;
     if (fields) {
       runInAction("Initialize fields", () => {
         this.username = fields.username;
@@ -115,10 +116,11 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
   render() {
     const user = this.props[STORE_USER];
+    const ui = this.props[STORE_UI];
     const isLoggingIn = this.loginStore.state === LoginState.LoggingIn;
 
     return <Modal titleId={"loginModal.title"}
-                  toggleShown={user.toggleLoginModalShown}
+                  toggleShown={ui.toggleLoginModalShown}
     >
 
       <LoginAlertPanel error={this.lastError} clearError={this.clearError}/>
@@ -157,7 +159,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
                 className={style("w3-button", "w3-blue", "w3-padding")}>
           <LocaleMessage id={"loginModal.register"}/>
         </button>
-        <button onClick={user.toggleLoginModalShown} type="button"
+        <button onClick={ui.toggleLoginModalShown} type="button"
                 className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
           <LocaleMessage id={"loginModal.close"}/>
         </button>

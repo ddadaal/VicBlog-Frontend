@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactNode } from "react";
 import { slugify } from "../../Common/MarkdownDisplay/slugifier";
-import { ui } from "../../../stores/UiStore";
+import { ui } from "../../../stores/UiUtil";
 import * as localStyle from './style.css';
 
 function getCoreProps(props) {

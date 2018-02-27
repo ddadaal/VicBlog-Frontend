@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Modal } from "../Modal";
 import { inject, observer } from "mobx-react";
-import { STORE_USER } from "../../../constants/stores";
-import { UserStore } from "../../../stores";
+import { STORE_UI, STORE_USER } from "../../../constants/stores";
+import { UiStore, UserStore } from "../../../stores";
 import { action, observable } from "mobx";
 import { RegisteringContent } from "./RegisteringContent";
 import { RegisteredContent } from "./RegisteredContent";
@@ -11,10 +11,11 @@ import { LoginResult } from "../../../stores/UserStore";
 
 
 interface RegisterModalProps {
-  [STORE_USER]?: UserStore
+  [STORE_USER]?: UserStore;
+  [STORE_UI]?: UiStore;
 }
 
-@inject(STORE_USER)
+@inject(STORE_USER, STORE_UI)
 @observer
 export class RegisterModal extends React.Component<RegisterModalProps, any> {
 
@@ -39,25 +40,25 @@ export class RegisterModal extends React.Component<RegisterModalProps, any> {
   };
 
   @action closeRegisteredContent = () => {
-    const user = this.props[STORE_USER];
-    user.toggleRegisterModalShown();
+    const ui = this.props[STORE_UI];
+    ui.toggleRegisterModalShown();
   };
 
   render() {
-    const user = this.props[STORE_USER];
+    const ui = this.props[STORE_UI];
     const registered = this.loginResult != null;
 
     return <div>
 
       <Modal titleId={registered ? "registerModal.complete.congrats" : "registerModal.title"}
-             toggleShown={user.toggleRegisterModalShown}>
+             toggleShown={ui.toggleRegisterModalShown}>
 
         {registered
           ? <RegisteredContent toggleModalShown={this.closeRegisteredContent}
                                loginResult={this.loginResult}
                                login={this.login}/>
           : <RegisteringContent onRegisterSuccess={this.onRegisterSucceeded}
-                                toggleModalShown={user.toggleRegisterModalShown}
+                                toggleModalShown={ui.toggleRegisterModalShown}
                                 toggleTermsModalShown={this.toggleTermsModalShown}
           />
 

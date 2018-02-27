@@ -19,6 +19,7 @@
     "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ"
   },
   "loginModal": {
+    "loading": "加载中",
     "title": "登录",
     "username": "用户名",
     "password": "密码",

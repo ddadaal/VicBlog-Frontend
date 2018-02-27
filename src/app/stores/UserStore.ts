@@ -1,6 +1,6 @@
 import { action, computed, observable } from "mobx";
 import { User, UserRole } from "../models/User";
-import { ui } from "./UiStore";
+import { ui } from "./UiUtil";
 
 export interface LoginResult {
   token: string,
@@ -14,25 +14,12 @@ export function encryptPassword(password: string) {
   return password;
 }
 
-interface LoginPanelFields {
-  username: string,
-  password: string,
-  remember: boolean
-}
+
 
 export class UserStore {
   @observable user: User = null;
-  @observable loginModalShown: boolean = false;
-  @observable registerModalShown: boolean = false;
-  @observable temporaryLoginPanelFields: LoginPanelFields = null;
 
-  @action saveLoginPanelFields = (fields: LoginPanelFields) => {
-    this.temporaryLoginPanelFields = fields;
-  };
 
-  @action clearLoginPanelFields = () => {
-    this.temporaryLoginPanelFields = null;
-  };
 
   @computed
   public get loggedIn() {
@@ -53,13 +40,6 @@ export class UserStore {
     this.clearUser();
   };
 
-  @action public toggleLoginModalShown = () => {
-    this.loginModalShown = !this.loginModalShown;
-  };
-
-  @action public toggleRegisterModalShown = () => {
-    this.registerModalShown = !this.registerModalShown;
-  };
 
   @action login = async (response: LoginResult) => {
     this.user = new User(response.username, response.role, response.token);

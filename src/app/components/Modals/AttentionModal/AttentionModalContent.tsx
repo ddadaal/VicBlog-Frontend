@@ -8,13 +8,13 @@ interface AttentionModalContentProps {
   language: LanguageSetting
 }
 
-export class AttentionModalContent extends React.Component<AttentionModalContentProps, any> {
+export class AttentionModalContent extends React.Component<AttentionModalContentProps, {}> {
 
   load = async () => {
     const res = await import(`../../../../assets/registerAttention/${this.props.language.filename}.md`);
 
     return <div className={style("w3-container")}>
-      <MarkdownDisplay content={res}/>
+      <MarkdownDisplay content={res.default}/>
     </div>;
   };
 

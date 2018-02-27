@@ -1,34 +1,44 @@
-import { STORE_USER } from "../../constants/stores";
+import { STORE_UI } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
 import * as React from "react";
-import { LoginModal } from "../Modals/LoginModal";
-import { RegisterModal } from "../Modals/RegisterModal";
+import { AsyncComponent } from "../../routes/AsyncComponent";
+import { Modal } from "../Modals/Modal";
+import style from '../style';
+import { LocaleMessage } from "../Common/Locale";
 
+export class LoadingModal extends React.Component<{},{}> {
 
-@inject(STORE_USER)
-@observer
-class ObserverLoginModal extends React.Component<{},{}> {
   render() {
-    const user = this.props[STORE_USER];
-    return user.loginModalShown ? <LoginModal/> : null;
+    return <Modal>
+      <div className={style("w3-container","w3-display-container")} style={{minHeight: "200px"}}>
+        <div className={style("w3-display-middle")} >
+          <h2><LocaleMessage id={"loginModal.loading"}/></h2>
+        </div>
+      </div>
+    </Modal>
   }
 }
 
-@inject(STORE_USER)
+@inject(STORE_UI)
 @observer
-class ObserverRegisterModal extends React.Component<{},{}> {
-  render() {
-    const user = this.props[STORE_USER];
-    return user.registerModalShown ? <RegisterModal/> : null;
-  }
-}
-
-
 export class NavbarModals extends React.Component<any, any> {
+
+  loadLoginModal = async () => {
+    const Modal = (await import("../Modals/LoginModal")).LoginModal;
+    return <Modal/>;
+  };
+
+  loadRegisterModal = async () => {
+    const Modal = (await import("../Modals/RegisterModal")).RegisterModal;
+    return <Modal/>;
+  };
+
+
   render() {
+    const ui = this.props[STORE_UI];
     return <div>
-      <ObserverLoginModal/>
-      <ObserverRegisterModal/>
+      {ui.loginModalShown ? <AsyncComponent render={this.loadLoginModal} componentWhenLoading={<LoadingModal/>} /> : null}
+      {ui.registerModalShown ? <AsyncComponent render={this.loadRegisterModal} componentWhenLoading={<LoadingModal/>}/>: null}
     </div>;
   }
 }

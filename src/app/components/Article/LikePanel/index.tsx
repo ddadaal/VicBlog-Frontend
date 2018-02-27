@@ -1,7 +1,7 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import { STORE_USER } from "../../../constants/stores";
-import { UserStore } from "../../../stores";
+import { STORE_UI, STORE_USER } from "../../../constants/stores";
+import { UiStore, UserStore } from "../../../stores";
 import { action, computed, observable, runInAction } from "mobx";
 import { Article } from "../../../models";
 import { APIs } from "../../../api/ApiDefinition";
@@ -10,7 +10,8 @@ import { LikePanelComponent } from "./LikePanelComponent";
 
 interface LikePanelContainerProps {
   article: Article;
-  [STORE_USER]?: UserStore,
+  [STORE_USER]?: UserStore;
+  [STORE_UI]?: UiStore
 
 }
 
@@ -19,7 +20,7 @@ export const enum LikeState { // to use it as a key of a map
 }
 
 
-@inject(STORE_USER)
+@inject(STORE_USER,STORE_UI)
 @observer
 export class LikePanel extends React.Component<LikePanelContainerProps, any> {
 
@@ -106,7 +107,7 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
   };
 
   loginButtonOnClick = () => {
-    this.props[STORE_USER].toggleLoginModalShown();
+    this.props[STORE_UI].toggleLoginModalShown();
   };
 
   componentDidMount() {

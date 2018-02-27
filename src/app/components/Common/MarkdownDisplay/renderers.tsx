@@ -13,7 +13,7 @@ import json from 'react-syntax-highlighter/languages/hljs/json';
 import yaml from 'react-syntax-highlighter/languages/hljs/yaml';
 import github from 'react-syntax-highlighter/styles/hljs/github';
 import * as React from "react";
-import { ui } from "../../../stores/UiStore";
+import { ui } from "../../../stores/UiUtil";
 
 registerLanguage('javascript', js);
 registerLanguage('python', python);

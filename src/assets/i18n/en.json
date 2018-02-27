@@ -19,6 +19,7 @@
     "dateFormat": "YYYY/M/D HH:mm:ss ZZ"
   },
   "loginModal": {
+    "loading": "Loading",
     "title": "Login",
     "username": "Username",
     "password": "Password",

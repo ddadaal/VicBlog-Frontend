@@ -93,7 +93,7 @@ module.exports = {
   },
   plugins: plugins,
   module: {
-    loaders: [
+    rules: [
       // .ts, .tsx
       {
         test: /\.tsx?$/,

@@ -2,7 +2,6 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 import { STORE_ROUTER } from "../../constants/stores";
 import { RouterStore } from "../../stores";
-import * as classNames from "classnames";
 import style from '../style';
 import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
@@ -11,7 +10,7 @@ import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } fr
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { LocaleMessage } from "../Common/Locale";
-import { Sticky } from "../Common/Sticky/index";
+import { Sticky } from "../Common/Sticky";
 
 interface NavbarLinkItemProps {
   [STORE_ROUTER]?: RouterStore,
@@ -34,12 +33,10 @@ class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
     const route = this.props[STORE_ROUTER];
     const active = route.currentPage == this.props.pathConfig;
     return <a onClick={this.jumpTo}
-              className={classNames(
-                style("w3-bar-item", "w3-button"),
-                {
-                  [style("w3-indigo")]: active,
-                  [style("w3-hide-small")]: this.props.visibleOnBigScreen
-                })}>
+              className={style("w3-bar-item", "w3-button",{
+                ["w3-indigo"]: active,
+                ["w3-hide-small"]: this.props.visibleOnBigScreen
+              })}>
       <LocaleMessage id={this.props.textId}/>
     </a>
   }
@@ -70,7 +67,7 @@ export class Navbar extends React.Component<any, any> {
       <AsyncComponent render={this.renderModalsAsync}/>
       <Sticky>
         {(sticky) => <>
-          <div className={classNames(style("w3-bar", "w3-blue"), {[localStyle.sticky]: sticky})}>
+          <div className={style("w3-bar", "w3-blue",{[localStyle.sticky]: sticky})}>
             <LanguageSelector sticky={sticky}
                               navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>
             <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={true}/>

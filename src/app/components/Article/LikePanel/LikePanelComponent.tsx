@@ -1,10 +1,10 @@
 import * as React from "react";
 import { LikeState } from "./index";
-import * as classNames from "classnames";
 import { Sticky } from "../../Common/Sticky";
 import { LikeButton } from "./LikeButton";
 import * as localStyle from './style.css';
 import { LocaleMessage } from "../../Common/Locale";
+import style from '../../style';
 
 interface LikePanelProps {
   state: LikeState,
@@ -39,7 +39,7 @@ export class LikePanelComponent extends React.Component<LikePanelProps, any> {
   render() {
     return <Sticky>
       {(sticky) => {
-        return <div className={classNames(localStyle.panel, {[localStyle.sticky]: sticky})}>
+        return <div className={style(localStyle.panel, {[localStyle.sticky]: sticky})}>
           <LikeButton state={this.props.state} onClick={this.props.likeButtonOnClick} likeCount={this.props.likeCount}/>
           <p>
             {this.constructDescription()}

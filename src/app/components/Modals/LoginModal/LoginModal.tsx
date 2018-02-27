@@ -10,6 +10,7 @@ import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
 import { Checkbox } from "../../Common/Checkbox";
 import { LocaleMessage } from "../../Common/Locale";
+import { Spin } from "../../Common/Spin";
 
 interface LoginModalProps {
   [STORE_USER]?: UserStore,
@@ -85,8 +86,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
 
   @action openRegisterModal = () => {
     const ui = this.props[STORE_UI];
-    ui.toggleLoginModalShown();
-    ui.toggleRegisterModalShown()
+    ui.toggleRegisterModalShown();
   };
 
   componentWillUnmount() {
@@ -158,6 +158,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
         <button onClick={this.openRegisterModal} type="button"
                 className={style("w3-button", "w3-blue", "w3-padding")}>
           <LocaleMessage id={"loginModal.register"}/>
+          { ui.registerModalLoading ? <Spin/> : null}
         </button>
         <button onClick={ui.toggleLoginModalShown} type="button"
                 className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>

@@ -1,20 +1,23 @@
 import { RegisterError, RegisterState, RegisterStore, } from "./RegisterStore";
 import style from "../../style";
 import * as React from "react";
-import { observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
 import { FormInput } from "../FormInput";
 import { ModalBottom } from "../Modal";
 import { LoginResult } from "../../../stores/UserStore";
 import { LocaleMessage } from "../../Common/Locale";
+import { STORE_UI } from "../../../constants/stores";
+import { UiStore } from "../../../stores";
 
 export interface RegisteringContentProps {
   onRegisterSuccess: (result: LoginResult) => void,
-  toggleModalShown: () => void,
+  [STORE_UI]?: UiStore,
   toggleTermsModalShown: () => void,
 }
 
+@inject(STORE_UI)
 @observer
 export class RegisteringContent extends React.Component<RegisteringContentProps, any> {
   @observable lastError: RegisterError = null;
@@ -79,7 +82,7 @@ export class RegisteringContent extends React.Component<RegisteringContentProps,
 
   render() {
     const isRegistering = this.store.state === RegisterState.Registering;
-
+    const ui = this.props[STORE_UI];
     return <div>
       <RegisterAlertPanel error={this.lastError} clearError={this.clearError}/>
 
@@ -111,7 +114,7 @@ export class RegisteringContent extends React.Component<RegisteringContentProps,
         <button className={style("w3-button", "w3-padding")} onClick={this.props.toggleTermsModalShown}>
           <LocaleMessage id={"registerModal.registerAttention.link"}/>
         </button>
-        <button onClick={this.props.toggleModalShown} type="button"
+        <button onClick={ui.toggleRegisterModalShown} type="button"
                 className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
           <LocaleMessage id={"registerModal.close"}/>
         </button>

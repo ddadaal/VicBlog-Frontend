@@ -12,8 +12,8 @@ export class UiStore {
   @observable registerModalShown = false;
   @observable temporaryLoginPanelFields: LoginPanelFields = null;
 
-  @observable loginModalLoaded = false;
-  @observable registerModalLoaded = false;
+  @observable loginModalLoading = false;
+  @observable registerModalLoading = false;
 
   @action saveLoginPanelFields = (fields: LoginPanelFields) => {
     this.temporaryLoginPanelFields = fields;
@@ -30,5 +30,24 @@ export class UiStore {
   @action toggleRegisterModalShown = () => {
     this.registerModalShown = !this.registerModalShown;
   };
+
+  @action startLoadingLoginModal = () => {
+    this.loginModalLoading = true;
+  };
+
+
+  @action finishedLoadingLoginModal = () => {
+    this.loginModalLoading = false;
+  };
+
+
+  @action startLoadingRegisterModal = () => {
+    this.registerModalLoading = true;
+  };
+
+
+  @action finishedLoadingRegisterModal = () => {
+    this.registerModalLoading = false;
+  }
 
 }

@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactSVG from 'react-svg';
 
 interface SvgImgProps {
   filePath: string,
@@ -7,12 +6,10 @@ interface SvgImgProps {
 }
 
 export class SvgImg extends React.Component<SvgImgProps, {}> {
+
   render() {
-    const size = `${this.props.size}px`;
-    return <ReactSVG
-      path={`../../../../assets/img/${this.props.filePath}`}
-      style={{ width: size, height: size}}
-    />;
+    const Svg = require(`svg-react-loader?name=Svg!../../../../assets/img/${this.props.filePath}`);
+    return <Svg width={this.props.size} height={this.props.size}/>;
   }
 
 }

@@ -8,9 +8,9 @@ import { action, observable } from "mobx";
 import * as localStyle from './style.css';
 import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } from "../../pages";
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
-import { AsyncComponent } from "../../routes/AsyncComponent";
 import { LocaleMessage } from "../Common/Locale";
 import { Sticky } from "../Common/Sticky";
+import { NavbarModals } from "./NavbarModals";
 
 interface NavbarLinkItemProps {
   [STORE_ROUTER]?: RouterStore,
@@ -53,10 +53,6 @@ export class Navbar extends React.Component<any, any> {
     this.collapsed = !this.collapsed;
   };
 
-  renderModalsAsync = async () => {
-    const Modals = (await import("./NavbarModals")).NavbarModals;
-    return <Modals/>;
-  };
 
   @action ref = (dom) => {
     this.dom = dom;
@@ -64,7 +60,7 @@ export class Navbar extends React.Component<any, any> {
 
   render() {
     return <div ref={this.ref}>
-      <AsyncComponent render={this.renderModalsAsync}/>
+      <NavbarModals/>
       <Sticky>
         {(sticky) => <>
           <div className={style("w3-bar", "w3-blue",{[localStyle.sticky]: sticky})}>

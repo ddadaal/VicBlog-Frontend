@@ -36,13 +36,8 @@ export class RegisterModal extends React.Component<RegisterModalProps, any> {
     if (remember) {
       user.remember();
     }
-    this.closeRegisteredContent();
   };
 
-  @action closeRegisteredContent = () => {
-    const ui = this.props[STORE_UI];
-    ui.toggleRegisterModalShown();
-  };
 
   render() {
     const ui = this.props[STORE_UI];
@@ -54,11 +49,9 @@ export class RegisterModal extends React.Component<RegisterModalProps, any> {
              toggleShown={ui.toggleRegisterModalShown}>
 
         {registered
-          ? <RegisteredContent toggleModalShown={this.closeRegisteredContent}
-                               loginResult={this.loginResult}
+          ? <RegisteredContent loginResult={this.loginResult}
                                login={this.login}/>
           : <RegisteringContent onRegisterSuccess={this.onRegisterSucceeded}
-                                toggleModalShown={ui.toggleRegisterModalShown}
                                 toggleTermsModalShown={this.toggleTermsModalShown}
           />
 

@@ -4,15 +4,18 @@ import style from "../../style";
 import { ModalBottom } from "../Modal";
 import { Checkbox } from "../../Common/Checkbox";
 import { action, observable } from "mobx";
-import { observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { LocaleMessage } from "../../Common/Locale";
+import { STORE_UI } from "../../../constants/stores";
+import { UiStore } from "../../../stores";
 
 interface RegisteredContentProps {
-  toggleModalShown: () => void,
-  loginResult: LoginResult,
-  login: (remember: boolean) => void
+  loginResult: LoginResult;
+  login: (remember: boolean) => void;
+  [STORE_UI]?: UiStore
 }
 
+@inject(STORE_UI)
 @observer
 export class RegisteredContent extends React.Component<RegisteredContentProps, any> {
   @observable rememberMe: boolean = false;
@@ -23,6 +26,13 @@ export class RegisteredContent extends React.Component<RegisteredContentProps, a
 
   login = () => {
     this.props.login(this.rememberMe);
+    this.closeModals();
+  };
+
+  closeModals = () => {
+    const ui = this.props[STORE_UI];
+    ui.toggleRegisterModalShown();
+    ui.toggleLoginModalShown();
   };
 
   render() {
@@ -38,7 +48,7 @@ export class RegisteredContent extends React.Component<RegisteredContentProps, a
         <span>
           <LocaleMessage id={"loginModal.rememberMe"}/>
         </span>
-        <button onClick={this.props.toggleModalShown} type="button"
+        <button onClick={this.closeModals} type="button"
                 className={style("w3-button", "w3-red", "w3-right", "w3-padding")}>
           <LocaleMessage id={"registerModal.close"}/>
         </button>

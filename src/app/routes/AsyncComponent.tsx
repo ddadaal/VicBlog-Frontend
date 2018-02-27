@@ -5,10 +5,10 @@ import { action, observable, runInAction } from "mobx";
 
 
 interface AsyncComponentProps<T> {
-  render: (props: T) => Promise<ReactNode>,
-  props?: T,
-  componentWhenLoading?: ReactNode,
-  componentProducerWhenLoadingFailed?: (e) => ReactNode
+  render: (props: T) => Promise<ReactNode>;
+  props?: T;
+  componentWhenLoading?: ReactNode;
+  componentProducerWhenLoadingFailed?: (e) => ReactNode;
 }
 
 @observer

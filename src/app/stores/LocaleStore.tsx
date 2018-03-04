@@ -102,6 +102,9 @@ export class LocaleStore {
     let fallbackContent = this.fallbackLanguage.definitions;
     let onFallback = false;
     for (const key of id.split(idSeparator)) {
+      if (typeof content === 'undefined') {
+        throw new RangeError(`unidentified id ${id}.`);
+      }
       if (key in content) {
         if (!onFallback) {
           fallbackContent = fallbackContent[key];
@@ -113,6 +116,9 @@ export class LocaleStore {
         content = fallbackContent[key];
         onFallback = true;
       }
+    }
+    if (typeof content !== "string") {
+      throw new RangeError(`id ${id} does not refer to a string.`)
     }
     return content;
   };

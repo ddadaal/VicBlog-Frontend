@@ -24,7 +24,7 @@ export class LikePanelComponent extends React.Component<LikePanelProps, any> {
           login: <span className={localStyle["login-link"]} onClick={this.props.loginButtonOnClick}>
                     <LocaleMessage id={"article.like.loginLink"}/>
                   </span>
-                }}/>;
+        }}/>;
 
       case LikeState.NotLiked:
         return <LocaleMessage id={"article.like.notLiked.description"}/>;
@@ -37,15 +37,12 @@ export class LikePanelComponent extends React.Component<LikePanelProps, any> {
 
 
   render() {
-    return <Sticky>
-      {(sticky) => {
-        return <div className={style(localStyle.panel, {[localStyle.sticky]: sticky})}>
-          <LikeButton state={this.props.state} onClick={this.props.likeButtonOnClick} likeCount={this.props.likeCount}/>
-          <p>
-            {this.constructDescription()}
-          </p>
-        </div>
-      }}
-    </Sticky>;
+    return <div className={localStyle.panel}>
+      <LikeButton state={this.props.state} onClick={this.props.likeButtonOnClick} likeCount={this.props.likeCount}/>
+      <p>
+        {this.constructDescription()}
+      </p>
+    </div>
+
   }
 }

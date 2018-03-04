@@ -17,7 +17,7 @@ export class User {
     this.token = token;
   }
 
-  static parse(obj: any) {
+  static fromJson(obj: any) {
     return new User(obj.name, obj.role, obj.token);
   }
 }

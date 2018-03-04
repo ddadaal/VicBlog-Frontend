@@ -59,7 +59,7 @@ export class UserStore {
       const user = ui.localStorage.getItem("user");
       if (user) {
         try {
-          this.user = User.parse(JSON.parse(user));
+          this.user = User.fromJson(JSON.parse(user));
         } catch (ignored) {
         }
       }

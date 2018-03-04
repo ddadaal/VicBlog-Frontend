@@ -36,7 +36,7 @@ export class ArticleStore {
     if (ok) {
       return {
         fetchTime: moment(),
-        article: response
+        article: Article.fromJson(response)
       };
     } else if (isNetworkError) {
       throw {type: ArticleFetchErrorType.NetworkError, error: error}

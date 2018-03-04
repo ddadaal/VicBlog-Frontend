@@ -9,6 +9,6 @@ export const APIs = {
   comments: `${APIROOTURL}/Comments`,
   upload: `${APIROOTURL}/upload`,
   like: `${APIROOTURL}/Likes`,
-  didLike: `${APIROOTURL}/Likes/DidILike`,
+  queryLiked: `${APIROOTURL}/Likes/QueryLiked`,
   likeHistory: `${APIROOTURL}/Likes/History`,
 };

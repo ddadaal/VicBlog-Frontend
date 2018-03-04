@@ -7,8 +7,8 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaTags from 'react-icons/lib/fa/tags';
 
 import { LocaleDate, LocaleMessage } from "../../Common/Locale";
-import style from '../../style';
 import { Tag } from "../../Common/Tag";
+import { Tooltip } from "../../Common/Tooltip";
 
 interface ArticleMetaProps {
   article: Article,
@@ -16,11 +16,9 @@ interface ArticleMetaProps {
 }
 
 function Item(props: { icon: ReactNode, tooltipTextId: string, children: ReactNode }) {
-  return <span className={style("w3-tooltip")} style={{paddingRight: "20px"}}>
-    {props.icon}
-    <span className={style("w3-text","w3-tag","w3-animate-opacity")}><LocaleMessage id={props.tooltipTextId}/></span>
-    {props.children}
-  </span>
+  return <Tooltip beforeTooltip={props.icon} afterTooltip={props.children} style={{paddingRight: "20px"}}>
+    {props.tooltipTextId}
+  </Tooltip>
 }
 
 export class ArticleMeta extends React.Component<ArticleMetaProps, any> {
@@ -34,7 +32,7 @@ export class ArticleMeta extends React.Component<ArticleMetaProps, any> {
         <LocaleDate formatId={"article.dateFormat"} input={article.lastEditedTime}/>
       </Item>
       <Item icon={<FaUser size={20}/>} tooltipTextId={"article.author"}>
-        <span>{article.username}</span>
+        <span>{article.author}</span>
       </Item>
       <Item icon={<FaTags size={20}/>} tooltipTextId={"article.tags"}>
         {article.tags.map(x => <Tag key={x} text={x}/>)}

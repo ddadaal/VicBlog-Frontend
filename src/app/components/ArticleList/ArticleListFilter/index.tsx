@@ -9,12 +9,9 @@ import { Localize } from "../../Common/Locale/Localize";
 
 
 interface ArticleListFilterProps {
-  [STORE_ARTICLE_LIST]?: ArticleListStore
+  tags: string[]
 }
 
-
-@inject(STORE_ARTICLE_LIST)
-@observer
 export class ArticleListFilter extends React.Component<ArticleListFilterProps, any> {
 
   @observable titleText: string = "";

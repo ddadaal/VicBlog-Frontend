@@ -14,8 +14,20 @@
   },
   "footer": {
     "codeProudlyByVicCrubs": "由 {viccrubs} 强力编写",
-    "themedWith": "由 {w3css} 和 {fabric} 强势驱动",
-    "frontend": "前端版本 {build}. 构建于 {buildTime}. 部署于 {frontendDeployment}.",
+    "comma": "，",
+    "goToGithubRepo": "去GitHub仓库",
+    "frontend": {
+      "version": "前端版本 {version}",
+      "deployedOn": "部署于 {deployment}",
+      "buildTime": "构建于 {buildTime}",
+      "by": "使用 {react}，{w3css} 和 {fabric} 构建前端"
+    },
+    "backend": {
+      "version": "后端版本 {version}",
+      "deployedOn": "部署于 {deployment}",
+      "buildTime": "构建于 {buildTime}",
+      "by": "使用 {aspnetcore} 构建后端"
+    },
     "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ"
   },
   "loginModal": {
@@ -76,6 +88,13 @@
       "createTimeRange": "创建时间范围",
       "lastEditTimeRange": "最后更新时间范围",
       "minLikes": "最少赞"
+    },
+    "order": {
+      "lastEditTimeLatestFirst": "最后编辑时间从最近到更早",
+      "lastEditTimeEarliestFirst": "最后编辑时间从最早到更近",
+      "submitTimeLatestFirst": "提交时间从最近到更早",
+      "submitTimeEarliestFirst": "提交时间从最早到更近",
+      "likeMostFirst": "喜欢数从多到少"
     }
   },
   "article": {
@@ -103,6 +122,9 @@
         "description": "很高兴你能喜欢这篇文章！"
       },
       "loginLink": "登录"
+    },
+    "comment": {
+      "title": "评论"
     }
 
   },

@@ -32,10 +32,9 @@ export class ArticleLinks extends React.Component<ArticleLinksProps, {}> {
     return <div>
       <p>
         <FaBookmark size={20}/>
-        &nbsp;
-        <b>
+        <span style={{marginLeft: "5px"}}><b>
           <LocaleMessage id={"article.toc"}/>
-        </b>
+        </b></span>
       </p>
       {titles.map(x => <Link key={x.slug} node={x}/>)}
     </div>;

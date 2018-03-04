@@ -1,33 +1,38 @@
 import * as React from "react";
 import { STORE_ARTICLE_LIST } from "../../constants/stores";
-import { ArticleListStore } from "../../stores";
 import { inject, observer } from "mobx-react";
 import style from '../style';
-import { ArticleListItem } from "./ArticleListItem";
-import { LocaleMessage } from "../Common/Locale";
+import * as localStyle from './style.css';
+import { ArticleList } from "../../models/Article";
+import { ArticleListFilter } from "./ArticleListFilter";
+import { ArticleListContent } from "./ArticleListContent";
+import { observable } from "mobx";
 
-interface ArticleListProps {
-  [STORE_ARTICLE_LIST]?: ArticleListStore
+interface ArticleListPageContentProps {
+  articleList: ArticleList;
+  lastUpdateTime: Date;
+  tags: string[];
+  refresh: () => void
 }
+
 
 @inject(STORE_ARTICLE_LIST)
 @observer
-export class ArticleList extends React.Component<ArticleListProps, any> {
+export class ArticleListPageContent extends React.Component<ArticleListPageContentProps, any> {
 
-  componentDidMount() {
-    const articleList = this.props[STORE_ARTICLE_LIST];
-    articleList.startFetch();
-  }
+  @observable title: string = "";
+  @observable tags: string[] = [];
+
+
 
   render() {
-    const articleList = this.props[STORE_ARTICLE_LIST];
-    if (!articleList.fetched) {
-      return <div className={style("w3-container")}>
-        <h3><LocaleMessage id={"articleList.loading"}/></h3>
-      </div>;
-    }
-    return <div className={style("w3-container")}>
-      {articleList.list.map(x => <ArticleListItem brief={x} key={x.id}/>)}
+    return <div className={style("w3-row",localStyle.container)}>
+      <div className={style("w3-col","m3","w3-mobile", localStyle.left)}>
+        <ArticleListFilter tags={this.props.tags}/>
+      </div>
+      <div className={style("w3-rest","w3-mobile", localStyle.right)}>
+        <ArticleListContent list={this.props.articleList} />
+      </div>
     </div>
   }
 }

@@ -14,8 +14,20 @@
   },
   "footer": {
     "codeProudlyByVicCrubs": "Coded Proudly by {viccrubs}",
-    "themedWith": "Themed with {w3css} and {fabric}",
-    "frontend": "Frontend build {build}. Built at {buildTime}. Deployed on {frontendDeployment}.",
+    "comma": ", ",
+    "goToGithubRepo": "Go to GitHub Repository",
+    "frontend": {
+      "version": "Frontend version {version}",
+      "deployedOn": "Deployed on {deployment}",
+      "buildTime": "Built at {buildTime}",
+      "by": "Powered by {react}，{w3css} and {fabric}"
+    },
+    "backend": {
+      "version": "Backend version {version}",
+      "deployedOn": "Deployed on {deployment}",
+      "buildTime": "Built at {buildTime}",
+      "by": "Powered by {aspnetcore}"
+    },
     "dateFormat": "YYYY/M/D HH:mm:ss ZZ"
   },
   "loginModal": {
@@ -76,6 +88,13 @@
       "createTimeRange": "Create time range",
       "lastEditTimeRange": "Last edited time range",
       "minLikes": "Minimum like count"
+    },
+    "order": {
+      "lastEditTimeLatestFirst": "Latest Last Edited Time First",
+      "lastEditTimeEarliestFirst": "Earliest Last Edited Time First",
+      "submitTimeLatestFirst": "Latest Submit Time First",
+      "submitTimeEarliestFirst": "Earliest Submit Time First",
+      "likeMostFirst": "Most Likes First"
     }
   },
   "article": {
@@ -103,9 +122,12 @@
         "description": "Glad you like this article! :D"
       },
       "loginLink": "Login"
+    },
+    "comment": {
+      "title": "Comments"
     }
-
   },
+
   "markdownReader": {
     "copyCode": "Copy the code"
   }

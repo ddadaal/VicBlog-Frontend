@@ -1,7 +1,8 @@
 import { action, computed, observable, runInAction } from "mobx";
-import { ArticleBrief } from "../models/Article";
+import { ArticleBrief, ArticleList } from "../models/Article";
 import { APIs } from "../api/ApiDefinition";
 import { NetworkStore } from "./NetworkStore";
+import * as moment from "moment";
 
 enum ArticleListFetchErrorType {
   NetworkError, Unknown
@@ -16,40 +17,39 @@ export interface ArticleListFetchNetworkError extends ArticleListFetchError {
   error: any
 }
 
-export enum ArticleListFetchState {
-  Standby, Fetching, Fetched
-}
+const updateThresholdMinutes = 60;
 
 export class ArticleListStore {
-  @observable.ref list: ArticleBrief[] = null;
+  @observable.ref list: ArticleList = null;
 
   lastUpdated: Date;
-  @observable fetchState: ArticleListFetchState = ArticleListFetchState.Standby;
 
-  @computed get fetched() {
-    return this.fetchState === ArticleListFetchState.Fetched;
+  async fetchList() {
+    if (this.isOutdated) {
+      const list = await this.remoteFetch();
+      this.lastUpdated = new Date();
+      runInAction(() => {
+        this.list = list;
+      })
+    }
+    return this.list;
   }
 
-  async remoteFetch(): Promise<ArticleBrief[]> {
+  private get isOutdated() {
+    return !this.lastUpdated || moment().diff(this.lastUpdated, "minutes") >= updateThresholdMinutes;
+  }
+
+  async remoteFetch(): Promise<ArticleList> {
     const url = `${APIs.articles}`;
     const {statusCode, response, isNetworkError, error, ok} = await NetworkStore.fetch(url);
 
     if (ok) {
-      return response;
+      return ArticleList.fromJson(response);
     } else if (isNetworkError) {
       throw {type: ArticleListFetchErrorType.NetworkError, error: error}
     } else {
       throw { type: ArticleListFetchErrorType.Unknown };
     }
   }
-
-  @action startFetch =  async () => {
-    this.fetchState = ArticleListFetchState.Fetching;
-    this.list = await this.remoteFetch();
-    runInAction("article list fetch complete", () => {
-      this.lastUpdated = new Date();
-      this.fetchState = ArticleListFetchState.Fetched;
-    });
-  };
 
 }

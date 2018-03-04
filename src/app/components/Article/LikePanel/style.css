@@ -1,25 +1,10 @@
 
-.sticky {
-    position: fixed;
-    top: 100px;
-    width: 16.66%;
-}
-
 .panel {
     text-align: center;
 }
 
-@media (max-width: 992px) {
-    .panel {
-        position: initial;
-        top: initial;
-        width: initial;
-    }
-}
-
 
 .login-link:hover {
-    text-decoration: underline;
     cursor: pointer;
 }
 

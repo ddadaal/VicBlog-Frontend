@@ -28,7 +28,7 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
   @observable iLiked: boolean = false;
 
   get articleId() {
-    return this.props.article.id;
+    return this.props.article.articleId;
   }
 
   get token() {
@@ -65,12 +65,12 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
 
   @action async fetchLikeStatus() {
 
-    const url = APIs.didLike;
+    const url = NetworkStore.appendQueryString(APIs.queryLiked, {articleId: this.articleId});
     const {statusCode, ok, error, isNetworkError, response} = await NetworkStore.fetch(url, HttpMethod.GET, null, this.token);
 
     if (ok) {
       runInAction(() => {
-        this.iLiked = response;
+        this.iLiked = response.didLike;
       })
     }
   }

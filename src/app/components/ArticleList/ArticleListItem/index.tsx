@@ -5,6 +5,7 @@ import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
 import { LocaleDate, LocaleMessage } from "../../Common/Locale";
 import { Tag } from "../../Common/Tag";
+import * as localStyle from './style.css';
 
 interface ArticleListItemProps {
   brief: ArticleBrief,
@@ -12,7 +13,9 @@ interface ArticleListItemProps {
 }
 
 function PHeader(props: {id: string}) {
-  return <span style={{fontWeight: "bold"}}><LocaleMessage id={props.id}/>&emsp;</span>;
+  return <span className={localStyle["info-header"]}>
+    <LocaleMessage id={props.id}/>
+  </span>;
 }
 
 
@@ -23,7 +26,7 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
 
   jumpTo = () => {
     const router = this.props[STORE_ROUTER];
-    router.jumpTo(`/articles/${this.props.brief.id}`);
+    router.jumpTo(`/articles/${this.props.brief.articleId}`);
   };
 
   render() {
@@ -55,7 +58,7 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
       </p>
       <p>
         <PHeader id={"articleList.author"}/>
-        {brief.username}
+        {brief.author}
       </p>
       <hr/>
     </div>

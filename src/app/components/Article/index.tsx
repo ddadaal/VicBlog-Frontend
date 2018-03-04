@@ -1,31 +1,41 @@
 import * as React from "react";
 import { FetchedArticle } from "../../stores/ArticleStore";
 import style from '../../components/style';
+import * as localStyle from './style.css';
 import { ArticleContent } from "./ArticleContent";
 import { ArticleHeader } from "./ArticleHeader";
 import { ArticleOverview } from "./ArticleOverview";
 import { LikePanel } from "./LikePanel";
+import { CommentPanel } from "./CommentPanel";
+import { Sticky } from "../Common/Sticky";
 
-interface ArticleContentPageProps {
+interface ArticlePageContentProps {
   article: FetchedArticle;
 }
 
-export class ArticleContentPage extends React.Component<ArticleContentPageProps, any> {
+export class ArticlePageContent extends React.Component<ArticlePageContentProps, any> {
   render() {
-
+    const { article } = this.props.article;
     return <div>
-      <ArticleHeader article={this.props.article.article}/>
+      <ArticleHeader article={article}/>
       <hr/>
-      <div className={style("w3-col","l2","w3-hide-medium","w3-hide-small")}>
+      <div className={style("w3-col", "l2", "w3-hide-medium", "w3-hide-small")}>
         <p/> {/*keeps the width when the ArticleOverview becomes absolute position*/}
-        <ArticleOverview content={this.props.article.article.content}/>
+        <ArticleOverview content={article.content}/>
       </div>
-      <div className={style("w3-col","l8")}>
-        <ArticleContent article={this.props.article.article}/>
+      <div className={style("w3-col", "l8")}>
+        <ArticleContent article={article}/>
       </div>
-      <div className={style("w3-col","l2")}>
+      <div className={style("w3-col", "l2")}>
         <hr className={style("w3-hide-large")}/>
-        <LikePanel article={this.props.article.article}/>
+        <Sticky>
+          {isSticky => {
+            return <div className={style({[localStyle.sticky]: isSticky})}>
+              <LikePanel article={article}/>
+              <CommentPanel article={article}/>
+            </div>;
+          }}
+        </Sticky>
       </div>
     </div>;
   }

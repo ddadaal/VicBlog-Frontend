@@ -2,6 +2,7 @@ import { Language, LanguageDefinition } from "../internationalization";
 import { action, computed, observable, runInAction } from "mobx";
 import * as React from "react";
 import { cloneElement, ReactNode } from "react";
+import { STORE_LOCALE } from "../constants/stores";
 
 const idSeparator = '.';
 
@@ -131,4 +132,8 @@ export class LocaleStore {
     });
 
   };
+}
+
+export interface LocaleStoreProps {
+  [STORE_LOCALE]?: LocaleStore;
 }

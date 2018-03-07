@@ -9,6 +9,7 @@ import {
   PageConfig
 } from "../pages";
 import { action, computed } from "mobx";
+import { STORE_ROUTER } from "../constants/stores";
 
 export class RouterStore extends BaseRouterStore {
   constructor(history?: History) {
@@ -45,4 +46,8 @@ export class RouterStore extends BaseRouterStore {
   @action jumpTo404 = () => {
     this.jumpTo(notFoundPageConfig.path);
   };
+}
+
+export interface RouterStoreProps {
+  [STORE_ROUTER]?: RouterStore
 }

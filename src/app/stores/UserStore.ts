@@ -1,6 +1,7 @@
 import { action, computed, observable } from "mobx";
 import { User, UserRole } from "../models/User";
 import { ui } from "./UiUtil";
+import { STORE_LOCALE, STORE_USER } from "../constants/stores";
 
 export interface LoginResult {
   token: string,
@@ -65,4 +66,8 @@ export class UserStore {
       }
     }
   }
+}
+
+export interface UserStoreProps {
+  [STORE_USER]?: UserStore
 }

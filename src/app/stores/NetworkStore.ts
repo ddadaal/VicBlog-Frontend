@@ -25,6 +25,7 @@ export class NetworkResponse<T> {
     this.statusCode = statusCode;
     this.response = response;
     this.error = error;
+    console.log(this);
   }
 }
 
@@ -35,8 +36,7 @@ export class NetworkStore {
   }
 
 
-  static async fetch<T = any>
-  (url: string, method: HttpMethod = HttpMethod.GET, payload?: any, token?: string): Promise<NetworkResponse<T>> {
+  static async fetch<T = any>(url: string, method: HttpMethod = HttpMethod.GET, payload?: any, token?: string): Promise<NetworkResponse<T>> {
     const authHeader = token ? {"Authorization": `Bearer ${token}`} : {};
     try {
       const res = await fetch(url, {
@@ -47,7 +47,6 @@ export class NetworkStore {
         },
         body: payload
       });
-      console.log(res);
       const json = await res.json();
       return new NetworkResponse(res.status, json);
     } catch (e) {

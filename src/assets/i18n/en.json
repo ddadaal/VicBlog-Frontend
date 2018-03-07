@@ -81,20 +81,28 @@
     "commentCount": "Comments",
     "author": "Author",
     "dateFormat": "YYYY/M/D HH:mm:ss ZZ",
-    "filter": {
-      "title": "Filter",
+    "filterAndSort": {
+      "title": "Filter And Sort",
       "textsInTitle": "Texts in title",
       "tags": "Tags",
       "createTimeRange": "Create time range",
       "lastEditTimeRange": "Last edited time range",
-      "minLikes": "Minimum like count"
+      "minLikes": "Minimum like count",
+      "update":"Update",
+      "clear":"Clear"
+    },
+    "fetchError": {
+      "networkError": "Network error occurred.",
+      "unknownError":"Unknown error occurred.",
+      "retry": "Retry"
     },
     "order": {
-      "lastEditTimeLatestFirst": "Latest Last Edited Time First",
-      "lastEditTimeEarliestFirst": "Earliest Last Edited Time First",
-      "submitTimeLatestFirst": "Latest Submit Time First",
-      "submitTimeEarliestFirst": "Earliest Submit Time First",
-      "likeMostFirst": "Most Likes First"
+      "LastEditTimeLatestFirst": "Latest Last Edited Time First",
+      "LastEditTimeEarliestFirst": "Earliest Last Edited Time First",
+      "CreateTimeLatestFirst": "Latest Submit Time First",
+      "CreateTimeEarliestFirst": "Earliest Submit Time First",
+      "LikeMostFirst": "Most Likes First",
+      "LikeLeastFirst":"Fewest Likes First"
     }
   },
   "article": {

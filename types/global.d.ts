@@ -11,3 +11,6 @@ declare module '*.svg' {
 
 
 
+declare type ClassType<T> = {
+  [P in keyof T]?: T[P];
+}

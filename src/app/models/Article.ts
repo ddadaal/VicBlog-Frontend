@@ -7,12 +7,19 @@ export class ArticleList {
   pagingInfo: PagingInfo;
   list: ArticleBrief[];
 
-  static fromJson(json: any) {
+  static fromJson(json: ClassType<ArticleList>) {
     const list = new ArticleList();
 
     list.pagingInfo = PagingInfo.fromJson(json.pagingInfo);
     list.list = json.list.map(ArticleBrief.fromJson);
     return list;
+  }
+
+  static get newInstance() {
+    return ArticleList.fromJson({
+      pagingInfo: PagingInfo.newInstance,
+      list: []
+    });
   }
 }
 

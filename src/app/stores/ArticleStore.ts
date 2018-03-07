@@ -2,6 +2,7 @@ import { Article } from "../models";
 import * as moment from 'moment';
 import { APIs } from "../api/ApiDefinition";
 import { NetworkStore } from "./NetworkStore";
+import { STORE_ARTICLE, STORE_LOCALE } from "../constants/stores";
 
 export interface FetchedArticle {
   fetchTime: moment.Moment,
@@ -63,4 +64,8 @@ export class ArticleStore {
   }
 
 
+}
+
+export interface ArticleStoreProps {
+  [STORE_ARTICLE]?: ArticleStore;
 }

@@ -48,7 +48,7 @@ export class LoginAlertPanel extends React.Component<LoginAlertPanelProps, any> 
       }
     }
 
-    return <AlertPanel clearError={this.props.clearError}>
+    return <AlertPanel onCloseButtonClicked={this.props.clearError}>
       <h3>
         <LocaleMessage id={"loginModal.loginFailed"}/>
       </h3>

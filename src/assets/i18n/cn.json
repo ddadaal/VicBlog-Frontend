@@ -81,20 +81,28 @@
     "commentCount": "评论数",
     "author": "作者",
     "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ",
-    "filter": {
-      "title": "筛选",
+    "filterAndSort": {
+      "title": "筛选和排序",
       "textsInTitle": "标题包含文字",
       "tags": "标签",
       "createTimeRange": "创建时间范围",
       "lastEditTimeRange": "最后更新时间范围",
-      "minLikes": "最少赞"
+      "minLikes": "最少赞",
+      "update":"更新",
+      "clear":"清空"
+    },
+    "fetchError": {
+      "networkError": "网络错误",
+      "unknownError":"不明错误",
+      "retry": "重新加载"
     },
     "order": {
-      "lastEditTimeLatestFirst": "最后编辑时间从最近到更早",
-      "lastEditTimeEarliestFirst": "最后编辑时间从最早到更近",
-      "submitTimeLatestFirst": "提交时间从最近到更早",
-      "submitTimeEarliestFirst": "提交时间从最早到更近",
-      "likeMostFirst": "喜欢数从多到少"
+      "LastEditTimeLatestFirst": "最后编辑时间从最近到更早",
+      "LastEditTimeEarliestFirst": "最后编辑时间从最早到更近",
+      "CreateTimeLatestFirst": "创建时间从最近到更早",
+      "CreateTimeEarliestFirst": "创建时间从最早到更近",
+      "LikeMostFirst": "喜欢数从多到少",
+      "LikeLeastFirst":"喜欢数从少到多"
     }
   },
   "article": {

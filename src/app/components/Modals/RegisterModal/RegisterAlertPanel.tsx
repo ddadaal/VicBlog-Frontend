@@ -43,7 +43,7 @@ export class RegisterAlertPanel extends React.Component<RegisterAlertPanelProps,
         break;
     }
 
-    return <AlertPanel clearError={this.props.clearError}>
+    return <AlertPanel onCloseButtonClicked={this.props.clearError}>
       <h3>
         <LocaleMessage id={"registerModal.registerFailed"}/>
       </h3>

@@ -2,7 +2,6 @@ import { History } from 'history';
 import { RouterStore as BaseRouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import {
   aboutPageConfig,
-  articleListPageConfig,
   getPage,
   homePageConfig,
   notFoundPageConfig,
@@ -25,10 +24,6 @@ export class RouterStore extends BaseRouterStore {
 
   @action jumpTo = (path: string) => {
     this.push(path);
-  };
-
-  @action jumpToArticleList = () => {
-    this.jumpTo(articleListPageConfig.path)
   };
 
   @action jumpToHome = () => {

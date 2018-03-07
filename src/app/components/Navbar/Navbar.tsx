@@ -6,7 +6,7 @@ import style from '../style';
 import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
 import * as localStyle from './style.css';
-import { aboutPageConfig, articleListPageConfig, homePageConfig, PageConfig } from "../../pages";
+import { aboutPageConfig, homePageConfig, PageConfig } from "../../pages";
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { LocaleMessage } from "../Common/Locale";
 import { Sticky } from "../Common/Sticky";
@@ -67,7 +67,6 @@ export class Navbar extends React.Component<any, any> {
             <LanguageSelector sticky={sticky}
                               navbarHeight={this.dom ? this.dom.getBoundingClientRect().height : 0}/>
             <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={true}/>
-            <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig} visibleOnBigScreen={true}/>
             <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={true}/>
 
             <UserIndicator notLoggedInStyle={style("w3-bar-item", "w3-button", "w3-hide-small", "w3-right")}
@@ -79,8 +78,6 @@ export class Navbar extends React.Component<any, any> {
           <div className={style("w3-bar-block", "w3-blue", "w3-hide-large", "w3-hide-medium")}
                style={{display: this.collapsed ? "block" : "none"}}>
             <NavbarLinkItem textId={"header.home"} pathConfig={homePageConfig} visibleOnBigScreen={false}/>
-            <NavbarLinkItem textId={"header.articleList"} pathConfig={articleListPageConfig}
-                            visibleOnBigScreen={false}/>
             <NavbarLinkItem textId={"header.about"} pathConfig={aboutPageConfig} visibleOnBigScreen={false}/>
             <UserIndicator notLoggedInStyle={style("w3-bar-item", "w3-button")}
                            loggedInStyle={style("w3-dropdown-hover")}/>

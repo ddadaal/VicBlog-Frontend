@@ -2,7 +2,7 @@ import * as React from "react";
 import { STORE_ARTICLE_LIST } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
 import style from '../style';
-import * as localStyle from './style.css';
+import * as localStyle from '../../pages/Home/style.css';
 import { ArticleList } from "../../models/Article";
 import { ArticleListFilterPanel } from "./ArticleListFilterPanel";
 import { ArticleListContent } from "./ArticleListContent";
@@ -13,6 +13,7 @@ import { ArticleListStoreProps } from "../../stores/ArticleListStore";
 import { ArticleListFetchingContent } from "./ArticleListFetchingContent";
 import { ArticleListFetchErrorContent } from "./ArticleListFetchErrorContent";
 import { PageIndicator } from "./PageIndicator";
+import { ProfilePanel } from "../ProfilePanel";
 
 interface ArticleListPageContentProps extends ArticleListStoreProps {
 
@@ -20,7 +21,7 @@ interface ArticleListPageContentProps extends ArticleListStoreProps {
 
 @inject(STORE_ARTICLE_LIST)
 @observer
-class ListContent extends React.Component<ArticleListStoreProps, any> {
+export class ArticleListPageContent extends React.Component<ArticleListPageContentProps, any> {
 
   retry = () => {
     this.props[STORE_ARTICLE_LIST].fetchPage();
@@ -44,19 +45,3 @@ class ListContent extends React.Component<ArticleListStoreProps, any> {
   }
 }
 
-
-export class ArticleListPageContent extends React.Component<ArticleListPageContentProps, any> {
-
-
-  render() {
-    return <div className={style("w3-row",localStyle.container)}>
-      <div className={style("w3-col","m3","w3-mobile", localStyle.left)}>
-        <ArticleListFilterPanel />
-      </div>
-      <div className={style("w3-rest","w3-mobile", localStyle.right)}>
-        <ListContent />
-        <PageIndicator/>
-      </div>
-    </div>
-  }
-}

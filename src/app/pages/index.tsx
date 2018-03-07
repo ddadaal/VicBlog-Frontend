@@ -31,18 +31,6 @@ export const articlePageConfig: PageConfig = {
   exact: true
 };
 
-export const articleListPageConfig: PageConfig = {
-  isThisPage: (pathname: string): boolean => {
-    return pathname === "/articles";
-  },
-  render: async (props) => {
-    const ArticleListPage = (await import("./ArticleList")).ArticleListPage;
-    return <ArticleListPage/>;
-  },
-  path: "/articles",
-  exact: true
-};
-
 export const homePageConfig: PageConfig = {
   path: "/",
   render: async (props) => {
@@ -70,7 +58,6 @@ export const aboutPageConfig: PageConfig = {
 export const pageConfigs: PageConfig[] = [
   aboutPageConfig,
   homePageConfig,
-  articleListPageConfig,
   articlePageConfig,
   notFoundPageConfig
 ];

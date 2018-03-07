@@ -33,7 +33,7 @@ export enum ArticleListOrder
 
 const updateThresholdMinutes = 60;
 
-const defaultPageSize = 1;
+const defaultPageSize = 10;
 
 async function remoteFetch(pageSize: number, pageNumber: number, filter: ArticleFilter, order: ArticleListOrder): Promise<ArticleList> {
   const url = NetworkStore.appendQueryString(`${APIs.articles}`,
@@ -59,7 +59,7 @@ export class ArticleListStore {
 
   @observable pageInfo: PagingInfo = PagingInfo.newInstance;
 
-  nextFilter: ArticleFilter = null;
+  @observable nextFilter: ArticleFilter = ArticleFilter.newInstance({});
   currentFilter: ArticleFilter = null;
 
   @observable nextListOrder: ArticleListOrder = ArticleListOrder.LastEditTimeLatestFirst;
@@ -76,10 +76,6 @@ export class ArticleListStore {
     return this.fetchedLists.get(this.currentPageNumber);
   }
 
-  @action setFilter(obj: ClassType<ArticleFilter>) {
-    this.nextFilter = ArticleFilter.newInstance(obj);
-  }
-
   @action setPageNumber(number: number) {
     this.nextPageNumber = number;
   }
@@ -92,7 +88,7 @@ export class ArticleListStore {
     return this.nextListOrder === this.currentListOrder;
   }
 
-  private get filterMatches() {
+  @computed get filterMatches() {
     return articleFilterMatches(this.nextFilter, this.currentFilter);
   }
 
@@ -117,7 +113,7 @@ export class ArticleListStore {
         this.fetchedLists.set(this.nextPageNumber, response.list);
 
         this.currentPageNumber = this.nextPageNumber;
-        this.currentFilter = this.nextFilter;
+        this.currentFilter = this.nextFilter.clone();
         this.currentListOrder = this.nextListOrder;
 
         this.fetchStatus = FetchStatus.Fetched;

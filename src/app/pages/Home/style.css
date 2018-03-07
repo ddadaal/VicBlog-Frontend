@@ -1,0 +1,48 @@
+.left {
+    order: 1
+}
+
+.middle {
+    order: 2
+}
+
+.right {
+    order: 3
+}
+
+.container {
+    margin: auto;
+}
+
+@media (max-width: 992px) {
+    .left { order: 3}
+    .right { order: 2}
+    .middle { order: 1}
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.vertical-divider{
+    clear: both;
+    position: relative;
+}
+
+.vertical-divider:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.vertical-divider .w3-col:not(:first-child):after, .vertical-divider .w3-col:not(:first-child):after{
+    background: #DDDDDD;
+    bottom: 0;
+    content: " ";
+    margin-left: -10px;
+    position: absolute;
+    top: 0;
+    width: 1px;
+}

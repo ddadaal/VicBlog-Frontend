@@ -17,11 +17,11 @@ interface ArticleMetaProps {
 
 function Item(props: { icon: ReactNode, tooltipTextId: string, children: ReactNode }) {
   return <Tooltip beforeTooltip={props.icon} afterTooltip={props.children} style={{paddingRight: "20px"}}>
-    {props.tooltipTextId}
+    <LocaleMessage id={props.tooltipTextId}/>
   </Tooltip>
 }
 
-export class ArticleMeta extends React.Component<ArticleMetaProps, any> {
+export class ArticleMetaRow extends React.Component<ArticleMetaProps, any> {
   render() {
     const {article} = this.props;
     return <div>

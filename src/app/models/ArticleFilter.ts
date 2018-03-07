@@ -60,6 +60,10 @@ export class ArticleFilter {
       ;
   }
 
+  clone() {
+    return ArticleFilter.newInstance(this);
+  }
+
   static newInstance(obj: ClassType<ArticleFilter>) {
     return Object.assign(new ArticleFilter(), obj);
   }

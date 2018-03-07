@@ -12,6 +12,15 @@
       "logout": "Logout"
     }
   },
+  "profile": {
+    "selfIntro": {
+      "title": "About me",
+      "description":"I am a what"
+    },
+    "contact": {
+      "title": "Contact me"
+    }
+  },
   "footer": {
     "codeProudlyByVicCrubs": "Coded Proudly by {viccrubs}",
     "comma": ", ",

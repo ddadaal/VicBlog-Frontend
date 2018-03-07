@@ -29,7 +29,7 @@
       "version": "前端版本 {version}",
       "deployedOn": "部署于 {deployment}",
       "buildTime": "构建于 {buildTime}",
-      "by": "使用 {react}，{w3css} 和 {fabric} 构建前端"
+      "by": "使用 {react} 和 {w3css} 构建前端"
     },
     "backend": {
       "version": "后端版本 {version}",

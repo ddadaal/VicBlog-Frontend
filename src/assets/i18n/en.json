@@ -29,7 +29,7 @@
       "version": "Frontend version {version}",
       "deployedOn": "Deployed on {deployment}",
       "buildTime": "Built at {buildTime}",
-      "by": "Powered by {react}，{w3css} and {fabric}"
+      "by": "Powered by {react} and {w3css}"
     },
     "backend": {
       "version": "Backend version {version}",

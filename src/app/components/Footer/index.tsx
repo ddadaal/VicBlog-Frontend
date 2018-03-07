@@ -61,8 +61,7 @@ export class Footer extends React.Component<FooterProps, any> {
         <p>
           <LocaleMessage id={"footer.frontend.by"} replacements={{
             react: <a href={react}>React</a>,
-            w3css: <a href={w3cssurl}>W3.CSS</a>,
-            fabric: <a href={fabric}>Office UI Fabric</a>
+            w3css: <a href={w3cssurl}>W3.CSS</a>
           }}/>
           <LocaleMessage id={"footer.comma"}/>
           <LocaleMessage id={"footer.frontend.deployedOn"} replacements={{

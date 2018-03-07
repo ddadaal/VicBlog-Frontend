@@ -24,45 +24,48 @@ export interface ArticleFetchNetworkError extends ArticleFetchError {
 
 const refetchTimeThresholdMinutes = 120;
 
+async function remoteFetch(id: number): Promise<FetchedArticle> {
+  const url = `${APIs.articles}/${id}`;
+  const {statusCode, response, error, ok, isNetworkError} = await NetworkStore.fetch(url);
+  if (ok) {
+    return {
+      fetchTime: moment(),
+      article: Article.fromJson(response)
+    };
+  } else if (isNetworkError) {
+    throw {type: ArticleFetchErrorType.NetworkError, error: error}
+  } else if (statusCode === 404) {
+    throw {type: ArticleFetchErrorType.NotFound};
+  } else {
+    throw {type: ArticleFetchErrorType.Unknown}
+  }
+}
+
+function needRefetch(date: moment.Moment) {
+  return moment().diff(date, "minutes") > refetchTimeThresholdMinutes;
+}
+
 export class ArticleStore {
+
   fetchedArticles: Map<number, FetchedArticle> = new Map();
 
-  needRefetch(date: moment.Moment) {
-    return moment().diff(date, "minutes") > refetchTimeThresholdMinutes;
-  }
 
-  async remoteFetch(id: number): Promise<FetchedArticle> {
-    const url = `${APIs.articles}/${id}`;
-    const {statusCode, response, error, ok, isNetworkError} = await NetworkStore.fetch(url);
-    if (ok) {
-      return {
-        fetchTime: moment(),
-        article: Article.fromJson(response)
-      };
-    } else if (isNetworkError) {
-      throw {type: ArticleFetchErrorType.NetworkError, error: error}
-    } else if (statusCode === 404) {
-      throw {type: ArticleFetchErrorType.NotFound};
-    } else {
-      throw {type: ArticleFetchErrorType.Unknown}
-    }
-  }
+
 
   async fetchArticle(id: number): Promise<FetchedArticle> {
     if (this.fetchedArticles.has(id)) {
       const article = this.fetchedArticles.get(id);
-      if (!this.needRefetch(article.fetchTime)) {
+      if (!needRefetch(article.fetchTime)) {
         return article;
       }
     }
 
     // fetch from backend
-    const article = await this.remoteFetch(id);
+    const article = await remoteFetch(id);
     this.fetchedArticles.set(id, article);
     return article;
 
   }
-
 
 }
 

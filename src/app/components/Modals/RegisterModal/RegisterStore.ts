@@ -6,7 +6,7 @@ export enum RegisterState {
 }
 
 export enum RegisterErrorType {
-  UsernameConflict, ServerError, NetworkError
+  UsernameConflict, ServerError, NetworkError, Server500Error
 }
 
 type RegisterResult = LoginResult;
@@ -51,8 +51,11 @@ export class RegisterStore {
     runInAction("requestRegister failed", async () => {
       this.state = RegisterState.Standby;
     });
-    if (error.isServerError) {
+    console.log(error);
+    if (error.isNetworkError) {
       throw {type: RegisterErrorType.NetworkError, error: error.info} as RegisterNetworkError;
+    } else if (error.isServerError) {
+      throw {type: RegisterErrorType.Server500Error};
     } else if (statusCode === 409) {
       throw {type: RegisterErrorType.UsernameConflict};
     } else {

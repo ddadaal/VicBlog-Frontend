@@ -2,6 +2,7 @@ import * as React from "react";
 import { AlertPanel } from "../AlertPanel";
 import { RegisterError, RegisterErrorType, RegisterServerError } from "./RegisterStore";
 import { LocaleMessage } from "../../Common/Locale";
+import { ReactNode } from "react";
 
 interface RegisterAlertPanelProps {
   error: RegisterError,
@@ -16,8 +17,11 @@ export class RegisterAlertPanel extends React.Component<RegisterAlertPanelProps,
       return null;
     }
 
-    const alertMessage = [] as Array<string | JSX.Element>;
+    const alertMessage = [] as Array<ReactNode>;
     switch (error.type) {
+      case RegisterErrorType.Server500Error:
+        alertMessage.push(<LocaleMessage id={"registerModal.server500Error"} key={"registerModal.server500Error"}/>);
+        break;
       case RegisterErrorType.UsernameConflict:
         alertMessage.push(
           <LocaleMessage key={"usernameConflict"} id={"registerModal.usernameConflict"}/>

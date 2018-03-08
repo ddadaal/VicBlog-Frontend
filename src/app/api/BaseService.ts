@@ -57,7 +57,7 @@ export abstract class BaseService {
           'Content-Type': 'application/json',
           ...authHeader
         },
-        body: fetchInfo.payload
+        body: JSON.stringify(fetchInfo.payload)
       });
       const json = await res.json();
       return new NetworkResponse(res.status, json);

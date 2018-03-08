@@ -69,6 +69,7 @@
     "usernameConflict": "Username has been token. Please select another one.",
     "networkError": "Network error. Please check your network connection.",
     "serverError": "Server responds with error(s):",
+    "server500Error": "Server responds with 500 error. It's our fault. Please try again later.",
     "complete": {
       "congrats": "Congratulations!",
       "content": "You have just registered. Click \"Click to Login\" to login as {username}.",

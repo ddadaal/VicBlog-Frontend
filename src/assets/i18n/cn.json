@@ -69,6 +69,7 @@
     "usernameConflict": "用户名已经被占用。请重新输入。",
     "networkError": "网络错误，请检查网络连接。",
     "serverError": "服务器错误：",
+    "server500Error": "服务器发生了错误，是我们的问题，请稍后再试。",
     "complete": {
       "congrats": "祝贺!",
       "content": "注册完成！点击“登录”，以{username}的身份登录！",

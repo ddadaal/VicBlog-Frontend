@@ -5,11 +5,11 @@ import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
 import { FormInput } from "../FormInput";
-import { ModalBottom } from "../Modal";
-import { LoginResult } from "../../../stores/UserStore";
 import { LocaleMessage } from "../../Common/Locale";
 import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
+import { LoginResult } from "../../../api/UserService";
+import { ModalBottom } from "../Modal";
 
 export interface RegisteringContentProps {
   onRegisterSuccess: (result: LoginResult) => void,

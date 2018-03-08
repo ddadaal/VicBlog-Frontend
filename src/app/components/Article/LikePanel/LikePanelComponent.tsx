@@ -1,10 +1,8 @@
 import * as React from "react";
 import { LikeState } from "./index";
-import { Sticky } from "../../Common/Sticky";
 import { LikeButton } from "./LikeButton";
 import * as localStyle from './style.css';
 import { LocaleMessage } from "../../Common/Locale";
-import style from '../../style';
 
 interface LikePanelProps {
   state: LikeState,

@@ -1,7 +1,5 @@
-import { APIs } from "../../../api/ApiDefinition";
-import { encryptPassword, LoginResult } from "../../../stores/UserStore";
 import { action, observable, runInAction } from "mobx";
-import { NetworkStore } from "../../../stores/NetworkStore";
+import { LoginResult, UserService } from "../../../api/UserService";
 
 
 export enum LoginState {
@@ -29,6 +27,8 @@ export interface LoginNetworkError extends LoginError {
   error: any
 }
 
+const service = new UserService();
+
 export class LoginStore {
   @observable state: LoginState;
 
@@ -43,12 +43,10 @@ export class LoginStore {
 
   @action public requestLogin = async (username: string, password: string): Promise<LoginResult> => {
     this.state = LoginState.LoggingIn;
-    password = encryptPassword(password);
-    const getUrl = NetworkStore.appendQueryString(APIs.login, {username, password});
 
-    const res = await NetworkStore.fetch(getUrl);
+    const res = await service.login(username, password);
 
-    const {statusCode, response, error,ok, isNetworkError} = res;
+    const {statusCode, response, error, ok} = res;
 
     if (ok) {
       return runInAction("requestLogin success", () => {
@@ -61,8 +59,8 @@ export class LoginStore {
     });
     if (statusCode === 401) {
       throw {type: LoginErrorType.WrongCredential};
-    } else if (isNetworkError) {
-      throw {type: LoginErrorType.NetworkError, error: error};
+    } else if (error.isNetworkError) {
+      throw {type: LoginErrorType.NetworkError, error: error.info};
     } else {
       throw {type: LoginErrorType.ServerError, messages: response.errorDescriptions} as LoginServerError;
     }

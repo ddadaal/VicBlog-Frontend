@@ -1,8 +1,7 @@
 import { Article } from "../models";
 import * as moment from 'moment';
-import { APIs } from "../api/ApiDefinition";
-import { NetworkStore } from "./NetworkStore";
-import { STORE_ARTICLE, STORE_LOCALE } from "../constants/stores";
+import { STORE_ARTICLE } from "../constants/stores";
+import { ArticleService } from "../api/ArticleService";
 
 export interface FetchedArticle {
   fetchTime: moment.Moment,
@@ -10,7 +9,7 @@ export interface FetchedArticle {
 }
 
 export enum ArticleFetchErrorType {
-  NotFound, NetworkError, Unknown
+  NotFound, NetworkError, Unknown, ServerError
 }
 
 export interface ArticleFetchError {
@@ -24,33 +23,15 @@ export interface ArticleFetchNetworkError extends ArticleFetchError {
 
 const refetchTimeThresholdMinutes = 120;
 
-async function remoteFetch(id: number): Promise<FetchedArticle> {
-  const url = `${APIs.articles}/${id}`;
-  const {statusCode, response, error, ok, isNetworkError} = await NetworkStore.fetch(url);
-  if (ok) {
-    return {
-      fetchTime: moment(),
-      article: Article.fromJson(response)
-    };
-  } else if (isNetworkError) {
-    throw {type: ArticleFetchErrorType.NetworkError, error: error}
-  } else if (statusCode === 404) {
-    throw {type: ArticleFetchErrorType.NotFound};
-  } else {
-    throw {type: ArticleFetchErrorType.Unknown}
-  }
-}
-
 function needRefetch(date: moment.Moment) {
   return moment().diff(date, "minutes") > refetchTimeThresholdMinutes;
 }
 
+const service = new ArticleService();
+
 export class ArticleStore {
 
   fetchedArticles: Map<number, FetchedArticle> = new Map();
-
-
-
 
   async fetchArticle(id: number): Promise<FetchedArticle> {
     if (this.fetchedArticles.has(id)) {
@@ -61,7 +42,7 @@ export class ArticleStore {
     }
 
     // fetch from backend
-    const article = await remoteFetch(id);
+    const article = await service.fetchArticle(id);
     this.fetchedArticles.set(id, article);
     return article;
 

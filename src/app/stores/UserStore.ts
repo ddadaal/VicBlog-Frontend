@@ -1,20 +1,8 @@
 import { action, computed, observable } from "mobx";
 import { User, UserRole } from "../models/User";
 import { ui } from "./UiUtil";
-import { STORE_LOCALE, STORE_USER } from "../constants/stores";
-
-export interface LoginResult {
-  token: string,
-  username: string,
-  role: string
-}
-
-
-
-export function encryptPassword(password: string) {
-  return password;
-}
-
+import { STORE_USER } from "../constants/stores";
+import { LoginResult } from "../api/UserService";
 
 
 export class UserStore {

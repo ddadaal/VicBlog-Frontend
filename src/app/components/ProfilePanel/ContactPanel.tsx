@@ -1,7 +1,6 @@
 import * as React from "react";
-import { LocaleMessage } from "../Common/Locale";
 import { ReactNode } from "react";
-import style from '../style';
+import { LocaleMessage } from "../Common/Locale";
 import MdEmail from "react-icons/lib/md/email";
 import FaGithubSquare from "react-icons/lib/fa/github-square";
 import FaQq from "react-icons/lib/fa/qq";

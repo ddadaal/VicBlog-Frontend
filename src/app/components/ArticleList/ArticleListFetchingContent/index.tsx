@@ -1,5 +1,4 @@
 import React from "react";
-import style from "../../style";
 import { LocaleMessage } from "../../Common/Locale";
 import { Spin } from "../../Common/Spin";
 

@@ -1,15 +1,15 @@
-import { action, computed, observable, runInAction, transaction } from "mobx";
-import { ArticleBrief, ArticleList } from "../models/Article";
-import { APIs } from "../api/ApiDefinition";
-import { NetworkStore } from "./NetworkStore";
+import { action, computed, observable, runInAction } from "mobx";
+import { ArticleBrief } from "../models/Article";
+
 import * as moment from "moment";
 import { ArticleFilter, articleFilterMatches } from "../models/ArticleFilter";
 import { FetchStatus } from "./index";
 import { PagingInfo } from "../models/PagingInfo";
 import { STORE_ARTICLE_LIST } from "../constants/stores";
+import { ArticleListService } from "../api/ArticleListService";
 
 export enum ArticleListFetchErrorType {
-  NetworkError, Unknown
+  NetworkError, Unknown, ServerError
 }
 
 export interface ArticleListFetchError {
@@ -33,21 +33,9 @@ export enum ArticleListOrder
 
 const updateThresholdMinutes = 60;
 
-const defaultPageSize = 10;
+const defaultPageSize = 1;
 
-async function remoteFetch(pageSize: number, pageNumber: number, filter: ArticleFilter, order: ArticleListOrder): Promise<ArticleList> {
-  const url = NetworkStore.appendQueryString(`${APIs.articles}`,
-    {...filter, order: order, pageNumber: pageNumber, pageSize: pageSize});
-  const { response, isNetworkError, error, ok} = await NetworkStore.fetch(url);
-
-  if (ok) {
-    return ArticleList.fromJson(response);
-  } else if (isNetworkError) {
-    throw {type: ArticleListFetchErrorType.NetworkError, error: error};
-  } else {
-    throw {type: ArticleListFetchErrorType.Unknown};
-  }
-}
+const service = new ArticleListService();
 
 export class ArticleListStore {
   @observable lastUpdated: Date;
@@ -94,18 +82,9 @@ export class ArticleListStore {
 
   @action completeRefetch = async () => {
     this.fetchStatus = FetchStatus.Fetching;
-    this.nextPageNumber = 1;
-
-    if (this.orderMatches && this.filterMatches) {
-      this.currentPageNumber = 1;
-
-      this.fetchStatus = FetchStatus.Fetched;
-      return;
-    }
-
 
     try {
-      const response = await remoteFetch(defaultPageSize, this.nextPageNumber, this.nextFilter, this.nextListOrder);
+      const response = await service.fetchArticleList(defaultPageSize, this.nextPageNumber, this.nextFilter, this.nextListOrder);
       runInAction(() => {
         this.lastUpdated = new Date();
         this.pageInfo = response.pagingInfo;
@@ -132,7 +111,7 @@ export class ArticleListStore {
     if (this.pageNeedRefetch(this.nextPageNumber)) {
       this.fetchStatus = FetchStatus.Fetching;
       try {
-        const response = await remoteFetch(defaultPageSize, this.nextPageNumber, this.currentFilter, this.currentListOrder);
+        const response = await service.fetchArticleList(defaultPageSize, this.nextPageNumber, this.currentFilter, this.currentListOrder);
         runInAction(() => {
           this.lastUpdated = new Date();
           this.pageInfo = response.pagingInfo;
@@ -164,7 +143,6 @@ export class ArticleListStore {
   private get isOutdated() {
     return !this.lastUpdated || moment().diff(this.lastUpdated, "minutes") >= updateThresholdMinutes;
   }
-
 
 }
 

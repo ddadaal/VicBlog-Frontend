@@ -1,7 +1,5 @@
 import { action, observable, runInAction } from "mobx";
-import { encryptPassword, LoginResult, } from "../../../stores/UserStore";
-import { APIs } from "../../../api/ApiDefinition";
-import { HttpMethod, NetworkStore } from "../../../stores/NetworkStore";
+import { LoginResult, UserService } from "../../../api/UserService";
 
 export enum RegisterState {
   Standby, Registering, Registered
@@ -28,6 +26,7 @@ export interface RegisterNetworkError extends RegisterError {
   error: any
 }
 
+const service = new UserService();
 
 export class RegisterStore {
   @observable state: RegisterState = RegisterState.Standby;
@@ -38,11 +37,11 @@ export class RegisterStore {
 
   @action requestRegister = async (username: string, password: string): Promise<RegisterResult> => {
     this.state = RegisterState.Registering;
-    password = encryptPassword(password);
-    const getUrl = APIs.register;
 
-    const res = await NetworkStore.fetch(getUrl, HttpMethod.POST, JSON.stringify({username, password}));
-    const {statusCode, response, error, ok, isNetworkError} = res;
+
+    const res = await service.register(username, password);
+
+    const {statusCode, response, error, ok} = res;
     if (ok) {
       return runInAction("requestRegister success", () => {
         this.state = RegisterState.Registered;
@@ -52,8 +51,8 @@ export class RegisterStore {
     runInAction("requestRegister failed", async () => {
       this.state = RegisterState.Standby;
     });
-    if (isNetworkError) {
-      throw {type: RegisterErrorType.NetworkError, error: error} as RegisterNetworkError;
+    if (error.isServerError) {
+      throw {type: RegisterErrorType.NetworkError, error: error.info} as RegisterNetworkError;
     } else if (statusCode === 409) {
       throw {type: RegisterErrorType.UsernameConflict};
     } else {

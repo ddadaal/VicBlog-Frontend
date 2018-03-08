@@ -5,9 +5,7 @@ import { inject, observer } from "mobx-react";
 import { RouterStore } from "../../stores";
 import FaGithub from 'react-icons/lib/fa/github';
 import { LocaleDate, LocaleMessage } from "../Common/Locale";
-import { Tooltip } from "../Common/Tooltip";
 import * as localStyle from './style.css';
-import { ReactNode } from "react";
 import { Localize } from "../Common/Locale/Localize";
 
 declare var FRONT_END_BUILD: string;

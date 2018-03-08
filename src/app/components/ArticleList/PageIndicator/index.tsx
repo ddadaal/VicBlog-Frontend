@@ -1,9 +1,9 @@
 import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
 import * as React from "react";
+import { ReactNode } from "react";
 import style from '../../style';
 import { inject, observer } from "mobx-react";
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { ReactNode } from "react";
 
 export function PageLink(props: { active: boolean, pageNumber: number, onClick: () => void, content?: ReactNode, disabled?: boolean }) {
   return <button disabled={props.disabled == undefined ? false : props.disabled}

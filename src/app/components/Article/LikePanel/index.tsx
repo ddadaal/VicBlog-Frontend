@@ -1,31 +1,35 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import { STORE_UI, STORE_USER } from "../../../constants/stores";
-import { UiStore, UserStore } from "../../../stores";
+import { STORE_ARTICLE_LIST, STORE_UI, STORE_USER } from "../../../constants/stores";
+import { ArticleListStore, UiStore, UserStore } from "../../../stores";
 import { action, computed, observable, runInAction } from "mobx";
 import { Article } from "../../../models";
-import { APIs } from "../../../api/ApiDefinition";
-import { HttpMethod, NetworkStore } from "../../../stores/NetworkStore";
 import { LikePanelComponent } from "./LikePanelComponent";
+import { LikeService } from "../../../api/LikeService";
+import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
 
 interface LikePanelContainerProps {
   article: Article;
   [STORE_USER]?: UserStore;
-  [STORE_UI]?: UiStore
+  [STORE_UI]?: UiStore;
+  [STORE_ARTICLE_LIST]?: ArticleListStore;
 
 }
+
+
 
 export const enum LikeState { // to use it as a key of a map
   NotLogin, NotLiked, Liked
 }
 
 
-@inject(STORE_USER,STORE_UI)
+@inject(STORE_USER,STORE_UI, STORE_ARTICLE_LIST)
 @observer
 export class LikePanel extends React.Component<LikePanelContainerProps, any> {
 
   @observable likeCount: number = 0;
   @observable iLiked: boolean = false;
+  private readonly service = new LikeService(this.props.article.articleId);
 
   get articleId() {
     return this.props.article.articleId;
@@ -54,47 +58,50 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
   }
 
   @action async fetchLikeCount() {
-    const url = NetworkStore.appendQueryString(APIs.like, {articleId: this.articleId});
-    const {statusCode, ok, error, isNetworkError, response} = await NetworkStore.fetch(url);
-    if (ok) {
+    try {
+      const count = await this.service.fetchLikeCount();
       runInAction(() => {
-        this.likeCount = response;
+        this.likeCount = count;
       });
+    } catch (e) {
+
     }
   }
 
   @action async fetchLikeStatus() {
-
-    const url = NetworkStore.appendQueryString(APIs.queryLiked, {articleId: this.articleId});
-    const {statusCode, ok, error, isNetworkError, response} = await NetworkStore.fetch(url, HttpMethod.GET, null, this.token);
-
-    if (ok) {
+    try {
+      const result = await this.service.fetchLikeStatus(this.token);
       runInAction(() => {
-        this.iLiked = response.didLike;
-      })
+        this.iLiked = result
+      });
+    } catch (e) {
+
     }
   }
 
   @action async dislike() {
     this.iLiked = false; // optimistic update
-    const url = NetworkStore.appendQueryString(APIs.like, {articleId: this.articleId});
-    const {ok, response} = await NetworkStore.fetch(url, HttpMethod.DELETE, null, this.token);
-    if (ok) {
+    try {
+      const newCount = await this.service.unlike(this.token);
       runInAction(() => {
-        this.likeCount = response;
+        this.likeCount = newCount;
+        this.props[STORE_ARTICLE_LIST].completeRefetch();
       });
+    } catch (e) {
 
     }
   }
 
   @action async like() {
     this.iLiked = true;
-    const url = NetworkStore.appendQueryString(APIs.like, {articleId: this.articleId});
-    const {statusCode, ok, error, isNetworkError, response} = await NetworkStore.fetch(url, HttpMethod.POST, null, this.token);
-    if (ok) {
+    try {
+      const newCount = await this.service.like(this.token);
       runInAction(() => {
-        this.likeCount = response;
+        this.likeCount = newCount;
+        this.props[STORE_ARTICLE_LIST].completeRefetch();
       });
+    } catch (e) {
+
     }
   }
 

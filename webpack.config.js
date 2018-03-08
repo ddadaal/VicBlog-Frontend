@@ -118,19 +118,6 @@ module.exports = {
                 importLoaders: 1,
                 localIdentName: '[local]__[hash:base64:5]'
               }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: [
-                  require('postcss-import')({addDependencyTo: webpack}),
-                  require('postcss-url')(),
-                  require('postcss-cssnext')(),
-                  require('postcss-reporter')(),
-                  require('postcss-browser-reporter')({disabled: isProduction}),
-                ]
-              }
             }
           ]
         })
@@ -149,6 +136,10 @@ module.exports = {
     stats: {
       warnings: false
     },
+    inline: true,
+    port: 3000,
+    open: true,
+    historyApiFallback: true
   },
   node: {
     // workaround for webpack-dev-server issue 

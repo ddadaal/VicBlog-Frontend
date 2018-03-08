@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { LoginResult } from "../../../stores/UserStore";
 import style from "../../style";
 import { ModalBottom } from "../Modal";
 import { Checkbox } from "../../Common/Checkbox";
@@ -8,6 +7,7 @@ import { inject, observer } from "mobx-react";
 import { LocaleMessage } from "../../Common/Locale";
 import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
+import { LoginResult } from "../../../api/UserService";
 
 interface RegisteredContentProps {
   loginResult: LoginResult;

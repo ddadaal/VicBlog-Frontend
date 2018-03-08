@@ -3,10 +3,9 @@ import { STORE_ARTICLE_LIST } from "../../../constants/stores";
 import { ArticleListStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import style from '../../style';
-import { action, computed, observable, runInAction } from "mobx";
+import { action } from "mobx";
 import { LocaleMessage } from "../../Common/Locale";
 import { Localize } from "../../Common/Locale/Localize";
-import { ArticleFilter } from "../../../models/ArticleFilter";
 import { OrderIndicator } from "./OrderIndicator";
 import FaFilter from "react-icons/lib/fa/filter";
 
@@ -27,8 +26,15 @@ export class ArticleListFilterPanel extends React.Component<ArticleListFilterPan
     this.filter.titleText = e.target.value;
   };
 
-  @action onFilter = () => {
-    this.props[STORE_ARTICLE_LIST].completeRefetch();
+  @action onFilter = async () => {
+    const store = this.props[STORE_ARTICLE_LIST];
+
+    if (!(store.orderMatches && store.filterMatches)) {
+      await store.completeRefetch();
+    }
+    store.setPageNumber(1);
+    store.fetchPage();
+
   };
 
   @action clearFilter = () => {

@@ -1,7 +1,6 @@
 import React from "react";
 import { LocaleMessage } from "../../Common/Locale";
 import { ArticleListFetchError, ArticleListFetchErrorType } from "../../../stores/ArticleListStore";
-import { ArticleListContent } from "../ArticleListContent";
 import { AlertPanel } from "../../Modals/AlertPanel";
 import style from '../../style';
 
@@ -17,6 +16,9 @@ export class ArticleListFetchErrorContent extends React.Component<ArticleListFet
     switch (this.props.error.type) {
       case ArticleListFetchErrorType.NetworkError:
         message = <LocaleMessage id={"articleList.fetchError.networkError"}/>;
+        break;
+      case ArticleListFetchErrorType.ServerError:
+        message = "Server Error";
         break;
       case ArticleListFetchErrorType.Unknown:
         message = <LocaleMessage id={"articleList.fetchError.unknownError"}/>;

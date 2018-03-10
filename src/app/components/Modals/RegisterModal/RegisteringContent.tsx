@@ -5,7 +5,7 @@ import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
 import { FormInput } from "../FormInput";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
 import { LoginResult } from "../../../api/UserService";

@@ -2,7 +2,7 @@ import * as React from "react";
 import { LikeState } from "./index";
 import { LikeButton } from "./LikeButton";
 import * as localStyle from './style.css';
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 
 interface LikePanelProps {
   state: LikeState,

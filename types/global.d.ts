@@ -9,8 +9,11 @@ declare module '*.svg' {
   export default svg;
 }
 
-
+declare module "*.json" {
+  const value: any;
+  export default value;
+}
 
 declare type ClassType<T> = {
-  [P in keyof T]?: T[P];
+  [P in keyof T]: T[P];
 }

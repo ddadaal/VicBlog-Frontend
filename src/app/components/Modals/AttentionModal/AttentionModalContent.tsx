@@ -5,7 +5,7 @@ import style from '../../style';
 import { MarkdownDisplay } from "../../Common/MarkdownDisplay";
 
 interface AttentionModalContentProps {
-  language: LanguageSetting
+  language: LanguageSetting;
 }
 
 export class AttentionModalContent extends React.Component<AttentionModalContentProps, {}> {
@@ -14,7 +14,7 @@ export class AttentionModalContent extends React.Component<AttentionModalContent
     const res = await import(`../../../../assets/registerAttention/${this.props.language.filename}.md`);
 
     return <div className={style("w3-container")}>
-      <MarkdownDisplay content={res}/>
+      <MarkdownDisplay content={res.default}/>
     </div>;
   };
 

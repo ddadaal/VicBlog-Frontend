@@ -8,7 +8,7 @@ import { action, observable } from "mobx";
 import * as localStyle from './style.css';
 import { aboutPageConfig, homePageConfig, PageConfig } from "../../pages";
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
-import { LocaleMessage } from "../Common/Locale";
+import { LocaleMessage } from "../../internationalization/components";
 import { Sticky } from "../Common/Sticky";
 import { NavbarModals } from "./NavbarModals";
 

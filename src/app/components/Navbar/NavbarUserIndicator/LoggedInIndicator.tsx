@@ -3,7 +3,7 @@ import style from '../../style';
 import { inject, observer } from "mobx-react";
 import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 
 export interface LoggedInIndicatorProps {
   [STORE_USER]? :UserStore,

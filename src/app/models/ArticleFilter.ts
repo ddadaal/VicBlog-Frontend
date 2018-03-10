@@ -64,7 +64,7 @@ export class ArticleFilter {
     return ArticleFilter.newInstance(this);
   }
 
-  static newInstance(obj: ClassType<ArticleFilter>) {
+  static newInstance(obj: Partial<ArticleFilter>) {
     return Object.assign(new ArticleFilter(), obj);
   }
 }

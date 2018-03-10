@@ -1,5 +1,5 @@
 import React from "react";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { ArticleListFetchError, ArticleListFetchErrorType } from "../../../stores/ArticleListStore";
 import { AlertPanel } from "../../Modals/AlertPanel";
 import style from '../../style';

@@ -2,7 +2,7 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { Spin } from "../../Common/Spin";
 
 export interface NotLoggedInIndicatorProps {

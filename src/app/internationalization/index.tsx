@@ -1,21 +1,10 @@
-export interface Language {
-  id: string,
-  name: string,
-  languagePrompt: string,
-  definitionName: string
+import { LocaleStore } from './LocaleStore';
+import { STORE_LOCALE } from '../constants/stores';
+
+export { LocaleStore } from './LocaleStore';
+
+export { LocaleDate, LocaleMessage, Localize } from './components';
+
+export interface LocaleStoreProps {
+  [STORE_LOCALE]?: LocaleStore;
 }
-
-
-export const cn: Language = {
-  id: "zh-CN",
-  name: "简体中文",
-  languagePrompt: "现在的语言：简体中文。点击切换语言。",
-  definitionName: "cn"
-};
-
-export const en: Language = {
-  id: "en-US",
-  name: "English",
-  languagePrompt: "Current Language: English. Click to change.",
-  definitionName: "en"
-};

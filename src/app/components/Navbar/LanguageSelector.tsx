@@ -1,24 +1,24 @@
 import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
-import { LocaleStore } from "../../stores";
 import * as React from "react";
 import { CSSProperties } from "react";
 import FaLanguage from 'react-icons/lib/fa/language';
 import style from "../style";
-import { Language } from "../../internationalization";
 import { action, observable, runInAction } from "mobx";
+import { LocaleStore } from "../../internationalization";
+import { Language } from "../../internationalization/LocaleStore";
 
 interface LanguageSelectorProps {
-  [STORE_LOCALE]?: LocaleStore,
-  sticky: boolean,
-  navbarHeight: number
+  [STORE_LOCALE]?: LocaleStore;
+  sticky: boolean;
+  navbarHeight: number;
 }
 
 interface LanguageSelectorItemProps {
-  [STORE_LOCALE]?: LocaleStore,
-  language: Language,
-  switchTo: (id: string) => void,
-  switchingTo: boolean
+  [STORE_LOCALE]?: LocaleStore;
+  language: Language;
+  switchTo: (id: string) => void;
+  switchingTo: boolean;
 }
 
 @inject(STORE_LOCALE)

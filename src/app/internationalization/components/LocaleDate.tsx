@@ -1,12 +1,14 @@
-import { STORE_LOCALE } from "../../../constants/stores";
+
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import * as moment from 'moment';
 import { MomentInput } from 'moment';
-import { LocaleStore } from "../../../stores";
+import { LocaleStore } from "../LocaleStore";
+import { LocaleStoreProps } from "..";
+import { STORE_LOCALE } from "../../constants/stores";
 
-interface LocaleDateProps {
-  [STORE_LOCALE]?: LocaleStore,
+
+interface LocaleDateProps extends LocaleStoreProps {
   formatId: string,
   input: MomentInput,
   isUtc?: boolean

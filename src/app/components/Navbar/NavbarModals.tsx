@@ -4,7 +4,7 @@ import * as React from "react";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { Modal } from "../Modals/Modal";
 import style from '../style';
-import { LocaleMessage } from "../Common/Locale";
+import { LocaleMessage } from "../../internationalization/components";
 import { UiStore } from "../../stores";
 
 export class LoadingModal extends React.Component<{},{}> {

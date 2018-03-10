@@ -4,8 +4,7 @@ import { ArticleListStore } from "../../../stores";
 import { inject, observer } from "mobx-react";
 import style from '../../style';
 import { action } from "mobx";
-import { LocaleMessage } from "../../Common/Locale";
-import { Localize } from "../../Common/Locale/Localize";
+import { LocaleMessage, Localize } from "../../../internationalization/components";
 import { OrderIndicator } from "./OrderIndicator";
 import FaFilter from "react-icons/lib/fa/filter";
 

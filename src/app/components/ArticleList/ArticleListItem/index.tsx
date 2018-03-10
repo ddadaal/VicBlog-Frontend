@@ -3,9 +3,9 @@ import { ArticleBrief } from "../../../models/Article";
 import { inject, observer } from "mobx-react";
 import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
-import { LocaleDate, LocaleMessage } from "../../Common/Locale";
 import { Tag } from "../../Common/Tag";
 import * as localStyle from './style.css';
+import { LocaleDate, LocaleMessage } from "../../../internationalization/components";
 
 interface ArticleListItemProps {
   brief: ArticleBrief,

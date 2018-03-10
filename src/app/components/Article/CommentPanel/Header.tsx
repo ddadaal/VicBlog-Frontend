@@ -1,6 +1,6 @@
 import * as React from "react";
 import FaCommentO from 'react-icons/lib/fa/comment-o';
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 
 export class Header extends React.Component<any> {
   render() {

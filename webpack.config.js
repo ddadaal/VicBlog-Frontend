@@ -12,6 +12,7 @@ const blogConfig = require("./blog.config");
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const buildTime = moment();
 
 
@@ -86,14 +87,15 @@ module.exports = {
       // .ts, .tsx
       {
         test: /\.tsx?$/,
-        use: 'ts-loader'
+        use: 'ts-loader',
       },
       // css 
       {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {loader: 'css-loader',
+          {
+            loader: 'css-loader',
               query: {
                 modules: true,
                 sourceMap: !isProduction,

@@ -9,7 +9,7 @@ import { Modal, ModalBottom } from "../Modal";
 import { LoginAlertPanel } from "./LoginAlertPanel";
 import { LoginError, LoginState, LoginStore } from "./LoginStore";
 import { Checkbox } from "../../Common/Checkbox";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { Spin } from "../../Common/Spin";
 
 interface LoginModalProps {

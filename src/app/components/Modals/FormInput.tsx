@@ -1,10 +1,7 @@
 import * as React from "react";
 import { ChangeEventHandler } from "react";
-import { STORE_LOCALE } from "../../constants/stores";
 import { action } from "mobx";
-import { LocaleStore } from "../../stores";
-import { LocaleMessage } from "../Common/Locale";
-import { Localize } from "../Common/Locale/Localize";
+import { LocaleMessage, Localize } from "../../internationalization/components";
 
 interface FormInputProps {
   className: string,
@@ -15,7 +12,6 @@ interface FormInputProps {
   invalidPromptId: string,
   onChange: (e: ChangeEventHandler<HTMLInputElement>) => void,
   value: string,
-  [STORE_LOCALE]?: LocaleStore
 }
 
 export class FormInput extends React.Component<FormInputProps, any> {

@@ -4,7 +4,7 @@ import { ModalBottom } from "../Modal";
 import { Checkbox } from "../../Common/Checkbox";
 import { action, observable } from "mobx";
 import { inject, observer } from "mobx-react";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
 import { LoginResult } from "../../../api/UserService";

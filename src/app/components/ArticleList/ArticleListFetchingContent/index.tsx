@@ -1,5 +1,5 @@
 import React from "react";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { Spin } from "../../Common/Spin";
 
 export class ArticleListFetchingContent extends React.Component<any, any> {

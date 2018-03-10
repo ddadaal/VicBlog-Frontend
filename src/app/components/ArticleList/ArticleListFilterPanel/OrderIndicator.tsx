@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
 import { Dropdown } from "../../Common/Dropdown";
 import style from '../../style';
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { ArticleListOrder, ArticleListStoreProps } from "../../../stores/ArticleListStore";
 
 function OrderItem(props: {id: string, onClick : () => void}) {

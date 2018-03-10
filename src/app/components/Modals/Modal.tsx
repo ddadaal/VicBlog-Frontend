@@ -1,6 +1,6 @@
 import * as React from "react";
 import style from "../style";
-import { LocaleMessage } from "../Common/Locale";
+import { LocaleMessage } from "../../internationalization/components";
 
 interface ModalProps {
   shown?: boolean,

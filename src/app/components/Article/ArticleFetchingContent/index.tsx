@@ -1,8 +1,8 @@
 import { ArticleId } from "../../../models/Article";
 import * as React from "react";
 import style from "../../style";
-import { LocaleMessage } from "../../Common/Locale";
 import { Spin } from "../../Common/Spin";
+import { LocaleMessage } from "../../../internationalization/components";
 
 interface ArticleFetchingContentProps {
   id: ArticleId,

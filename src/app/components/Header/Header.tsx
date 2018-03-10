@@ -1,8 +1,8 @@
 import * as React from "react";
 import style from '../style';
 import * as logoStyle from "./style.css";
-import { LocaleMessage } from "../Common/Locale";
 import { SvgImg } from "../Common/SvgImg";
+import { LocaleMessage } from "../../internationalization/components";
 
 export class Header extends React.Component<any, any> {
 

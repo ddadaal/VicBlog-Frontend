@@ -1,16 +1,27 @@
-import { Language } from "../internationalization";
 import { action, computed, observable, runInAction } from "mobx";
 import * as React from "react";
 import { cloneElement, ReactNode } from "react";
-import { STORE_LOCALE } from "../constants/stores";
+import config from '../../assets/i18n/index.json';
+
+export interface Language {
+  id: string;
+  name: string;
+  acceptedLanguages: string[];
+  definitionFileName: string;
+}
+
+interface LanguageConfig {
+  fallbackId: string,
+  languages: Language[]
+};
 
 const idSeparator = '.';
 
 type LoadedLanguage = Language & { definitions: any }
 
 export class LocaleStore {
-  private availableLanguages: Map<string, Language>;
-  private loadedLanguages: Map<string, LoadedLanguage>;
+  private availableLanguages: Map<string, Language> = new Map();
+  private loadedLanguages: Map<string, LoadedLanguage> = new Map();
 
   @observable.ref currentLanguage: LoadedLanguage;
 
@@ -34,37 +45,26 @@ export class LocaleStore {
       return this.loadedLanguages.get(id);
     }
     const language = this.availableLanguages.get(id);
-    const definitions = await import(`../../assets/i18n/${language.definitionName}.json`);
+    const definitions = await import(`../../assets/i18n/${language.definitionFileName}.json`);
     const loaded = { ...language, definitions: definitions};
     this.loadedLanguages.set(language.id, loaded);
     return loaded;
   };
 
-  public static async init(availableLanguages: Language[], defaultLanguageId : string, fallbackLanguageId: string) {
-    const store = new LocaleStore();
+  private currentBrowserLanguage(fallback: string) {
+    return window ? window.navigator.language : fallback;
+  }
 
-    store.availableLanguages = new Map();
-    store.loadedLanguages = new Map();
 
-    for (const l of availableLanguages) {
-      store.availableLanguages.set(l.id, l);
+  public async init() {
+    for (const l of config.languages) {
+      this.availableLanguages.set(l.id, l);
     }
 
-    store.fallbackLanguage = await store.loadLanguage(fallbackLanguageId);
+    this.fallbackLanguage = await this.loadLanguage(config.fallbackId);
 
-    store.currentLanguage = await store.loadLanguage(defaultLanguageId);
-
-    return runInAction("language initialization complete", () =>{
-      return store;
-    });
-
+    this.currentLanguage = await this.loadLanguage(this.currentBrowserLanguage(config.fallbackId));
   }
-
-
-  private constructor() {
-
-  }
-
 
   public get = (id: string, replacements?: {[s: string]: ReactNode}) : Array<ReactNode> | string => {
     const definition = this.retrieveDefinition(id);
@@ -132,8 +132,4 @@ export class LocaleStore {
     });
 
   };
-}
-
-export interface LocaleStoreProps {
-  [STORE_LOCALE]?: LocaleStore;
 }

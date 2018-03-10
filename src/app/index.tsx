@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router';
-import { ArticleListStore, ArticleStore, LocaleStore, RouterStore, UiStore, UserStore } from './stores';
+import { ArticleListStore, ArticleStore, RouterStore, UiStore, UserStore } from './stores';
 import {
   STORE_ARTICLE,
   STORE_ARTICLE_LIST,
@@ -14,7 +14,7 @@ import {
   STORE_USER
 } from './constants/stores';
 import { switches } from "./routes/routes";
-import { cn, en } from "./internationalization";
+import { LocaleStore } from "./internationalization";
 
 // enable MobX strict mode
 useStrict(true);
@@ -41,13 +41,12 @@ const history = createBrowserHistory();
 const routerStore = new RouterStore(history);
 
 async function resetStore() {
-  const fallbackLanguage = en.id;
-  const userLanguage = window ? window.navigator.language : en.id;
   const userStore = new UserStore();
   const articleListStore = new ArticleListStore();
   const articleStore = new ArticleStore();
   const uiStore = new UiStore();
-  const localeStore = await LocaleStore.init([en, cn], userLanguage, fallbackLanguage);
+  const localeStore = new LocaleStore();
+  await localeStore.init();
 
 
   stores = {

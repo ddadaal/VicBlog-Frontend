@@ -6,7 +6,7 @@ import FaPencilSquare from "react-icons/lib/fa/pencil-square";
 import FaUser from 'react-icons/lib/fa/user';
 import FaTags from 'react-icons/lib/fa/tags';
 
-import { LocaleDate, LocaleMessage } from "../../Common/Locale";
+import { LocaleDate, LocaleMessage } from "../../../internationalization";
 import { Tag } from "../../Common/Tag";
 import { Tooltip } from "../../Common/Tooltip";
 

@@ -1,15 +1,14 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../../constants/stores";
-import { LocaleStore } from "../../../stores";
 import { action, observable } from "mobx";
-
 import style from '../../style';
 import { Modal, ModalBottom } from "../Modal";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import { Dropdown } from "../../Common/Dropdown";
 import { AttentionModalContent } from "./AttentionModalContent";
 import { AttentionModalStore, LanguageSetting } from "./AttentionModalStore";
+import { LocaleStore } from "../../../internationalization";
 
 
 interface TermsModalProps {

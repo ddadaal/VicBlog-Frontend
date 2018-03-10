@@ -1,0 +1,21 @@
+{
+  "fallbackId": "en-US",
+  "languages":[
+    {
+      "id": "zh-CN",
+      "name": "简体中文",
+      "acceptedLanguages": [
+        "zh-CN"
+      ],
+      "definitionFileName": "cn"
+    },
+    {
+      "id": "en-US",
+      "name": "English",
+      "acceptedLanguages": [
+        "en-US"
+      ],
+      "definitionFileName": "en"
+    }
+  ]
+}

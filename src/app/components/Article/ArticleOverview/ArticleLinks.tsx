@@ -2,7 +2,7 @@ import * as React from "react";
 import { getTitleNodes } from "./LinksAnalyzer";
 import { TitleNode } from "../../Common/MarkdownDisplay/slugifier";
 import FaBookmark from "react-icons/lib/fa/bookmark";
-import { LocaleMessage } from "../../Common/Locale";
+import { LocaleMessage } from "../../../internationalization/components";
 import * as localStyle from './style.css';
 
 interface ArticleLinksProps {

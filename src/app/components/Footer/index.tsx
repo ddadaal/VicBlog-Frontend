@@ -4,9 +4,8 @@ import { STORE_ROUTER } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
 import { RouterStore } from "../../stores";
 import FaGithub from 'react-icons/lib/fa/github';
-import { LocaleDate, LocaleMessage } from "../Common/Locale";
 import * as localStyle from './style.css';
-import { Localize } from "../Common/Locale/Localize";
+import { LocaleDate, LocaleMessage, Localize } from "../../internationalization/components";
 
 declare var FRONT_END_BUILD: string;
 declare var FRONT_END_BUILD_TIME: string;

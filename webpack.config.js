@@ -11,8 +11,7 @@ const blogConfig = require("./blog.config");
 
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const buildTime = moment();
 
 
@@ -31,10 +30,13 @@ const basePlugins = [
     FRONT_END_BUILD: JSON.stringify(buildTime.format(blogConfig.buildFormat)),
     FRONT_END_BUILD_TIME: JSON.stringify(buildTime.format())
   }),
-  new ExtractTextPlugin({
-    disable: !isProduction,
-    filename: 'styles.css',
-  }),
+  new MiniCssExtractPlugin({
+    // Options similar to the same options in webpackOptions.output
+    // both options are optional
+    filename: "[name].css",
+    chunkFilename: "[id].css"
+  })
+
 ];
 
 const devPlugins = [
@@ -89,18 +91,16 @@ module.exports = {
       // css 
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
+        use: [
+          MiniCssExtractPlugin.loader,
+          {loader: 'css-loader',
               query: {
                 modules: true,
                 sourceMap: !isProduction,
                 importLoaders: 1,
-                localIdentName: '[local]__[hash:base64:5]'
+                localIdentName: '[local]__[hash:base64:5]',
               }
-          }]})
+          }]
       },
       // static assets 
       { test: /\.html$/, use: 'html-loader' },
@@ -134,7 +134,8 @@ module.exports = {
     historyApiFallback: {
       disableDotRule: true
     },
-    stats: 'minimal'
+    stats: 'minimal',
+    open: true
   },
 
 };

@@ -1,4 +1,4 @@
-import { Language, LanguageDefinition } from "../internationalization";
+import { Language } from "../internationalization";
 import { action, computed, observable, runInAction } from "mobx";
 import * as React from "react";
 import { cloneElement, ReactNode } from "react";
@@ -6,7 +6,7 @@ import { STORE_LOCALE } from "../constants/stores";
 
 const idSeparator = '.';
 
-type LoadedLanguage = Language & { definitions: LanguageDefinition }
+type LoadedLanguage = Language & { definitions: any }
 
 export class LocaleStore {
   private availableLanguages: Map<string, Language>;
@@ -33,10 +33,10 @@ export class LocaleStore {
     if (this.loadedLanguages.has(id)) {
       return this.loadedLanguages.get(id);
     }
-    const l = this.availableLanguages.get(id);
-    const definitions = await import(`../../assets/i18n/${l.definitionName}.json`);
-    const loaded = { ...l, definitions: definitions};
-    this.loadedLanguages.set(l.id, loaded);
+    const language = this.availableLanguages.get(id);
+    const definitions = await import(`../../assets/i18n/${language.definitionName}.json`);
+    const loaded = { ...language, definitions: definitions};
+    this.loadedLanguages.set(language.id, loaded);
     return loaded;
   };
 
@@ -99,7 +99,7 @@ export class LocaleStore {
   };
 
   private retrieveDefinition = (id: string) => {
-    let content = this.definitions as any;
+    let content = this.definitions;
     let fallbackContent = this.fallbackLanguage.definitions;
     let onFallback = false;
     for (const key of id.split(idSeparator)) {
@@ -119,7 +119,7 @@ export class LocaleStore {
       }
     }
     if (typeof content !== "string") {
-      throw new RangeError(`id ${id} does not refer to a string.`)
+      throw new RangeError(`id ${id} does not refer to a string. value: ${content}`)
     }
     return content;
   };

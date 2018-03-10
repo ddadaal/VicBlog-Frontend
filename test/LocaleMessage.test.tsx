@@ -49,7 +49,7 @@
 //     expect(actual).eq(expected);
 //   }
 //
-//   @test test_elementReplacement() {
+//   @test test_elementReplacement() {a
 //     const expected = [ "由 ", <a key={1}/>, " 强力编写"];
 //     const actual = this.store.get("footer.codeProudlyByVicCrubs", {viccrubs: <a/>});
 //     expect(actual).deep.eq(expected);

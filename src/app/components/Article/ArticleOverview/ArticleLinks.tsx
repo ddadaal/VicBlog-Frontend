@@ -16,11 +16,17 @@ interface LinkProps {
 function Link(props: LinkProps) {
   const x = props.node;
   const margin = 16*(x.level-1);
-  return <div style={{wordWrap: "break-word", marginLeft: `${margin}px`}}>
+  return <div className={localStyle.title} style={{marginLeft: `${margin}px`}}>
     <a className={localStyle.link} href={`#${x.slug}`}>
       ·&nbsp;{x.text}
       </a>
     <br/>
+  </div>;
+}
+
+function LinkList(props: {nodes: TitleNode[]}) {
+  return <div>
+    {props.nodes.map(x => <Link key={x.slug} node={x}/>)}
   </div>;
 }
 
@@ -32,11 +38,13 @@ export class ArticleLinks extends React.Component<ArticleLinksProps, {}> {
     return <div>
       <p>
         <FaBookmark size={20}/>
-        <span style={{marginLeft: "5px"}}><b>
-          <LocaleMessage id={"article.toc"}/>
-        </b></span>
+        <span style={{marginLeft: "5px"}}>
+          <b>
+            <LocaleMessage id={"article.toc"}/>
+          </b>
+        </span>
       </p>
-      {titles.map(x => <Link key={x.slug} node={x}/>)}
+      <LinkList nodes={titles}/>
     </div>;
   }
 }

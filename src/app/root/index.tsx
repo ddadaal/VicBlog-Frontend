@@ -6,22 +6,25 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { observer } from "mobx-react";
 import ScrollUpButton from "react-scroll-up-button"
+import { AsyncComponent } from "../routes/AsyncComponent";
 
 export interface BlogAppProps {
 
 }
 
+
+async function renderDevTool() {
+  if (process.env.NODE_ENV !== 'production') {
+    const DevTools = (await import('mobx-react-devtools')).default;
+    return (<DevTools />);
+  } else {
+    return null;
+  }
+}
+
 @observer
 export class BlogApp extends React.Component<BlogAppProps, {}> {
 
-  renderDevTool() {
-    if (process.env.NODE_ENV !== 'production') {
-      const DevTools = require('mobx-react-devtools').default;
-      return (<DevTools />);
-    } else {
-      return null;
-    }
-  };
 
   render() {
     return <div>
@@ -30,7 +33,7 @@ export class BlogApp extends React.Component<BlogAppProps, {}> {
       <Navbar/>
       {this.props.children}
       <Footer/>
-      {this.renderDevTool()}
+      <AsyncComponent render={renderDevTool}/>
     </div>;
   }
 }

@@ -5,6 +5,7 @@ import { ProfilePanel } from "../../components/ProfilePanel";
 import { PageIndicator } from "../../components/ArticleList/PageIndicator";
 import { ArticleListFilterPanel } from "../../components/ArticleList/ArticleListFilterPanel";
 import * as localStyle from './style.css';
+import { ArticleFilter } from "../../models/ArticleFilter";
 
 export class HomePage extends React.Component<any, any> {
 
@@ -20,7 +21,7 @@ export class HomePage extends React.Component<any, any> {
         </div>
       </div>
       <div className={style("w3-col", "l2", "s12", localStyle.right)}>
-        <ArticleListFilterPanel/>
+        <ArticleListFilterPanel />
       </div>
     </div>
   }

@@ -11,3 +11,7 @@
 .link:hover {
     text-decoration: underline;
 }
+
+.title {
+    word-wrap: break-word;
+}

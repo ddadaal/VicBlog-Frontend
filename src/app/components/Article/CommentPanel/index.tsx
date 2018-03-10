@@ -9,9 +9,6 @@ interface CommentPanelProps {
 
 export class CommentPanel extends React.Component<CommentPanelProps> {
 
-
-
-
   render() {
     return <div className={style("w3-container")}>
       <Header/>

@@ -3,7 +3,7 @@ const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 // variables
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.argv.indexOf('-p') >= 0;
 const sourcePath = path.join(__dirname, './src');
 const outPath = path.join(__dirname, './dist');
 const moment = require("moment");
@@ -12,22 +12,11 @@ const blogConfig = require("./blog.config");
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const buildTime = moment();
 
-const basePlugins = [
-  new webpack.LoaderOptionsPlugin({
-    options: {
-      context: sourcePath
-    }
-  }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'vendor.bundle.js',
-    minChunks: Infinity
-  }),
-  new webpack.optimize.AggressiveMergingPlugin(),
 
-  new webpack.optimize.ModuleConcatenationPlugin(),
+const basePlugins = [
   new HtmlWebpackPlugin({
     template: './assets/index.html',
     favicon: './assets/logo.png',
@@ -41,23 +30,25 @@ const basePlugins = [
   new webpack.DefinePlugin({
     FRONT_END_BUILD: JSON.stringify(buildTime.format(blogConfig.buildFormat)),
     FRONT_END_BUILD_TIME: JSON.stringify(buildTime.format())
-  })
+  }),
+  new ExtractTextPlugin({
+    disable: !isProduction,
+    filename: 'styles.css',
+  }),
 ];
 
 const devPlugins = [
   new webpack.DefinePlugin({
     APIROOTURL: JSON.stringify(blogConfig.devBackend)
   }),
-  new ExtractTextPlugin({
-    filename: 'styles.css',
-  }),
-  new webpack.NamedModulesPlugin()
+  
 ];
 
 const prodPlugins = [
   new webpack.DefinePlugin({
     APIROOTURL: JSON.stringify(blogConfig.liveBackend),
   }),
+
   new UglifyJSPlugin(),
 
 ];
@@ -65,22 +56,15 @@ const prodPlugins = [
 const plugins = basePlugins.concat(isProduction ? prodPlugins : devPlugins);
 
 module.exports = {
+  mode: isProduction ? "production" : "development",
   context: sourcePath,
   entry: {
-    main: './index.ts',
-    vendor: [
-      'react',
-      'react-dom',
-      'react-router',
-      'mobx',
-      'mobx-react',
-      'mobx-react-router'
-    ]
+    main: './index.ts'
   },
   output: {
     path: outPath,
-    filename: 'index.bundle.[hash:5].js',
-    chunkFilename: '[name].bundle.[hash:5].js',
+    filename: 'index.[hash:5].js',
+    chunkFilename: '[name].[hash:5].js',
     publicPath: '/'
   },
   target: 'web',
@@ -89,7 +73,10 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx'],
     // Fix webpack's default behavior to not load packages with jsnext:main module
     // (jsnext:main directs not usually distributable es6 format, but es6 sources)
-    mainFields: ['module', 'browser', 'main']
+    mainFields: ['module', 'browser', 'main'],
+    alias: {
+      'app': path.resolve(__dirname, 'src/app/')
+    }
   },
   plugins: plugins,
   module: {
@@ -97,12 +84,7 @@ module.exports = {
       // .ts, .tsx
       {
         test: /\.tsx?$/,
-        use: isProduction
-          ? 'awesome-typescript-loader'
-          : [
-            'react-hot-loader/webpack',
-            'awesome-typescript-loader'
-          ]
+        use: 'ts-loader'
       },
       // css 
       {
@@ -118,33 +100,41 @@ module.exports = {
                 importLoaders: 1,
                 localIdentName: '[local]__[hash:base64:5]'
               }
-            }
-          ]
-        })
+          }]})
       },
       // static assets 
-      {test: /\.html$/, use: 'html-loader'},
-      {test: /\.png$/, use: 'url-loader?limit=10000'},
-      {test: /\.jpg$/, use: 'file-loader'},
-      {test: /\.md$/, use: 'raw-loader'}
-    ],
+      { test: /\.html$/, use: 'html-loader' },
+      { test: /\.png$/, use: 'url-loader?limit=10000' },
+      { test: /\.jpg$/, use: 'file-loader' },
+      { test: /\.md$/, use: 'raw-loader' },
+    ]
   },
-
+  devtool: isProduction ? false : 'cheap-module-eval-source-map',
+  optimization: {
+    splitChunks: {
+      name: true,
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          priority: -10
+        }
+      }
+    },
+    runtimeChunk: true
+  },
   devServer: {
     contentBase: sourcePath,
     hot: true,
-    stats: {
-      warnings: false
-    },
     inline: true,
-    port: 3000,
-    open: true,
-    historyApiFallback: true
+    historyApiFallback: {
+      disableDotRule: true
+    },
+    stats: 'minimal'
   },
-  node: {
-    // workaround for webpack-dev-server issue 
-    // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
-    fs: 'empty',
-    net: 'empty'
-  }
+
 };

@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { RouteComponentProps } from "react-router";
+import { homePageConfig } from "./Home";
+import { aboutPageConfig } from "./About";
+import { articlePageConfig } from "./ArticlePage";
+import { notFoundPageConfig } from "./NotFound";
 
 export interface PageConfig {
   isThisPage :(pathname: string) => boolean;
@@ -7,53 +11,6 @@ export interface PageConfig {
   render: (props: RouteComponentProps<any>) => Promise<JSX.Element>,
   exact: boolean
 }
-
-
-export const notFoundPageConfig: PageConfig =  {
-  path: "",
-  isThisPage: (pathname: string) => true,
-  render: async (props) => {
-    const NotFoundPage = (await import("./NotFound")).NotFoundPage;
-    return <NotFoundPage/>;
-  },
-  exact: false
-};
-
-export const articlePageConfig: PageConfig = {
-  path: "/articles/:id",
-  render: async (props) => {
-    const ArticlePage = (await import("./ArticlePage")).ArticlePage;
-    return <ArticlePage articleId={props.match.params.id}/>;
-  },
-  isThisPage(pathname: string): boolean {
-    return pathname.match("/articles/[0-9]+") != null;
-  },
-  exact: true
-};
-
-export const homePageConfig: PageConfig = {
-  path: "/",
-  render: async (props) => {
-    const HomePage = (await import("./Home")).HomePage;
-    return <HomePage/>;
-  },
-  isThisPage: (pathname: string) => {
-    return pathname === '/';
-  },
-  exact: true
-};
-
-export const aboutPageConfig: PageConfig = {
-  path: "/about",
-  render: async (props) => {
-    const AboutPage = (await import("./About")).AboutPage;
-    return <AboutPage/>;
-  },
-  isThisPage: (pathname: string): boolean => {
-    return pathname.startsWith("/about");
-  },
-  exact: true
-};
 
 export const pageConfigs: PageConfig[] = [
   aboutPageConfig,

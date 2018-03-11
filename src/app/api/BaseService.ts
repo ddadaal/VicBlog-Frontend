@@ -26,11 +26,11 @@ export class NetworkResponse<T> {
 
 
 interface FetchInfo {
-  route?: string,
-  method?: HttpMethod,
-  queryParams?: any,
-  payload?: any,
-  token?: string
+  route?: string;
+  method?: HttpMethod;
+  queryParams?: any;
+  payload?: any;
+  token?: string;
 }
 
 declare var APIROOTURL: string;

@@ -6,17 +6,19 @@ import style from '../style';
 import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
 import * as localStyle from './style.css';
-import { aboutPageConfig, homePageConfig, PageConfig } from "../../pages";
 import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { LocaleMessage } from "../../internationalization/components";
 import { Sticky } from "../Common/Sticky";
 import { NavbarModals } from "./NavbarModals";
+import { PageConfig } from "../../pages";
+import { homePageConfig } from "../../pages/Home";
+import { aboutPageConfig } from "../../pages/About";
 
 interface NavbarLinkItemProps {
-  [STORE_ROUTER]?: RouterStore,
-  textId: string,
-  pathConfig: PageConfig,
-  visibleOnBigScreen: boolean
+  [STORE_ROUTER]?: RouterStore;
+  textId: string;
+  pathConfig: PageConfig;
+  visibleOnBigScreen: boolean;
 }
 
 @inject(STORE_ROUTER)

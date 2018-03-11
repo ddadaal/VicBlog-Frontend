@@ -91,6 +91,8 @@
     "commentCount": "Comments",
     "author": "Author",
     "dateFormat": "YYYY/M/D HH:mm:ss ZZ",
+    "noArticle": "No articles found :(",
+    "pageIndicator": "{count} articles in total",
     "filterAndSort": {
       "title": "Filter And Sort",
       "textsInTitle": "Texts in title",

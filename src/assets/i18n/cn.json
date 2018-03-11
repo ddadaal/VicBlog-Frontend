@@ -90,7 +90,9 @@
     "likeCount": "喜欢数",
     "commentCount": "评论数",
     "author": "作者",
+    "noArticle": "没有符合条件的文章 :(",
     "dateFormat": "YYYY[年]M[月]D[日] HH:mm:ss ZZ",
+    "pageIndicator": "共{count}篇文章",
     "filterAndSort": {
       "title": "筛选和排序",
       "textsInTitle": "标题包含文字",

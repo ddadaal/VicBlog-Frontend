@@ -8,6 +8,7 @@ import { ArticleId } from "../../models/Article";
 import { ArticleFetchErrorContent } from "../../components/Article/ArticleFetchErrorContent";
 import { ArticleFetchingContent } from "../../components/Article/ArticleFetchingContent";
 import { ArticlePageContent } from "../../components/Article";
+import { PageConfig } from "../index";
 
 interface ArticlePageProps {
   [STORE_ARTICLE]?: ArticleStore,
@@ -69,4 +70,17 @@ export class ArticlePage extends React.Component<ArticlePageProps, any> {
     </div>;
   }
 }
+
+export const articlePageConfig: PageConfig = {
+  path: "/articles/:id",
+  render: async (props) => {
+    const ArticlePage = (await import("./")).ArticlePage;
+    return <ArticlePage articleId={props.match.params.id}/>;
+  },
+  isThisPage(pathname: string): boolean {
+    return pathname.match("/articles/[0-9]+") != null;
+  },
+  exact: true
+};
+
 

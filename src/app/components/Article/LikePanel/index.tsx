@@ -85,7 +85,7 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
       const newCount = await this.service.unlike(this.token);
       runInAction(() => {
         this.likeCount = newCount;
-        this.props[STORE_ARTICLE_LIST].completeRefetch();
+        // this.props[STORE_ARTICLE_LIST].completeRefetch();
       });
     } catch (e) {
 
@@ -98,7 +98,7 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
       const newCount = await this.service.like(this.token);
       runInAction(() => {
         this.likeCount = newCount;
-        this.props[STORE_ARTICLE_LIST].completeRefetch();
+        // this.props[STORE_ARTICLE_LIST].completeRefetch();
       });
     } catch (e) {
 

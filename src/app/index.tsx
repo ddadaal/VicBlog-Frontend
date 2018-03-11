@@ -4,9 +4,9 @@ import { createBrowserHistory } from 'history';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router';
-import { ArticleListStore, ArticleStore, RouterStore, UiStore, UserStore } from './stores';
+import { ArticleFilterStore, ArticleListStore, ArticleStore, RouterStore, UiStore, UserStore } from './stores';
 import {
-  STORE_ARTICLE,
+  STORE_ARTICLE, STORE_ARTICLE_FILTER,
   STORE_ARTICLE_LIST,
   STORE_LOCALE,
   STORE_ROUTER,
@@ -46,6 +46,7 @@ async function resetStore() {
   const articleStore = new ArticleStore();
   const uiStore = new UiStore();
   const localeStore = new LocaleStore();
+  const articleFilterStore = new ArticleFilterStore(routerStore);
   await localeStore.init();
 
 
@@ -55,7 +56,8 @@ async function resetStore() {
     [STORE_USER]: userStore,
     [STORE_ARTICLE_LIST]: articleListStore,
     [STORE_ARTICLE]: articleStore,
-    [STORE_UI]: uiStore
+    [STORE_UI]: uiStore,
+    [STORE_ARTICLE_FILTER]: articleFilterStore
   };
 }
 // prepare MobX stores

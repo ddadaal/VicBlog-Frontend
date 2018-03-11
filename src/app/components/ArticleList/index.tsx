@@ -6,9 +6,10 @@ import { FetchStatus } from "../../stores";
 import { ArticleListStoreProps } from "../../stores/ArticleListStore";
 import { ArticleListFetchingContent } from "./ArticleListFetchingContent";
 import { ArticleListFetchErrorContent } from "./ArticleListFetchErrorContent";
+import { ArticleFilter } from "../../models/ArticleFilter";
 
 interface ArticleListPageContentProps extends ArticleListStoreProps {
-
+  filter: ArticleFilter;
 }
 
 @inject(STORE_ARTICLE_LIST)
@@ -16,11 +17,12 @@ interface ArticleListPageContentProps extends ArticleListStoreProps {
 export class ArticleListPageContent extends React.Component<ArticleListPageContentProps, any> {
 
   retry = () => {
-    this.props[STORE_ARTICLE_LIST].fetchPage();
+    const store = this.props[STORE_ARTICLE_LIST];
+    store.fetchPage(store.currentPageNumber, this.props.filter);
   };
 
   componentDidMount() {
-    this.props[STORE_ARTICLE_LIST].completeRefetch();
+    this.retry();
   }
 
   render() {

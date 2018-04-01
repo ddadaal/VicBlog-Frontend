@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import style from '../../style';
 import { STORE_UI, STORE_USER } from "../../../constants/stores";
 import { UiStore, UserStore } from "../../../stores";

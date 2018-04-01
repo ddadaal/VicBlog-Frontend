@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ArticleBrief } from "../../../models/Article";
 import { inject, observer } from "mobx-react";
 import { STORE_ROUTER } from "../../../constants/stores";

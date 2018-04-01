@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { AlertPanel } from "../AlertPanel";
 import { RegisterError, RegisterErrorType, RegisterServerError } from "./RegisterStore";
 import { LocaleMessage } from "../../../internationalization/components";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import { slugify } from "../../Common/MarkdownDisplay/slugifier";
 import { ui } from "../../../stores/UiUtil";

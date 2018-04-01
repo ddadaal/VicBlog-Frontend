@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { STORE_USER } from "../../../constants/stores";
 import { UserStore } from "../../../stores";
 import { inject, observer } from "mobx-react";

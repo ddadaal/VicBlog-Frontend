@@ -1,5 +1,5 @@
 import { ArticleId } from "../../../models/Article";
-import * as React from "react";
+import React from "react";
 import style from "../../style";
 import { Spin } from "../../Common/Spin";
 import { LocaleMessage } from "../../../internationalization/components";

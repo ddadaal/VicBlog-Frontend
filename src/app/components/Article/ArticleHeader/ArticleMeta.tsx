@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import { Article } from "../../../models";
 import FaClockO from 'react-icons/lib/fa/clock-o';

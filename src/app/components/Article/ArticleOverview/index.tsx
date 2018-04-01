@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import * as localStyle from './style.css';
 import { ArticleLinks } from "./ArticleLinks";
 import { Sticky } from "../../Common/Sticky";

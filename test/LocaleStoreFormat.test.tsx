@@ -2,7 +2,7 @@
 // import { expect } from 'chai';
 // import { LocaleStore } from "../src/app/stores";
 // import { en, cn } from "../src/app/internationalization";
-// import * as React from 'react';
+// import React from "react";
 //
 // @suite class LocaleStoreFormatTest {
 //   private store: LocaleStore = LocaleStore.init([en, cn],en.id,en.id);

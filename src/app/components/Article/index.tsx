@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FetchedArticle } from "../../stores/ArticleStore";
 import style from '../../components/style';
 import * as localStyle from './style.css';

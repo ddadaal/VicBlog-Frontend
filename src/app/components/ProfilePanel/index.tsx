@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { SelfIntroPanel } from "./SelfIntroPanel";
 import { ContactPanel } from "./ContactPanel";
 

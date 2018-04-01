@@ -3,7 +3,7 @@
 // import { LocaleStore } from "../src/app/stores";
 // import { en, cn, Language, LocaleMessage } from "../src/app/internationalization";
 // import { ComponentChildrenType } from "../src/app/stores/LocaleStore";
-// import * as React from 'react';
+// import React from "react";
 //
 //
 // const partialLanguage: Language = {

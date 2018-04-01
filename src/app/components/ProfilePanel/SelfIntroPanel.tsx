@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { LocaleMessage } from "../../internationalization/components";
 
 export class SelfIntroPanel extends React.Component<{}> {

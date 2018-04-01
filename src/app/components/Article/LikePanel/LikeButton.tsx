@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import style from '../../style';
 import FaHeartO from 'react-icons/lib/fa/heart-o';
 import FaHeart from 'react-icons/lib/fa/heart';

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { getTitleNodes } from "./LinksAnalyzer";
 import { TitleNode } from "../../Common/MarkdownDisplay/slugifier";
 import FaBookmark from "react-icons/lib/fa/bookmark";

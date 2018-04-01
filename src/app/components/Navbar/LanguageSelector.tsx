@@ -1,6 +1,6 @@
 import { inject, observer } from "mobx-react";
 import { STORE_LOCALE } from "../../constants/stores";
-import * as React from "react";
+import React from "react";
 import { CSSProperties } from "react";
 import FaLanguage from 'react-icons/lib/fa/language';
 import style from "../style";

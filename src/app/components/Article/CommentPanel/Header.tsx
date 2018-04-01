@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import FaCommentO from 'react-icons/lib/fa/comment-o';
 import { LocaleMessage } from "../../../internationalization/components";
 

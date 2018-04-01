@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { STORE_ARTICLE } from "../../constants/stores";
 import { ArticleFetchError, ArticleStore, FetchedArticle } from "../../stores/ArticleStore";
 import { inject, observer } from "mobx-react";

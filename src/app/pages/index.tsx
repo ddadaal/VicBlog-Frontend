@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { homePageConfig } from "./Home";
 import { aboutPageConfig } from "./About";

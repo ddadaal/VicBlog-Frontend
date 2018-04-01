@@ -1,6 +1,6 @@
 import { STORE_UI } from "../../constants/stores";
 import { inject, observer } from "mobx-react";
-import * as React from "react";
+import React from "react";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { Modal } from "../Modals/Modal";
 import style from '../style';

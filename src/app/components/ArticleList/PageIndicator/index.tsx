@@ -1,5 +1,5 @@
 import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import style from '../../style';
 import { inject, observer } from "mobx-react";

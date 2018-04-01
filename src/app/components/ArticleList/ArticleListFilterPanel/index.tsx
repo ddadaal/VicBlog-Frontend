@@ -1,4 +1,4 @@
-// import * as React from "react";
+// import React from "react";
 // import { STORE_ARTICLE_LIST } from "../../../constants/stores";
 // import { ArticleListStore } from "../../../stores";
 // import { inject, observer } from "mobx-react";

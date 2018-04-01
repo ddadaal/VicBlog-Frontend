@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import { inject, observer } from "mobx-react";
 import { LocaleStore } from "../LocaleStore";

@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from "react";
 import * as ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
-import { useStrict } from 'mobx';
+import { configure } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router';
 import { ArticleFilterStore, ArticleListStore, ArticleStore, RouterStore, UiStore, UserStore } from './stores';
@@ -17,7 +17,7 @@ import { switches } from "./routes/routes";
 import { LocaleStore } from "./internationalization";
 
 // enable MobX strict mode
-useStrict(true);
+configure( { enforceActions: true});
 
 
 let stores;

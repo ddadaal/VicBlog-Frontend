@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ArticleListPageContent } from "../../components/ArticleList";
 import style from "../../components/style";
 import { ProfilePanel } from "../../components/ProfilePanel";

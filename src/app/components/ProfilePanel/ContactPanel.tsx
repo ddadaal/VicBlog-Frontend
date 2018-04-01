@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import { LocaleMessage } from "../../internationalization/components";
 import MdEmail from "react-icons/lib/md/email";

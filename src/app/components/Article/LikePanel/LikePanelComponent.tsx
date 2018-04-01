@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { LikeState } from "./index";
 import { LikeButton } from "./LikeButton";
 import * as localStyle from './style.css';

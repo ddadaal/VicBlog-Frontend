@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import style from '../style';
 import * as logoStyle from "./style.css";
 import { SvgImg } from "../Common/SvgImg";

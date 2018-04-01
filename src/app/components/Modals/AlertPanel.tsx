@@ -1,5 +1,5 @@
 import style from "../style/index";
-import * as React from "react";
+import React from "react";
 
 interface AlertPanelProps {
   onCloseButtonClicked?: () => void,

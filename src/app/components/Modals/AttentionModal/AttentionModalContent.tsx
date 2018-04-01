@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { LanguageSetting } from "./AttentionModalStore";
 import { AsyncComponent } from "../../../routes/AsyncComponent";
 import style from '../../style';

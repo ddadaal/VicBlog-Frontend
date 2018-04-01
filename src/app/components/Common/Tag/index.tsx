@@ -1,5 +1,5 @@
 import style from "../../style";
-import * as React from "react";
+import React from "react";
 import { CSSProperties } from "react";
 
 export function Tag(props: { text: string, colorStyle?: string, style?: CSSProperties }) {

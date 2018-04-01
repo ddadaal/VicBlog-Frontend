@@ -1,5 +1,5 @@
 import { inject, observer } from "mobx-react";
-import * as React from "react";
+import React from "react";
 import { ReactNode } from "react";
 import { LocaleStoreProps } from "..";
 import { STORE_LOCALE } from "../../constants/stores";

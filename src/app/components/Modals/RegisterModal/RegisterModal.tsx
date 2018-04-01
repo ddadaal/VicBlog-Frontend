@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Modal } from "../Modal";
 import { inject, observer } from "mobx-react";
 import { STORE_UI, STORE_USER } from "../../../constants/stores";

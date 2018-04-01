@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import style from "../../components/style";
 
 export class AboutProject extends React.Component<any, any> {

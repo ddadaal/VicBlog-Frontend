@@ -1,5 +1,5 @@
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import * as React from "react";
+import React from "react";
 import { inject, observer } from "mobx-react";
 import { ArticleListItem } from "../ArticleListItem";
 import { ArticleListStoreProps } from "../../../stores/ArticleListStore";

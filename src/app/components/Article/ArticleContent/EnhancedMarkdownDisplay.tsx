@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { MarkdownDisplay } from "../../Common/MarkdownDisplay";
 import { Heading } from "./HeadingRenderer";
 

@@ -1,6 +1,6 @@
 import { RegisterError, RegisterState, RegisterStore, } from "./RegisterStore";
 import style from "../../style";
-import * as React from "react";
+import React from "react";
 import { inject, observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";

@@ -1,5 +1,4 @@
-import React from "react";
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
 import { Article } from "../../../models";
 import style from '../../style';
 import { ArticleMetaRow } from "./ArticleMeta";

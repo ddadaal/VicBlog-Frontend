@@ -6,7 +6,6 @@ import { action, computed, observable, runInAction } from "mobx";
 import { Article } from "../../../models";
 import { LikePanelComponent } from "./LikePanelComponent";
 import { LikeService } from "../../../api/LikeService";
-import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
 
 interface LikePanelContainerProps {
   article: Article;

@@ -1,5 +1,5 @@
-import { action, computed, observable, runInAction } from "mobx";
-import { ArticleBrief, ArticleList } from "../models/Article";
+import { action, autorun, computed, observable, runInAction } from "mobx";
+import { ArticleBrief } from "../models/Article";
 
 import * as moment from "moment";
 import { ArticleFilter } from "../models/ArticleFilter";
@@ -7,6 +7,8 @@ import { FetchStatus } from "./index";
 import { PagingInfo } from "../models/PagingInfo";
 import { STORE_ARTICLE_LIST } from "../constants/stores";
 import { ArticleListService } from "../api/ArticleListService";
+import { RouterStore } from "./RouterStore";
+import { parseQueryString } from "../api/utils";
 
 export enum ArticleListFetchErrorType {
   NetworkError, Unknown, ServerError
@@ -35,12 +37,18 @@ export enum ArticleListOrder
 
 const updateThresholdMinutes = 60;
 
-const defaultPageSize = 1;
+const defaultPageSize = 10;
 
 const service = new ArticleListService();
 
 export class ArticleListStore {
   lastUpdated: Date;
+
+  constructor() {
+    this.fetchPage();
+  }
+
+  @observable filter: ArticleFilter = new ArticleFilter();
 
   @observable fetchedLists: Map<number, ArticleBrief[]> = new Map();
 
@@ -64,16 +72,15 @@ export class ArticleListStore {
     this.expired = true;
   }
 
-  @action async fetchPage(nextPageNumber: number, filter: ArticleFilter = new ArticleFilter()) {
+  @action async fetchPage() {
     this.fetchStatus = FetchStatus.Fetching;
-    this.currentPageNumber = nextPageNumber;
-    if (this.expired || this.pageNeedRefetch(nextPageNumber)) {
+    if (this.expired || this.pageNeedRefetch(this.currentPageNumber)) {
       try {
-        const response = await service.fetchArticleList(defaultPageSize, nextPageNumber, filter, this.order);
+        const response = await service.fetchArticleList(defaultPageSize, this.currentPageNumber, this.filter, this.order);
         runInAction(() => {
           this.lastUpdated = new Date();
           this.pageInfo = response.pagingInfo;
-          this.fetchedLists.set(nextPageNumber, response.list);
+          this.fetchedLists.set(this.currentPageNumber, response.list);
         });
       } catch (e) {
         runInAction(() => {
@@ -102,5 +109,5 @@ export class ArticleListStore {
 }
 
 export interface ArticleListStoreProps {
-  [STORE_ARTICLE_LIST]?: ArticleListStore
+  [STORE_ARTICLE_LIST]?: ArticleListStore;
 }

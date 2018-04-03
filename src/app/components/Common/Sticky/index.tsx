@@ -1,5 +1,4 @@
-import React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import { ui } from "../../../stores/UiUtil";

@@ -1,5 +1,4 @@
-import React from "react";
-import { ReactType } from 'react';
+import React, { ReactType } from "react";
 import * as ReactMarkdown from "react-markdown";
 import * as githubStyle from './github-markdown.css';
 import { SyntaxHighlightedCodeBlock } from "./renderers";

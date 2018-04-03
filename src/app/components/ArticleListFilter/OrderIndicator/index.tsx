@@ -1,12 +1,13 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { Dropdown } from "../../Common/Dropdown";
+import { Dropdown } from "../../Common/Dropdown/index";
 import style from '../../style/index';
-import { LocaleMessage } from "../../../internationalization/components";
+import { LocaleMessage } from "../../../internationalization/components/index";
 import { runInAction } from "mobx";
 import { ArticleListOrder, ArticleListStoreProps } from "../../../stores/ArticleListStore";
-import { Article } from "../../../models";
+import * as localStyle from './style.css';
+import FaSortAlphaAsc from 'react-icons/lib/fa/sort-alpha-asc';
 
 function OrderItem(props: {id: string, onClick : () => void}) {
   return <a className={style("w3-bar-item", "w3-button")} onClick={props.onClick}>
@@ -26,24 +27,31 @@ export class OrderIndicator extends React.Component<ArticleListStoreProps, any> 
         store.expire();
         store.order = order;
       }
-      store.fetchPage(1);
+      store.currentPageNumber = 1;
+      store.fetchPage();
     })
   };
 
   render() {
+
+
     const store = this.props[STORE_ARTICLE_LIST];
     const entry = <button className={style("w3-button")}>
       <LocaleMessage id={`articleList.order.${store.order}`}/>
     </button>;
-    return <div>
-      <Dropdown entry={entry}>
-        {Object.keys(ArticleListOrder)
-          .map(x =>
-            <OrderItem key={x} id={x} onClick={this.onClickProducer(ArticleListOrder[x])}/>
-          )
-        }
-      </Dropdown>
-
+    return <div >
+      <div style={{width:"32px"}} className={localStyle.icon}>
+        <FaSortAlphaAsc size={26}/>
+      </div>
+      <div className={localStyle.icon}>
+        <Dropdown entry={entry} className={"w3-border"}>
+          {Object.keys(ArticleListOrder)
+            .map(x =>
+              <OrderItem key={x} id={x} onClick={this.onClickProducer(ArticleListOrder[x])}/>
+            )
+          }
+        </Dropdown>
+      </div>
     </div>;
   }
 }

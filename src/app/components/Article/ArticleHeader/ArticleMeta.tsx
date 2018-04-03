@@ -1,10 +1,10 @@
-import React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Article } from "../../../models";
 import FaClockO from 'react-icons/lib/fa/clock-o';
 import FaPencilSquare from "react-icons/lib/fa/pencil-square";
 import FaUser from 'react-icons/lib/fa/user';
 import FaTags from 'react-icons/lib/fa/tags';
+import * as rowStyle from '../../style/InterColumnMargin/style.css';
 
 import { LocaleDate, LocaleMessage } from "../../../internationalization";
 import { Tag } from "../../Common/Tag";
@@ -35,7 +35,9 @@ export class ArticleMetaRow extends React.Component<ArticleMetaProps, any> {
         <span>{article.author}</span>
       </Item>
       <Item icon={<FaTags size={20}/>} tooltipTextId={"article.tags"}>
+        <span className={rowStyle.parent}>
         {article.tags.map(x => <Tag key={x} text={x}/>)}
+        </span>
       </Item>
     </div>;
   }

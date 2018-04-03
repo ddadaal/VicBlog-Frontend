@@ -1,10 +1,9 @@
 import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
-import React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import style from '../../style';
 import { inject, observer } from "mobx-react";
 import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { LocaleMessage } from "../../../internationalization/components";
+import { action } from "mobx";
 
 export function PageLink(props: { active: boolean, pageNumber: number, onClick: () => void, content?: ReactNode, disabled?: boolean }) {
   return <button disabled={props.disabled == undefined ? false : props.disabled}
@@ -20,19 +19,22 @@ export class PageIndicator extends React.Component<ArticleListStoreProps, {}> {
 
   onClickProducer = (number: number) => {
     const store = this.props[STORE_ARTICLE_LIST];
-    return () => {
-      store.fetchPage(number);
-    }
+    return action(() => {
+      store.currentPageNumber = number;
+      store.fetchPage();
+    });
   };
 
-  toPreviousPage = () => {
+  @action toPreviousPage = () => {
     const store = this.props[STORE_ARTICLE_LIST];
-    store.fetchPage(store.currentPageNumber - 1);
+    store.currentPageNumber--;
+    store.fetchPage();
   };
 
-  toNextPage = () => {
+  @action toNextPage = () => {
     const store = this.props[STORE_ARTICLE_LIST];
-    store.fetchPage(store.currentPageNumber + 1);
+    store.currentPageNumber++;
+    store.fetchPage();
   };
 
   constructLinks() {

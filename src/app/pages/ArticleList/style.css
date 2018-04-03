@@ -1,0 +1,26 @@
+.right {
+    order: 2;
+}
+
+.left {
+    order: 1;
+}
+
+.pageIndicator {
+    order: 3;
+}
+
+@media (max-width: 992px) {
+    .right { order: 1}
+    .left { order: 3;}
+    .pageIndicator { order: 2;}
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.parent > * {
+    margin-bottom: 16px;
+}
+

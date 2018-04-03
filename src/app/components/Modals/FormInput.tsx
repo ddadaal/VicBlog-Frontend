@@ -1,17 +1,16 @@
-import React from "react";
-import { ChangeEventHandler } from "react";
+import React, { ChangeEventHandler } from "react";
 import { action } from "mobx";
 import { LocaleMessage, Localize } from "../../internationalization/components";
 
 interface FormInputProps {
-  className: string,
-  type: string,
-  placeholderTextId: string,
-  labelTextId: string,
-  invalid: boolean,
-  invalidPromptId: string,
-  onChange: (e: ChangeEventHandler<HTMLInputElement>) => void,
-  value: string,
+  className: string;
+  type: string;
+  placeholderTextId: string;
+  labelTextId: string;
+  invalid: boolean;
+  invalidPromptId: string;
+  onChange: (e: ChangeEventHandler<HTMLInputElement>) => void;
+  value: string;
 }
 
 export class FormInput extends React.Component<FormInputProps, any> {

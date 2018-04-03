@@ -1,10 +1,9 @@
-import React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { LocaleMessage } from "../../internationalization/components";
 import MdEmail from "react-icons/lib/md/email";
 import FaGithubSquare from "react-icons/lib/fa/github-square";
 import FaQq from "react-icons/lib/fa/qq";
-import * as localStyle from './style.css';
+import * as localStyle from '../style/InterColumnMargin/style.css';
 
 function LinkItem(props: {content: ReactNode, icon: ReactNode}) {
   return <p className={localStyle.parent}>

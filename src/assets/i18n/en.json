@@ -91,15 +91,13 @@
     "commentCount": "Comments",
     "author": "Author",
     "dateFormat": "YYYY/M/D HH:mm:ss ZZ",
-    "noArticle": "No articles found :(",
+    "noArticle": "No articles matched :(",
     "pageIndicator": "{count} articles in total",
     "filterAndSort": {
       "title": "Filter And Sort",
-      "textsInTitle": "Texts in title",
+      "order": "Order",
+      "textsInTitle": "Texts in title. Press enter to search",
       "tags": "Tags",
-      "createTimeRange": "Create time range",
-      "lastEditTimeRange": "Last edited time range",
-      "minLikes": "Minimum like count",
       "update":"Update",
       "clear":"Clear"
     },

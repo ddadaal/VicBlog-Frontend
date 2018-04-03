@@ -1,5 +1,4 @@
-import React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { observer } from "mobx-react";
 import { action, observable, runInAction } from "mobx";
 

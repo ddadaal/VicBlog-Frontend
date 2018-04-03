@@ -1,4 +1,4 @@
-import { BaseService, NetworkResponse } from "./BaseService";
+import { BaseService } from "./BaseService";
 import { HttpMethod } from "./utils";
 
 export interface LoginResult {

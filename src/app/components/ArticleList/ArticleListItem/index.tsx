@@ -5,11 +5,12 @@ import { STORE_ROUTER } from "../../../constants/stores";
 import { RouterStore } from "../../../stores";
 import { Tag } from "../../Common/Tag";
 import * as localStyle from './style.css';
+import * as rowStyle from '../../style/InterColumnMargin/style.css';
 import { LocaleDate, LocaleMessage } from "../../../internationalization/components";
+import { RouterStoreProps } from "../../../stores/RouterStore";
 
-interface ArticleListItemProps {
-  brief: ArticleBrief,
-  [STORE_ROUTER]?: RouterStore
+interface ArticleListItemProps extends RouterStoreProps {
+  brief: ArticleBrief;
 }
 
 function PHeader(props: {id: string}) {
@@ -35,7 +36,7 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
 
     return <div>
       <h2><a style={{ cursor: "pointer" }} onClick={this.jumpTo}>{brief.title}</a></h2>
-      <p>
+      <p className={rowStyle.parent}>
         {brief.tags.map(x =>
           <Tag key={x} text={x}/>
         )}

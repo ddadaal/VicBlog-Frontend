@@ -1,0 +1,13 @@
+.parent > * {
+    margin-right: 4px;
+}
+
+
+.icon {
+    display: inline;
+    margin-right: 4px
+}
+
+.input {
+    display: inline;
+}

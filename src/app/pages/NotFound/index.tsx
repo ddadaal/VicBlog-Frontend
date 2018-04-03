@@ -1,5 +1,4 @@
 import React from "react";
-import { PageConfig } from "../index";
 
 export class NotFoundPage extends React.Component<any, any> {
 
@@ -9,12 +8,3 @@ export class NotFoundPage extends React.Component<any, any> {
 }
 
 
-export const notFoundPageConfig: PageConfig =  {
-  path: "",
-  isThisPage: (pathname: string) => true,
-  render: async (props) => {
-    const NotFoundPage = (await import("./")).NotFoundPage;
-    return <NotFoundPage/>;
-  },
-  exact: false
-};

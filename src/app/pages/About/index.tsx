@@ -1,7 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { observable, runInAction } from "mobx";
-import { PageConfig } from "../index";
 
 enum LoadStatus {
   NotLoaded,
@@ -34,14 +33,3 @@ export class AboutPage extends React.Component<any, any> {
   }
 }
 
-export const aboutPageConfig: PageConfig = {
-  path: "/about",
-  render: async (props) => {
-    const AboutPage = (await import("./")).AboutPage;
-    return <AboutPage/>;
-  },
-  isThisPage: (pathname: string): boolean => {
-    return pathname.startsWith("/about");
-  },
-  exact: true
-};

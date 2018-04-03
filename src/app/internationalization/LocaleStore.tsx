@@ -1,6 +1,5 @@
 import { action, computed, observable, runInAction } from "mobx";
-import React from "react";
-import { cloneElement, ReactNode } from "react";
+import React, { cloneElement, ReactNode } from "react";
 import config from '../../assets/i18n/index.json';
 
 export interface Language {

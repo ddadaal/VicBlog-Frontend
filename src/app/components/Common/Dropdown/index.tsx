@@ -1,14 +1,14 @@
-import React from "react";
-import { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 import style from '../../style';
 
 interface DropdownProps {
-  entry: ReactNode,
+  entry: ReactNode;
+  className?: string;
 }
 
 export class Dropdown extends React.Component<DropdownProps, any> {
   render() {
-    return <div className={style("w3-dropdown-hover")}>
+    return <div className={style("w3-dropdown-hover", this.props.className)}>
         {this.props.entry}
         <div className={style("w3-dropdown-content","w3-bar-block","w3-card-4")}>
           {this.props.children}

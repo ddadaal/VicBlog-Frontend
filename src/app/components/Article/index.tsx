@@ -25,6 +25,8 @@ export class ArticlePageContent extends React.Component<ArticlePageContentProps,
       </div>
       <div className={style("w3-col", "l8")}>
         <ArticleContent article={article}/>
+        <hr/>
+        <CommentPanel articleId={article.articleId}/>
       </div>
       <div className={style("w3-col", "l2")}>
         <hr className={style("w3-hide-large")}/>
@@ -32,7 +34,6 @@ export class ArticlePageContent extends React.Component<ArticlePageContentProps,
           {isSticky => {
             return <div className={style({[localStyle.sticky]: isSticky})}>
               <LikePanel article={article}/>
-              <CommentPanel article={article}/>
             </div>;
           }}
         </Sticky>

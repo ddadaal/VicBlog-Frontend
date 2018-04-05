@@ -5,7 +5,7 @@ import { ArticleListStore } from "../../stores";
 import { ArticleListFetchingContent } from "./ArticleListFetchingContent";
 import { ArticleListFetchErrorContent } from "./ArticleListFetchErrorContent";
 import { Inject } from "react.di";
-import { FetchStatus } from "../../stores/ArticleListStore";
+import { FetchStatus } from "../../stores/common";
 
 interface ArticleListPageContentProps  {
 

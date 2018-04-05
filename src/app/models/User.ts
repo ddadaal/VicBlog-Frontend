@@ -6,18 +6,14 @@ export enum UserRole {
 
 
 export class User {
-  public name: string;
+  public username: string;
   public role: UserRole;
   public token: string;
 
 
-  constructor(name: string, role: string, token: string) {
-    this.name = name;
-    this.role = UserRole[role];
-    this.token = token;
+  constructor(json) {
+    Object.assign(this,json);
+    this.role = json.role as UserRole;
   }
 
-  static fromJson(obj: any) {
-    return new User(obj.name, obj.role, obj.token);
-  }
 }

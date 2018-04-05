@@ -9,15 +9,12 @@ import { ArticleFetchingContent } from "../../components/Article/ArticleFetching
 import { ArticlePageContent } from "../../components/Article";
 import { Inject } from "react.di";
 import { ArticleFetchError } from "../../api/ArticleService";
+import { FetchStatus } from "../../stores/common";
 
 interface ArticlePageProps {
   articleId: ArticleId
 }
 
-
-enum FetchStatus {
-  NotStarted, Fetching, Fetched, Error
-}
 
 @observer
 export class ArticlePage extends React.Component<ArticlePageProps, any> {

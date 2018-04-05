@@ -139,10 +139,20 @@
         "buttonText": "I Liked it!",
         "description": "Glad you like this article! :D"
       },
+      "querying": {
+        "description": "Querying...",
+        "buttonText": "Like"
+      },
       "loginLink": "Login"
     },
     "comment": {
-      "title": "Comments"
+      "title": "Comments",
+      "dateFormat": "YYYY/M/D HH:mm:ss",
+      "loginRequired": "Login required",
+      "inputPlaceholder": "Input your comment here",
+      "submit": "Submit",
+      "removeComment": "Remove",
+      "empty": "No comments yet :("
     }
   },
 

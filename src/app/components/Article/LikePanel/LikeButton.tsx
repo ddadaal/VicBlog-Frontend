@@ -6,15 +6,15 @@ import { LocaleMessage } from "../../../internationalization/components";
 import { LikeState } from "./";
 
 interface LikeButtonProps {
-  state: LikeState,
-  likeCount: number,
-  onClick: () => void
+  state: LikeState;
+  likeCount: number;
+  onClick: () => void;
 }
 
 interface ButtonConfig {
-  icon: JSX.Element,
-  disabled: boolean,
-  textId: string
+  icon: JSX.Element;
+  disabled: boolean;
+  textId: string;
 }
 
 const notLogin = {
@@ -35,10 +35,17 @@ const liked = {
   textId: "article.like.liked.buttonText"
 };
 
+const querying = {
+  disabled: true,
+  icon: <FaHeart size={20}/>,
+  textId: "article.like.querying.buttonText"
+};
+
 const map = new Map<LikeState, ButtonConfig>();
 map.set(LikeState.NotLogin, notLogin);
 map.set(LikeState.NotLiked, notLiked);
 map.set(LikeState.Liked, liked);
+map.set(LikeState.Querying, querying);
 
 export class LikeButton extends React.Component<LikeButtonProps, any> {
 

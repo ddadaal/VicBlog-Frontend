@@ -1,6 +1,7 @@
 import { HttpService } from "./HttpService";
 import { HttpMethod } from "./utils";
 import { Inject, Injectable } from "react.di";
+import { ArticleId } from "../models/Article";
 
 @Injectable
 export class LikeService {
@@ -9,7 +10,7 @@ export class LikeService {
 
   }
 
-  async fetchLikeCount(articleId: number) {
+  async fetchLikeCount(articleId: ArticleId) {
     const {statusCode, ok, error, response} = await this.http.fetch<number>({
       path: "/Likes",
       queryParams: {articleId}
@@ -21,7 +22,7 @@ export class LikeService {
     }
   }
 
-  async fetchLikeStatus(articleId: number, token: string) {
+  async fetchLikeStatus(articleId: ArticleId, token: string) {
 
     const {ok, error, response} = await this.http.fetch({
       path: "/Likes/QueryLiked",
@@ -36,7 +37,7 @@ export class LikeService {
     }
   }
 
-  async unlike(articleId: number, token: string) {
+  async unlike(articleId: ArticleId, token: string) {
     const {ok, response, error} = await this.http.fetch<number>({
       path: "/Likes",
       queryParams: {articleId},
@@ -51,8 +52,9 @@ export class LikeService {
     }
   }
 
-   async like(articleId: number, token: string) {
+   async like(articleId: ArticleId, token: string) {
     const {ok, error, response} = await this.http.fetch<number>({
+      path: "/Likes",
       method: HttpMethod.POST,
       queryParams: {articleId},
       token: token

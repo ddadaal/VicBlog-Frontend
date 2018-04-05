@@ -20,12 +20,14 @@ const basePlugins = [
   new HtmlWebpackPlugin({
     template: './assets/index.html',
     favicon: './assets/logo.png',
-    filename: 'index.html'
+    filename: 'index.html',
+    chunksSortMode: "none"
   }),
   new HtmlWebpackPlugin({
     template: './assets/404.html',
     favicon: './assets/logo.png',
-    filename: '404.html'
+    filename: '404.html',
+    chunksSortMode: "none"
   }),
   new webpack.DefinePlugin({
     FRONT_END_BUILD: JSON.stringify(buildTime.format(blogConfig.buildFormat)),
@@ -74,9 +76,6 @@ module.exports = {
 
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
-    // Fix webpack's default behavior to not load packages with jsnext:main module
-    // (jsnext:main directs not usually distributable es6 format, but es6 sources)
-    mainFields: ['module', 'browser', 'main'],
     alias: {
       'app': path.resolve(__dirname, 'src/app/')
     }
@@ -137,7 +136,8 @@ module.exports = {
       disableDotRule: true
     },
     stats: 'minimal',
-    open: true
+    open: true,
+    progress: true
   },
 
 };

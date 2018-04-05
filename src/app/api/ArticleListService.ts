@@ -42,7 +42,7 @@ export class ArticleListService {
 
 
     if (ok) {
-      return ArticleList.fromJson(response);
+      return new ArticleList(response);
     } else if (error.isNetworkError) {
       throw {type: ArticleListFetchErrorType.NetworkError, error: error.info};
     } else if (error.isServerError) {

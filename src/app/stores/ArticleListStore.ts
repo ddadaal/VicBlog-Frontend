@@ -7,12 +7,9 @@ import { PagingInfo } from "../models/PagingInfo";
 import { ArticleListFetchError, ArticleListOrder, ArticleListService } from "../api/ArticleListService";
 import { ArticleTag } from "../models/ArticleTag";
 import { Inject, Injectable } from "react.di";
+import { FetchStatus } from "./common";
 
 
-
-export enum FetchStatus {
-  NotStarted, Fetching, Fetched, Error
-}
 
 
 
@@ -36,13 +33,17 @@ export class ArticleListStore {
 
   @observable fetchStatus: FetchStatus = FetchStatus.NotStarted;
 
-  @observable pageInfo: PagingInfo = PagingInfo.newInstance;
+  @observable pageInfo: PagingInfo = new PagingInfo();
 
   @observable currentPageNumber: number = 1;
 
   @observable order: ArticleListOrder = ArticleListOrder.LastEditTimeLatestFirst;
 
   @observable tags: string[] = [];
+
+  expired: boolean = false;
+
+  error: ArticleListFetchError = null;
 
   @computed get articleTags() : ArticleTag[] {
     return this.tags.map(x => new ArticleTag(x, this.filter.tags.indexOf(x) >=0));
@@ -55,9 +56,7 @@ export class ArticleListStore {
     });
   }
 
-  expired: boolean = false;
 
-  error: ArticleListFetchError = null;
 
   @computed get listOfCurrentPage() {
     return this.fetchedLists.get(this.currentPageNumber);

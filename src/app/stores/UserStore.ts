@@ -31,7 +31,7 @@ export class UserStore {
 
 
   @action login = async (response: LoginResult) => {
-    this.user = new User(response.username, response.role, response.token);
+    this.user = new User(response);
   };
 
   remember = () => {
@@ -48,7 +48,7 @@ export class UserStore {
       const user = ui.localStorage.getItem("user");
       if (user) {
         try {
-          this.user = User.fromJson(JSON.parse(user));
+          this.user = new User(JSON.parse(user));
         } catch (ignored) {
         }
       }

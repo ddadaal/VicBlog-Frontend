@@ -29,6 +29,8 @@ export class LikePanelComponent extends React.Component<LikePanelProps, any> {
 
       case LikeState.Liked:
         return <LocaleMessage id={"article.like.liked.description"}/>;
+      case LikeState.Querying:
+        return <LocaleMessage id={"article.like.querying.description"}/>
     }
 
   }

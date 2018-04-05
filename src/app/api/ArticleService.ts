@@ -29,7 +29,7 @@ export class ArticleService {
     });
 
     if (ok) {
-      return  Article.fromJson(response);
+      return  new Article(response);
     } else if (error.isServerError) {
       throw { type: ArticleFetchErrorType.ServerError};
     } else if (error.isNetworkError) {

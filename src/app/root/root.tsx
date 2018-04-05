@@ -1,7 +1,5 @@
 import React from "react";
 import { Navbar } from '../components/Navbar';
-
-import './global.style.css';
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { observer } from "mobx-react";
@@ -31,7 +29,7 @@ export class Root extends React.Component<BlogAppProps, {}> {
       <ScrollUpButton/>
       <Header/>
       <Navbar/>
-      {this.props.children}
+        {this.props.children}
       <Footer/>
       <AsyncComponent render={renderDevTool}/>
     </div>;

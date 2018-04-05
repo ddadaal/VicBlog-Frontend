@@ -5,9 +5,7 @@ import { Article } from "../../../models";
 import { LikePanelComponent } from "./LikePanelComponent";
 import { LikeService } from "../../../api/LikeService";
 import { Inject } from "react.di";
-import { UserStore } from "../../../stores/UserStore";
-import { UiStore } from "../../../stores/UiStore";
-import { ArticleListStore } from "../../../stores/ArticleListStore";
+import { ArticleListStore, UiStore, UserStore } from "../../../stores";
 
 interface LikePanelContainerProps {
   article: Article;
@@ -16,7 +14,7 @@ interface LikePanelContainerProps {
 
 
 export const enum LikeState { // to use it as a key of a map
-  NotLogin, NotLiked, Liked
+  NotLogin, NotLiked, Liked, Querying
 }
 
 @observer
@@ -24,6 +22,10 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
 
   @observable likeCount: number = 0;
   @observable iLiked: boolean = false;
+
+  loggedIn: boolean = false;
+
+  @observable fetchingStatus: boolean  = false;
 
   @Inject userStore: UserStore;
   @Inject uiStore: UiStore;
@@ -39,9 +41,12 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
     return this.userStore.token;
   }
 
+
   @computed get likeState() {
     if (!this.userStore.loggedIn) {
       return LikeState.NotLogin;
+    } else if (this.fetchingStatus) {
+      return LikeState.Querying;
     } else if (this.iLiked) {
       return LikeState.Liked;
     } else {
@@ -49,11 +54,15 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
     }
   }
 
-  @action update() {
+  @action async update() {
+    this.fetchingStatus = true;
     this.fetchLikeCount();
     if (this.userStore.loggedIn) {
-      this.fetchLikeStatus();
+      await this.fetchLikeStatus();
     }
+    runInAction(() => {
+      this.fetchingStatus = false;
+    })
   }
 
   @action async fetchLikeCount() {
@@ -97,7 +106,6 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
       const newCount = await this.likeService.like(this.props.article.articleId, this.token);
       runInAction(() => {
         this.likeCount = newCount;
-        // this.props[STORE_ARTICLE_LIST].completeRefetch();
       });
     } catch (e) {
 
@@ -118,6 +126,14 @@ export class LikePanel extends React.Component<LikePanelContainerProps, any> {
 
   componentDidMount() {
     this.update();
+  }
+
+  componentDidUpdate() {
+    if (!this.loggedIn && this.userStore.loggedIn) {
+
+      this.update();
+    }
+    this.loggedIn = this.userStore.loggedIn;
   }
 
   render() {

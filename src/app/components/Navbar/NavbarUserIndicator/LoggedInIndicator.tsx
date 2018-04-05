@@ -17,7 +17,7 @@ export class LoggedInIndicator extends React.Component<LoggedInIndicatorProps, a
   render() {
     return <div className={this.props.className}>
       <button className={style("w3-button")}>
-        <LocaleMessage id={"header.navbarLogin.loggedInPrompt"} replacements={{username: this.userStore.user.name}}/>
+        <LocaleMessage id={"header.navbarLogin.loggedInPrompt"} replacements={{username: this.userStore.user.username}}/>
       </button>
       <div className={style("w3-dropdown-content","w3-bar-block","w3-card-4")}>
         {this.userStore.isAdmin

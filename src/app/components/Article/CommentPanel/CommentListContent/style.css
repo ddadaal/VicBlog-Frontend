@@ -1,0 +1,21 @@
+.removeCommentSign {
+    float: right;
+    margin-right: 4px;
+}
+
+.removeCommentSign:hover {
+    cursor: pointer;
+}
+
+.commentItem > * {
+    margin-bottom: 4px;
+}
+
+.commentContent {
+    word-wrap: break-word;
+}
+
+.inputField {
+    width: 100%;
+    margin-bottom: 4px;
+}

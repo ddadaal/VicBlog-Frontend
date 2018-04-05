@@ -139,10 +139,20 @@
         "buttonText": "我喜欢它！",
         "description": "很高兴你能喜欢这篇文章！"
       },
+      "querying": {
+        "description": "查询中",
+        "buttonText": "喜欢"
+      },
       "loginLink": "登录"
     },
     "comment": {
-      "title": "评论"
+      "title": "评论",
+      "dateFormat": "YYYY/M/D HH:mm:ss",
+      "loginRequired": "请先登录",
+      "inputPlaceholder": "请输入评论",
+      "submit": "提交",
+      "removeComment": "删除评论",
+      "empty": "还没有评论 :("
     }
 
   },

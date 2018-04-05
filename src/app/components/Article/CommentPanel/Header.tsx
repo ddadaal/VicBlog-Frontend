@@ -4,13 +4,13 @@ import { LocaleMessage } from "../../../internationalization/components";
 
 export class Header extends React.Component<any> {
   render() {
-    return <p>
-      <FaCommentO size={20}/>
+    return <h3>
+      <FaCommentO size={28}/>
       <span style={{marginLeft: "5px"}}>
         <b>
           <LocaleMessage id={"article.comment.title"}/>
         </b>
       </span>
-    </p>
+    </h3>
   }
 }

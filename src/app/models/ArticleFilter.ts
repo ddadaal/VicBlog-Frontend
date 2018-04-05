@@ -1,4 +1,4 @@
-import { computed, observable, toJS } from "mobx";
+import { observable, toJS } from "mobx";
 
 export class ArticleFilter {
   @observable tags: string[] = [];

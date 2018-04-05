@@ -1,5 +1,6 @@
 import { action, observable, runInAction } from "mobx";
 import { LoginResult, UserService } from "../../../api/UserService";
+import { Inject, Injectable } from "react.di";
 
 export enum RegisterState {
   Standby, Registering, Registered
@@ -26,10 +27,11 @@ export interface RegisterNetworkError extends RegisterError {
   error: any
 }
 
-const service = new UserService();
-
+@Injectable
 export class RegisterStore {
   @observable state: RegisterState = RegisterState.Standby;
+
+  constructor(@Inject private service: UserService) { }
 
   @action reset = () => {
     this.state = RegisterState.Standby;
@@ -39,7 +41,7 @@ export class RegisterStore {
     this.state = RegisterState.Registering;
 
 
-    const res = await service.register(username, password);
+    const res = await this.service.register(username, password);
 
     const {statusCode, response, error, ok} = res;
     if (ok) {

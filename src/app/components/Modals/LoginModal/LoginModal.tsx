@@ -1,8 +1,7 @@
 import React from "react";
 import style from '../../style';
-import { STORE_UI, STORE_USER } from "../../../constants/stores";
 import { UiStore, UserStore } from "../../../stores";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { FormInput } from "../FormInput";
 import { Modal, ModalBottom } from "../Modal";
@@ -11,16 +10,24 @@ import { LoginError, LoginState, LoginStore } from "./LoginStore";
 import { Checkbox } from "../../Common/Checkbox";
 import { LocaleMessage } from "../../../internationalization/components";
 import { Spin } from "../../Common/Spin";
+import { Inject, Module } from "react.di";
 
 interface LoginModalProps {
-  [STORE_USER]?: UserStore,
-  [STORE_UI]?: UiStore
+
 }
 
-@inject(STORE_USER, STORE_UI)
+@Module({
+  providers: [
+    { provide: LoginStore, useClass: LoginStore, noSingleton: true}
+  ]
+})
 @observer
 export class LoginModal extends React.Component<LoginModalProps, any> {
 
+  
+  @Inject uiStore: UiStore;
+  @Inject userStore: UserStore;
+  
   @observable username: string = "";
   @observable password: string = "";
   @observable loginAttempted: boolean = false;
@@ -28,7 +35,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   loggedIn: boolean = false;
   @observable lastError: LoginError = null;
 
-  @observable loginStore: LoginStore = new LoginStore();
+  @Inject loginStore: LoginStore;
 
   @action rememberMeClicked = () => {
     this.rememberMe = !this.rememberMe;
@@ -64,7 +71,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
     if (!this.validate()) {
       return;
     }
-    const user = this.props[STORE_USER];
+    const user = this.userStore;
     this.clearError();
     try {
       const loginResult = await this.loginStore.requestLogin(this.username, this.password);
@@ -74,7 +81,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
         if (this.rememberMe) {
           user.remember();
         }
-        this.props[STORE_UI].toggleLoginModalShown();
+        this.uiStore.toggleLoginModalShown();
       });
     } catch (e) {
       console.log(e);
@@ -85,12 +92,12 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   };
 
   @action openRegisterModal = () => {
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     ui.toggleRegisterModalShown();
   };
 
   componentWillUnmount() {
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     if (!this.loggedIn) {
       ui.saveLoginPanelFields({
         username: this.username,
@@ -103,7 +110,7 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   }
 
   componentDidMount() {
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     const fields = ui.temporaryLoginPanelFields;
     if (fields) {
       runInAction("Initialize fields", () => {
@@ -115,8 +122,8 @@ export class LoginModal extends React.Component<LoginModalProps, any> {
   }
 
   render() {
-    const user = this.props[STORE_USER];
-    const ui = this.props[STORE_UI];
+    const user = this.userStore;
+    const ui = this.uiStore;
     const isLoggingIn = this.loginStore.state === LoginState.LoggingIn;
 
     return <Modal titleId={"loginModal.title"}

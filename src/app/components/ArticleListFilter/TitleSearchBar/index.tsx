@@ -1,24 +1,24 @@
-import React, { KeyboardEvent, KeyboardEventHandler } from "react";
-import { inject, observer } from "mobx-react";
-import { STORE_ARTICLE_LIST } from "../../../constants/stores";
+import React, { KeyboardEvent } from "react";
+import { observer } from "mobx-react";
 import style from '../../style';
 import { Localize } from "../../../internationalization/components";
 import { action } from "mobx";
-import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
 import FaSearch from 'react-icons/lib/fa/search';
+import { ArticleListStore } from "../../../stores";
+import { Inject } from "react.di";
 
 
-
-@inject(STORE_ARTICLE_LIST)
 @observer
-export class TitleSearchBar extends React.Component<ArticleListStoreProps, any> {
+export class TitleSearchBar extends React.Component<{}, any> {
 
+  @Inject articleListStore: ArticleListStore;
+  
   @action setTitleText = (e) => {
-    this.props[STORE_ARTICLE_LIST].filter.titleText = e.target.value;
+    this.articleListStore.filter.titleText = e.target.value;
   };
 
   @action search = () => {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     store.expire();
     store.fetchPage();
   };
@@ -30,13 +30,13 @@ export class TitleSearchBar extends React.Component<ArticleListStoreProps, any> 
   };
 
   render() {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     return <div>
-      <Localize placeholder={"articleList.filterAndSort.textsInTitle"}
-                update={"articleList.filterAndSort.update"}
-                clear={"articleList.filterAndSort.clear"}
-
-      >
+      <Localize replacements={{
+        placeholder: "articleList.filterAndSort.textsInTitle",
+        update: "articleList.filterAndSort.update",
+        clear: "articleList.filterAndSort.clear"
+      }}>
         {props =>
           <div className={style("w3-row","w3-section")}>
             <div className={style("w3-col")} style={{width:"32px"}}>

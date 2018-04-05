@@ -1,25 +1,13 @@
 import { Article } from "../models";
-import * as moment from 'moment';
-import { STORE_ARTICLE } from "../constants/stores";
+import moment from 'moment';
 import { ArticleService } from "../api/ArticleService";
+import { Inject, Injectable } from "react.di";
 
 export interface FetchedArticle {
   fetchTime: moment.Moment,
   article: Article
 }
 
-export enum ArticleFetchErrorType {
-  NotFound, NetworkError, Unknown, ServerError
-}
-
-export interface ArticleFetchError {
-  type: ArticleFetchErrorType
-}
-
-export interface ArticleFetchNetworkError extends ArticleFetchError {
-  type: ArticleFetchErrorType.NetworkError,
-  error: any
-}
 
 const refetchTimeThresholdMinutes = 120;
 
@@ -27,9 +15,10 @@ function needRefetch(date: moment.Moment) {
   return moment().diff(date, "minutes") > refetchTimeThresholdMinutes;
 }
 
-const service = new ArticleService();
-
+@Injectable
 export class ArticleStore {
+
+  constructor(@Inject private articleService: ArticleService) { }
 
   fetchedArticles: Map<number, FetchedArticle> = new Map();
 
@@ -42,14 +31,10 @@ export class ArticleStore {
     }
 
     // fetch from backend
-    const article = await service.fetchArticle(id);
+    const article = { article: await this.articleService.fetchArticle(id), fetchTime: moment()};
     this.fetchedArticles.set(id, article);
     return article;
 
   }
 
-}
-
-export interface ArticleStoreProps {
-  [STORE_ARTICLE]?: ArticleStore;
 }

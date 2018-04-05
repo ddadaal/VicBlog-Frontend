@@ -1,5 +1,6 @@
 import { action, observable, runInAction } from "mobx";
 import { LoginResult, UserService } from "../../../api/UserService";
+import { Inject, Injectable } from "react.di";
 
 
 export enum LoginState {
@@ -27,24 +28,25 @@ export interface LoginNetworkError extends LoginError {
   error: any
 }
 
-const service = new UserService();
 
+@Injectable
 export class LoginStore {
-  @observable state: LoginState;
+
+  constructor(@Inject private userService: UserService) {
+
+  }
+
+  @observable state: LoginState = LoginState.NotLoggedIn;
 
   @action public logout = () => {
     this.state = LoginState.NotLoggedIn;
   };
 
-  constructor() {
-    this.state = LoginState.NotLoggedIn;
-  }
-
 
   @action public requestLogin = async (username: string, password: string): Promise<LoginResult> => {
     this.state = LoginState.LoggingIn;
 
-    const res = await service.login(username, password);
+    const res = await this.userService.login(username, password);
 
     const {statusCode, response, error, ok} = res;
 

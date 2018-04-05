@@ -1,21 +1,18 @@
-import { BaseService } from "./BaseService";
-import { ArticleId } from "../models/Article";
+import { HttpService } from "./HttpService";
 import { HttpMethod } from "./utils";
+import { Inject, Injectable } from "react.di";
 
-const queryLikedRoute = "QueryLiked";
+@Injectable
+export class LikeService {
 
-export class LikeService extends BaseService {
+  constructor(@Inject private http: HttpService) {
 
-  private articleId: ArticleId;
-
-  constructor(articleId: ArticleId) {
-    super("Likes");
-    this.articleId = articleId;
   }
 
-  async fetchLikeCount() {
-    const {statusCode, ok, error, response} = await this.fetch<number>({
-      queryParams: {articleId: this.articleId}
+  async fetchLikeCount(articleId: number) {
+    const {statusCode, ok, error, response} = await this.http.fetch<number>({
+      path: "/Likes",
+      queryParams: {articleId}
     });
     if (ok) {
       return response;
@@ -24,11 +21,11 @@ export class LikeService extends BaseService {
     }
   }
 
-  async fetchLikeStatus(token: string) {
+  async fetchLikeStatus(articleId: number, token: string) {
 
-    const {ok, error, response} = await this.fetch({
-      route: queryLikedRoute,
-      queryParams: { articleId: this.articleId},
+    const {ok, error, response} = await this.http.fetch({
+      path: "/Likes/QueryLiked",
+      queryParams: { articleId},
       token: token
     });
 
@@ -39,9 +36,10 @@ export class LikeService extends BaseService {
     }
   }
 
-  async unlike(token: string) {
-    const {ok, response, error} = await this.fetch<number>({
-      queryParams: {articleId: this.articleId},
+  async unlike(articleId: number, token: string) {
+    const {ok, response, error} = await this.http.fetch<number>({
+      path: "/Likes",
+      queryParams: {articleId},
       method: HttpMethod.DELETE,
       token: token
     });
@@ -53,10 +51,10 @@ export class LikeService extends BaseService {
     }
   }
 
-   async like(token: string) {
-    const {ok, error, response} = await this.fetch<number>({
+   async like(articleId: number, token: string) {
+    const {ok, error, response} = await this.http.fetch<number>({
       method: HttpMethod.POST,
-      queryParams: {articleId: this.articleId},
+      queryParams: {articleId},
       token: token
     });
     if (ok) {

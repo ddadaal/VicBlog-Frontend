@@ -1,17 +1,42 @@
-import { BaseService } from "./BaseService";
-import { ArticleListFetchErrorType, ArticleListOrder } from "../stores/ArticleListStore";
+import { HttpService } from "./HttpService";
 import { ArticleFilter } from "../models/ArticleFilter";
 import { ArticleList } from "../models/Article";
+import { Inject, Injectable } from "react.di";
 
-export class ArticleListService extends BaseService {
+export enum ArticleListFetchErrorType {
+  NetworkError, Unknown, ServerError
+}
 
-  constructor() {
-    super("Articles");
+export interface ArticleListFetchError {
+  type: ArticleListFetchErrorType;
+}
+
+export interface ArticleListFetchNetworkError extends ArticleListFetchError {
+  type: ArticleListFetchErrorType.NetworkError;
+  error: any;
+}
+
+export enum ArticleListOrder
+{
+  LastEditTimeLatestFirst = "LastEditTimeLatestFirst",
+  LastEditTimeEarliestFirst = "LastEditTimeEarliestFirst",
+  CreateTimeLatestFirst = "CreateTimeLatestFirst",
+  CreateTimeEarliestFirst = "CreateTimeEarliestFirst",
+  LikeLeastFirst = "LikeLeastFirst",
+  LikeMostFirst = "LikeMostFirst"
+}
+
+@Injectable
+export class ArticleListService {
+
+  constructor(@Inject private http: HttpService) {
+
   }
 
   async fetchArticleList(pageSize: number, pageNumber: number, filter: ArticleFilter, order: ArticleListOrder): Promise<ArticleList> {
 
-    const { response, error, ok } = await this.fetch({
+    const { response, error, ok } = await this.http.fetch({
+      path: "/Articles",
       queryParams: {...(filter.queryParams), order: order, pageNumber: pageNumber, pageSize: pageSize},
     });
 
@@ -28,8 +53,8 @@ export class ArticleListService extends BaseService {
   }
 
   async fetchTags() {
-    const { response, error, ok} = await this.fetch({
-      route: "Tags"
+    const { response, error, ok} = await this.http.fetch({
+      path: "/Articles/Tags",
     });
 
     if (ok) {

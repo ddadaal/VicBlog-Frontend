@@ -1,13 +1,14 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
-import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { Dropdown } from "../../Common/Dropdown/index";
+import { observer } from "mobx-react";
+import { Dropdown } from "../../Common/Dropdown";
 import style from '../../style/index';
-import { LocaleMessage } from "../../../internationalization/components/index";
+import { LocaleMessage } from "../../../internationalization/components";
 import { runInAction } from "mobx";
-import { ArticleListOrder, ArticleListStoreProps } from "../../../stores/ArticleListStore";
 import * as localStyle from './style.css';
 import FaSortAlphaAsc from 'react-icons/lib/fa/sort-alpha-asc';
+import { ArticleListStore } from "../../../stores";
+import { Inject } from "react.di";
+import { ArticleListOrder } from "../../../api/ArticleListService";
 
 function OrderItem(props: {id: string, onClick : () => void}) {
   return <a className={style("w3-bar-item", "w3-button")} onClick={props.onClick}>
@@ -16,13 +17,14 @@ function OrderItem(props: {id: string, onClick : () => void}) {
 }
 
 
-@inject(STORE_ARTICLE_LIST)
 @observer
-export class OrderIndicator extends React.Component<ArticleListStoreProps, any> {
+export class OrderIndicator extends React.Component<{}, any> {
+
+  @Inject articleListStore: ArticleListStore;
 
   onClickProducer = (order: ArticleListOrder) => () => {
     runInAction(() => {
-      const store = this.props[STORE_ARTICLE_LIST];
+      const store = this.articleListStore;
       if (store.order !== order) {
         store.expire();
         store.order = order;
@@ -35,7 +37,7 @@ export class OrderIndicator extends React.Component<ArticleListStoreProps, any> 
   render() {
 
 
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     const entry = <button className={style("w3-button")}>
       <LocaleMessage id={`articleList.order.${store.order}`}/>
     </button>;

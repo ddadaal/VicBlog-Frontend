@@ -12,6 +12,7 @@
 - TypeScript
 - Webpack
 - Custom i18n implementation
+- [react.di](https://github.com/RobinBuschmann/react.di/tree/master) for Dependency Injection
 - ~~Ant Design~~ [W3.CSS](https://www.w3schools.com/w3css/default.asp) with [Office UI Fabric](https://developer.microsoft.com/en-us/fabric)
 
 ## Development

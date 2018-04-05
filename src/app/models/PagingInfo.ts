@@ -1,5 +1,3 @@
-import { ClassType } from "react";
-
 class PagingInfoFields {
   totalCount: number;
   pageSize: number;

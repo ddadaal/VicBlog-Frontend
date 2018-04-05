@@ -1,4 +1,5 @@
 import { action, observable } from "mobx";
+import { Injectable } from "react.di";
 
 interface LoginPanelFields {
   username: string,
@@ -6,7 +7,7 @@ interface LoginPanelFields {
   remember: boolean
 }
 
-
+@Injectable
 export class UiStore {
   @observable loginModalShown = false;
   @observable registerModalShown = false;

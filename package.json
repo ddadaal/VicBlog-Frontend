@@ -65,6 +65,8 @@
     "react-router": "^4.2.0",
     "react-scroll-up-button": "^1.5.11",
     "react-syntax-highlighter": "^7.0.2",
+    "react.di": "^2.0.0",
+    "reflect-metadata": "^0.1.12",
     "w3-css": "^4.0.4"
   }
 }

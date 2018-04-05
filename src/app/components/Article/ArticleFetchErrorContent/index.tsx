@@ -1,11 +1,11 @@
 import { ArticleId } from "../../../models/Article";
-import { ArticleFetchError } from "../../../stores/ArticleStore";
 import React from "react";
+import { ArticleFetchError } from "../../../api/ArticleService";
 
 interface ArticleFetchErrorContentProps {
-  id: ArticleId,
-  error: ArticleFetchError,
-  refetch: () => void
+  id: ArticleId;
+  error: ArticleFetchError;
+  refetch: () => void;
 }
 
 export class ArticleFetchErrorContent extends React.Component<ArticleFetchErrorContentProps, {}> {

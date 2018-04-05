@@ -1,16 +1,14 @@
 import React from "react";
 import { ArticleBrief } from "../../../models/Article";
-import { inject, observer } from "mobx-react";
-import { STORE_ARTICLE_LIST, STORE_ROUTER } from "../../../constants/stores";
-import { RouterStore } from "../../../stores";
+import { observer } from "mobx-react";
+import { ArticleListStore, RouterStore } from "../../../stores";
 import { Tag } from "../../Common/Tag";
 import * as localStyle from './style.css';
 import * as rowStyle from '../../style/InterColumnMargin/style.css';
 import { LocaleDate, LocaleMessage } from "../../../internationalization/components";
-import { RouterStoreProps } from "../../../stores/RouterStore";
-import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
+import { Inject } from "react.di";
 
-interface ArticleListItemProps extends RouterStoreProps, ArticleListStoreProps {
+interface ArticleListItemProps {
   brief: ArticleBrief;
 }
 
@@ -21,19 +19,23 @@ function PHeader(props: {id: string}) {
 }
 
 
-@inject(STORE_ROUTER, STORE_ARTICLE_LIST)
 @observer
 export class ArticleListItem extends React.Component<ArticleListItemProps, any> {
 
+  
+  @Inject routerStore: RouterStore;
+  
+  @Inject articleListStore: ArticleListStore;
+  
   jumpTo = () => {
-    const router = this.props[STORE_ROUTER];
+    const router = this.routerStore;
     router.jumpTo(`/articles/${this.props.brief.articleId}`);
   };
 
   render() {
 
     const { brief } = this.props;
-    const articleListStore = this.props[STORE_ARTICLE_LIST];
+    const articleListStore = this.articleListStore;
     const articleTags = articleListStore.articleTags;
 
     return <div>

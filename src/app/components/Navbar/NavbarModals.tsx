@@ -1,11 +1,11 @@
-import { STORE_UI } from "../../constants/stores";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { AsyncComponent } from "../../routes/AsyncComponent";
 import { Modal } from "../Modals/Modal";
 import style from '../style';
 import { LocaleMessage } from "../../internationalization/components";
 import { UiStore } from "../../stores";
+import { Inject } from "react.di";
 
 export class LoadingModal extends React.Component<{},{}> {
 
@@ -21,36 +21,33 @@ export class LoadingModal extends React.Component<{},{}> {
 }
 
 interface NavbarModalsProps {
-  [STORE_UI]?: UiStore
 }
 
-@inject(STORE_UI)
 @observer
 export class NavbarModals extends React.Component<NavbarModalsProps, any> {
 
+  @Inject uiStore: UiStore;
+
   loadLoginModal = async () => {
-    const ui = this.props[STORE_UI];
-    ui.startLoadingLoginModal();
+    this.uiStore.startLoadingLoginModal();
     const Modal = (await import("../Modals/LoginModal")).LoginModal;
-    ui.finishedLoadingLoginModal();
+    this.uiStore.finishedLoadingLoginModal();
     return <Modal/>;
   };
 
   loadRegisterModal = async () => {
-    const ui = this.props[STORE_UI];
-    ui.startLoadingRegisterModal();
+    this.uiStore.startLoadingRegisterModal();
     const Modal = (await import("../Modals/RegisterModal")).RegisterModal;
-    ui.finishedLoadingRegisterModal();
+    this.uiStore.finishedLoadingRegisterModal();
     return <Modal/>;
   };
 
   render() {
-    const ui = this.props[STORE_UI];
     return <div>
-      {ui.loginModalShown
+      {this.uiStore.loginModalShown
         ? <AsyncComponent render={this.loadLoginModal}/>
         : null}
-      {ui.registerModalShown
+      {this.uiStore.registerModalShown
         ? <AsyncComponent render={this.loadRegisterModal}/>
         : null}
     </div>;

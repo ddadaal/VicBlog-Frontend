@@ -1,6 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
-import { STORE_LOCALE } from "../../../constants/stores";
+import { observer } from "mobx-react";
 import { action, observable } from "mobx";
 import style from '../../style';
 import { Modal, ModalBottom } from "../Modal";
@@ -8,23 +7,22 @@ import { LocaleMessage } from "../../../internationalization/components";
 import { Dropdown } from "../../Common/Dropdown";
 import { AttentionModalContent } from "./AttentionModalContent";
 import { AttentionModalStore, LanguageSetting } from "./AttentionModalStore";
-import { LocaleStore } from "../../../internationalization";
+import { Inject } from "react.di";
+import { LocaleStore } from "../../../stores/LocaleStore";
 
 
 interface TermsModalProps {
-  [STORE_LOCALE]?: LocaleStore,
-  toggleModalShown: () => void
+  toggleModalShown: () => void;
 }
 
 
-
-
-@inject(STORE_LOCALE)
 @observer
 export class AttentionModal extends React.Component<TermsModalProps, any> {
 
+  @Inject localeStore: LocaleStore;
+  
   private store: AttentionModalStore = new AttentionModalStore();
-  @observable selectedLanguage: LanguageSetting = this.store.getLanguage(this.props[STORE_LOCALE].currentLanguage.id);
+  @observable selectedLanguage: LanguageSetting = this.store.getLanguage(this.localeStore.currentLanguage.id);
 
   @action changeLanguage = (language: LanguageSetting) => {
     this.selectedLanguage = language;

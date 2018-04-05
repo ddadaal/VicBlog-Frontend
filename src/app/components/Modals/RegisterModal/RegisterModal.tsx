@@ -1,24 +1,24 @@
 import React from "react";
 import { Modal } from "../Modal";
-import { inject, observer } from "mobx-react";
-import { STORE_UI, STORE_USER } from "../../../constants/stores";
+import { observer } from "mobx-react";
 import { UiStore, UserStore } from "../../../stores";
 import { action, observable } from "mobx";
 import { RegisteringContent } from "./RegisteringContent";
 import { RegisteredContent } from "./RegisteredContent";
 import { AttentionModal } from "../AttentionModal";
 import { LoginResult } from "../../../api/UserService";
+import { Inject } from "react.di";
 
 
 interface RegisterModalProps {
-  [STORE_USER]?: UserStore;
-  [STORE_UI]?: UiStore;
 }
 
-@inject(STORE_USER, STORE_UI)
 @observer
 export class RegisterModal extends React.Component<RegisterModalProps, any> {
 
+  @Inject uiStore: UiStore;
+  @Inject userStore: UserStore;
+  
   @observable loginResult: LoginResult = null;
   @observable termsModalShown: boolean = false;
 
@@ -31,7 +31,7 @@ export class RegisterModal extends React.Component<RegisterModalProps, any> {
   };
 
   @action login = (remember: boolean) => {
-    const user = this.props[STORE_USER];
+    const user = this.userStore;
     user.login(this.loginResult);
     if (remember) {
       user.remember();
@@ -40,7 +40,7 @@ export class RegisterModal extends React.Component<RegisterModalProps, any> {
 
 
   render() {
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     const registered = this.loginResult != null;
 
     return <div>

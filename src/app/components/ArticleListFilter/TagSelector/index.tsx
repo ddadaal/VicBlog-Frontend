@@ -1,19 +1,22 @@
 import React from "react";
-import { STORE_ARTICLE_LIST } from "../../../constants/stores";
-import { inject, observer } from "mobx-react";
-import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
+import { observer } from "mobx-react";
 import FaTags from 'react-icons/lib/fa/tags';
 import { Tag } from "../../Common/Tag";
 import style from "../../style";
 import { action } from "mobx";
 import * as localStyle from './style.css';
+import { Inject } from "react.di";
+import { ArticleListStore } from "../../../stores";
 
-@inject(STORE_ARTICLE_LIST)
+
 @observer
-export class TagSelector extends React.Component<ArticleListStoreProps, {}> {
+export class TagSelector extends React.Component<{}, {}> {
 
+  
+  @Inject articleListStore: ArticleListStore;
+  
   onClickProducer = (text: string) => action(() => {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     const filter = store.filter;
     if (filter.tags.indexOf(text) >= 0) {
       filter.tags = filter.tags.filter(x => x !== text);
@@ -25,7 +28,7 @@ export class TagSelector extends React.Component<ArticleListStoreProps, {}> {
   });
 
   render() {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     return <div className={style("w3-row","w3-section")}>
       <div className={style("w3-col")} style={{width:"32px"}}>
         <FaTags size={26}/>

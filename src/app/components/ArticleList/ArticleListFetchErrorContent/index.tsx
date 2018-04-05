@@ -1,8 +1,8 @@
 import React from "react";
 import { LocaleMessage } from "../../../internationalization/components";
-import { ArticleListFetchError, ArticleListFetchErrorType } from "../../../stores/ArticleListStore";
 import { AlertPanel } from "../../Modals/AlertPanel";
 import style from '../../style';
+import { ArticleListFetchError, ArticleListFetchErrorType } from "../../../api/ArticleListService";
 
 interface ArticleListFetchErrorContentProps {
   error: ArticleListFetchError;

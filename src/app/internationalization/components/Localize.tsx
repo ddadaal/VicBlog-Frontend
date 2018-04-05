@@ -1,22 +1,23 @@
-import React, { ReactNode } from "react";
-import { inject, observer } from "mobx-react";
-import { LocaleStoreProps } from "..";
-import { STORE_LOCALE } from "../../constants/stores";
+import React, { ReactNode } from "react"
+import { observer } from "mobx-react";
+import { LocaleStore, ReplacementMap } from "../../stores/LocaleStore";
+import { Inject } from "react.di";
 
-interface LocalizeProps extends LocaleStoreProps { 
-  children: (props) => ReactNode;
-  [s: string]: ReactNode
+interface LocalizeProps {
+
+  children: (props: any) => ReactNode;
+  replacements?: ReplacementMap;
 }
 
-@inject(STORE_LOCALE)
 @observer
-export class Localize extends React.Component<LocalizeProps, {}> {
+export class Localize<T> extends React.Component<LocalizeProps, {}> {
+
+  @Inject localeStore: LocaleStore;
+
   render() {
-    const locale = this.props[STORE_LOCALE];
     const childProducer = this.props.children;
-    const properties = Object.keys(this.props)
-      .filter(x => x !== STORE_LOCALE && x !== "children")
-      .reduce((obj, key) => ({ ...obj, [key]: locale.get(this.props[key] as string) }), {});
+    const properties = Object.keys(this.props.replacements)
+      .reduce((obj, key) => ({ ...obj, [key]: this.localeStore.get(this.props.replacements[key] as string) }), {});
     return childProducer(properties);
   }
 }

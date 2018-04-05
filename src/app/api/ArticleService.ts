@@ -1,24 +1,35 @@
-import { BaseService } from "./BaseService";
-import { ArticleFetchErrorType, FetchedArticle } from "../stores/ArticleStore";
+import { HttpService } from "./HttpService";
 import { Article } from "../models";
-import * as moment from "moment";
+import { Inject, Injectable } from "react.di";
 
-export class ArticleService extends BaseService {
-  constructor() {
-    super("Articles");
+export enum ArticleFetchErrorType {
+  NotFound, NetworkError, Unknown, ServerError
+}
+
+export interface ArticleFetchError {
+  type: ArticleFetchErrorType
+}
+
+export interface ArticleFetchNetworkError extends ArticleFetchError {
+  type: ArticleFetchErrorType.NetworkError,
+  error: any
+}
+
+
+@Injectable
+export class ArticleService {
+
+  constructor(@Inject private http: HttpService) {
   }
 
-  async fetchArticle(id: number): Promise<FetchedArticle> {
+  async fetchArticle(id: number): Promise<Article> {
 
-    const {statusCode, response, error, ok} = await this.fetch({
-      route: id+""
+    const {statusCode, response, error, ok} = await this.http.fetch({
+      path: `/Articles/${id}`
     });
 
     if (ok) {
-      return {
-        fetchTime: moment(),
-        article: Article.fromJson(response)
-      };
+      return  Article.fromJson(response);
     } else if (error.isServerError) {
       throw { type: ArticleFetchErrorType.ServerError};
     } else if (error.isNetworkError) {

@@ -1,10 +1,10 @@
 import { action, computed, observable } from "mobx";
 import { User, UserRole } from "../models/User";
 import { ui } from "./UiUtil";
-import { STORE_USER } from "../constants/stores";
 import { LoginResult } from "../api/UserService";
+import { Injectable } from "react.di";
 
-
+@Injectable
 export class UserStore {
   @observable user: User = null;
 
@@ -54,8 +54,4 @@ export class UserStore {
       }
     }
   }
-}
-
-export interface UserStoreProps {
-  [STORE_USER]?: UserStore
 }

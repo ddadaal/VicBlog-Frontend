@@ -1,37 +1,17 @@
-import { action, autorun, computed, observable, runInAction } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { ArticleBrief } from "../models/Article";
 
-import * as moment from "moment";
+import moment from "moment";
 import { ArticleFilter } from "../models/ArticleFilter";
-import { FetchStatus } from "./index";
 import { PagingInfo } from "../models/PagingInfo";
-import { STORE_ARTICLE_LIST } from "../constants/stores";
-import { ArticleListService } from "../api/ArticleListService";
-import { RouterStore } from "./RouterStore";
-import { parseQueryString } from "../api/utils";
+import { ArticleListFetchError, ArticleListOrder, ArticleListService } from "../api/ArticleListService";
 import { ArticleTag } from "../models/ArticleTag";
+import { Inject, Injectable } from "react.di";
 
-export enum ArticleListFetchErrorType {
-  NetworkError, Unknown, ServerError
-}
 
-export interface ArticleListFetchError {
-  type: ArticleListFetchErrorType;
-}
 
-export interface ArticleListFetchNetworkError extends ArticleListFetchError {
-  type: ArticleListFetchErrorType.NetworkError;
-  error: any;
-}
-
-export enum ArticleListOrder
-{
-  LastEditTimeLatestFirst = "LastEditTimeLatestFirst",
-  LastEditTimeEarliestFirst = "LastEditTimeEarliestFirst",
-  CreateTimeLatestFirst = "CreateTimeLatestFirst",
-  CreateTimeEarliestFirst = "CreateTimeEarliestFirst",
-  LikeLeastFirst = "LikeLeastFirst",
-  LikeMostFirst = "LikeMostFirst"
+export enum FetchStatus {
+  NotStarted, Fetching, Fetched, Error
 }
 
 
@@ -40,12 +20,12 @@ const updateThresholdMinutes = 60;
 
 const defaultPageSize = 10;
 
-const service = new ArticleListService();
-
+@Injectable
 export class ArticleListStore {
+
   @observable lastUpdated: Date;
 
-  constructor() {
+  constructor(@Inject private articleListService: ArticleListService) {
     this.fetchTags();
     this.fetchPage();
   }
@@ -69,7 +49,7 @@ export class ArticleListStore {
   }
 
   @action async fetchTags() {
-    const response = await service.fetchTags();
+    const response = await this.articleListService.fetchTags();
     runInAction(() => {
       this.tags = response;
     });
@@ -91,7 +71,7 @@ export class ArticleListStore {
     this.fetchStatus = FetchStatus.Fetching;
     if (this.expired || this.pageNeedRefetch(this.currentPageNumber)) {
       try {
-        const response = await service.fetchArticleList(defaultPageSize, this.currentPageNumber, this.filter, this.order);
+        const response = await this.articleListService.fetchArticleList(defaultPageSize, this.currentPageNumber, this.filter, this.order);
         runInAction(() => {
           this.lastUpdated = new Date();
           this.pageInfo = response.pagingInfo;
@@ -123,6 +103,3 @@ export class ArticleListStore {
 
 }
 
-export interface ArticleListStoreProps {
-  [STORE_ARTICLE_LIST]?: ArticleListStore;
-}

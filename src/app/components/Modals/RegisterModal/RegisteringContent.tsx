@@ -1,27 +1,33 @@
 import { RegisterError, RegisterState, RegisterStore, } from "./RegisterStore";
 import style from "../../style";
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { action, computed, observable, runInAction } from "mobx";
 import { RegisterAlertPanel } from "./RegisterAlertPanel";
 import { FormInput } from "../FormInput";
 import { LocaleMessage } from "../../../internationalization/components";
-import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
 import { LoginResult } from "../../../api/UserService";
 import { ModalBottom } from "../Modal";
+import { Inject, Module } from "react.di";
 
 export interface RegisteringContentProps {
-  onRegisterSuccess: (result: LoginResult) => void,
-  [STORE_UI]?: UiStore,
-  toggleTermsModalShown: () => void,
+  onRegisterSuccess: (result: LoginResult) => void;
+  toggleTermsModalShown: () => void;
 }
 
-@inject(STORE_UI)
+@Module({
+  providers: [
+    {provide: RegisterStore, useClass: RegisterStore, noSingleton: true}
+  ]
+})
 @observer
 export class RegisteringContent extends React.Component<RegisteringContentProps, any> {
+  
+  @Inject uiStore: UiStore;
+  @Inject store: RegisterStore;
+
   @observable lastError: RegisterError = null;
-  @observable store: RegisterStore = new RegisterStore();
 
   @observable username: string = "";
   @observable password: string = "";
@@ -82,7 +88,7 @@ export class RegisteringContent extends React.Component<RegisteringContentProps,
 
   render() {
     const isRegistering = this.store.state === RegisterState.Registering;
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     return <div>
       <RegisterAlertPanel error={this.lastError} clearError={this.clearError}/>
 

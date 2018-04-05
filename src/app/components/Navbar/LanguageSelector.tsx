@@ -1,34 +1,30 @@
-import { inject, observer } from "mobx-react";
-import { STORE_LOCALE } from "../../constants/stores";
+import { observer } from "mobx-react";
 import React, { CSSProperties } from "react";
 import FaLanguage from 'react-icons/lib/fa/language';
 import style from "../style";
 import { action, observable, runInAction } from "mobx";
-import { LocaleStore } from "../../internationalization";
-import { Language } from "../../internationalization/LocaleStore";
+import { LocaleStore } from "../../stores/LocaleStore";
+import { Inject } from "react.di";
 
 interface LanguageSelectorProps {
-  [STORE_LOCALE]?: LocaleStore;
   sticky: boolean;
   navbarHeight: number;
 }
 
 interface LanguageSelectorItemProps {
-  [STORE_LOCALE]?: LocaleStore;
-  language: Language;
+  language;
   switchTo: (id: string) => void;
   switchingTo: boolean;
 }
 
-@inject(STORE_LOCALE)
 @observer
 class LanguageSelectorItem extends React.Component<LanguageSelectorItemProps, any> {
 
-
+  @Inject localeStore: LocaleStore; 
 
   render() {
     const { language } = this.props;
-    const locale = this.props[STORE_LOCALE];
+    const locale = this.localeStore;
     const current = language.id === locale.currentLanguage.id;
     const beingSwitchedTo = this.props.switchingTo;
     return <a key={language.id} onClick={() => this.props.switchTo(language.id)}
@@ -38,16 +34,15 @@ class LanguageSelectorItem extends React.Component<LanguageSelectorItemProps, an
   }
 }
 
-@inject(STORE_LOCALE)
 @observer
 export class LanguageSelector extends React.Component<LanguageSelectorProps, any> {
   @observable switchingToId: string = null;
 
-
+  @Inject localeStore: LocaleStore;
 
   @action switchTo = async (id: string) => {
     this.switchingToId = id;
-    const locale = this.props[STORE_LOCALE];
+    const locale = this.localeStore;
     await locale.changeLanguage(id);
     runInAction(() => {
       this.switchingToId = null;
@@ -62,7 +57,7 @@ export class LanguageSelector extends React.Component<LanguageSelectorProps, any
       top: `${this.props.navbarHeight}px`
     };
 
-    const locale = this.props[STORE_LOCALE];
+    const locale = this.localeStore;
     return <div className={style("w3-dropdown-hover")}>
       <button className={style("w3-button")}>
         <FaLanguage size={16}/>

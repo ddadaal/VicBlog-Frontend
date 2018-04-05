@@ -1,9 +1,10 @@
 import { History } from 'history';
 import { RouterStore as BaseRouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import { action } from "mobx";
-import { STORE_ROUTER } from "../constants/stores";
 import { aboutPageConfig, homePageConfig, notFoundPageConfig } from "../pages/routes";
+import { Injectable } from "react.di";
 
+@Injectable
 export class RouterStore extends BaseRouterStore {
   constructor(history?: History) {
     super();
@@ -31,8 +32,4 @@ export class RouterStore extends BaseRouterStore {
   @action jumpTo404 = () => {
     this.jumpTo(notFoundPageConfig.path);
   };
-}
-
-export interface RouterStoreProps {
-  [STORE_ROUTER]?: RouterStore
 }

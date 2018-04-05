@@ -1,9 +1,9 @@
-import { ArticleListStoreProps } from "../../../stores/ArticleListStore";
 import React, { ReactNode } from "react";
 import style from '../../style';
-import { inject, observer } from "mobx-react";
-import { STORE_ARTICLE_LIST } from "../../../constants/stores";
+import { observer } from "mobx-react";
 import { action } from "mobx";
+import { ArticleListStore } from "../../../stores";
+import { Inject } from "react.di";
 
 export function PageLink(props: { active: boolean, pageNumber: number, onClick: () => void, content?: ReactNode, disabled?: boolean }) {
   return <button disabled={props.disabled == undefined ? false : props.disabled}
@@ -13,12 +13,13 @@ export function PageLink(props: { active: boolean, pageNumber: number, onClick: 
   </button>;
 }
 
-@inject(STORE_ARTICLE_LIST)
 @observer
-export class PageIndicator extends React.Component<ArticleListStoreProps, {}> {
+export class PageIndicator extends React.Component<{}, {}> {
+
+  @Inject articleListStore: ArticleListStore;
 
   onClickProducer = (number: number) => {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     return action(() => {
       store.currentPageNumber = number;
       store.fetchPage();
@@ -26,19 +27,19 @@ export class PageIndicator extends React.Component<ArticleListStoreProps, {}> {
   };
 
   @action toPreviousPage = () => {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     store.currentPageNumber--;
     store.fetchPage();
   };
 
   @action toNextPage = () => {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     store.currentPageNumber++;
     store.fetchPage();
   };
 
   constructLinks() {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     const result = [];
     for (let i = 1; i <= store.pageInfo.totalPageNumber; i++) {
       result.push(<PageLink key={i} active={i === store.currentPageNumber} pageNumber={i} onClick={this.onClickProducer(i)}/>)
@@ -48,7 +49,7 @@ export class PageIndicator extends React.Component<ArticleListStoreProps, {}> {
 
 
   render() {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     return <div className={style("w3-center")}>
       <div className={style("w3-bar")}>
         <PageLink active={false} pageNumber={-1} onClick={this.toPreviousPage} content={<>&laquo;</>}

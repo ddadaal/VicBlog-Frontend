@@ -14,7 +14,7 @@ export class ArticleFetchingContent extends React.Component<ArticleFetchingConte
       <h3>
       <Spin/>
       <LocaleMessage id={"article.loading"} replacements={{
-        id: this.props.id
+        id: this.props.id+""
       }}/>
       </h3>
     </div>;

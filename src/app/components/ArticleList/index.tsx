@@ -1,27 +1,28 @@
 import React from "react";
-import { STORE_ARTICLE_LIST } from "../../constants/stores";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { ArticleListContent } from "./ArticleListContent";
-import { FetchStatus } from "../../stores";
-import { ArticleListStoreProps } from "../../stores/ArticleListStore";
+import { ArticleListStore } from "../../stores";
 import { ArticleListFetchingContent } from "./ArticleListFetchingContent";
 import { ArticleListFetchErrorContent } from "./ArticleListFetchErrorContent";
+import { Inject } from "react.di";
+import { FetchStatus } from "../../stores/ArticleListStore";
 
-interface ArticleListPageContentProps extends ArticleListStoreProps {
+interface ArticleListPageContentProps  {
 
 }
 
-@inject(STORE_ARTICLE_LIST)
+
 @observer
 export class ArticleListPageContent extends React.Component<ArticleListPageContentProps, any> {
 
+  @Inject articleListStore: ArticleListStore;
+
   retry = () => {
-    const store = this.props[STORE_ARTICLE_LIST];
-    store.fetchPage();
+    this.articleListStore.fetchPage();
   };
 
   render() {
-    const store = this.props[STORE_ARTICLE_LIST];
+    const store = this.articleListStore;
     switch (store.fetchStatus) {
       case FetchStatus.NotStarted:
       case FetchStatus.Fetching:

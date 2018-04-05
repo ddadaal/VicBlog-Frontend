@@ -1,6 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
-import { STORE_ROUTER } from "../../constants/stores";
+import { observer } from "mobx-react";
 import style from '../style';
 import { LanguageSelector } from "./LanguageSelector";
 import { action, observable } from "mobx";
@@ -9,7 +8,8 @@ import { UserIndicator } from "./NavbarUserIndicator/UserIndicator";
 import { LocaleMessage } from "../../internationalization/components";
 import { Sticky } from "../Common/Sticky";
 import { NavbarModals } from "./NavbarModals";
-import { RouterStoreProps } from "../../stores/RouterStore";
+import { Inject } from "react.di";
+import { RouterStore } from "../../stores";
 
 interface NavbarRoutesConfig {
   path: string;
@@ -36,26 +36,25 @@ const routes: NavbarRoutesConfig[] = [
 ];
 
 
-interface NavbarLinkItemProps extends RouterStoreProps {
+interface NavbarLinkItemProps {
   config: NavbarRoutesConfig;
   visibleOnBigScreen: boolean;
 }
 
 
 
-@inject(STORE_ROUTER)
 @observer
 class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
 
+  @Inject routerStore: RouterStore;
+  
   jumpTo = () => {
     const jumpToUrl = this.props.config.path;
-    this.props[STORE_ROUTER].jumpTo(jumpToUrl);
+    this.routerStore.jumpTo(jumpToUrl);
   };
 
   render() {
-
-    const route = this.props[STORE_ROUTER];
-    const active = this.props.config.identify(route.location.pathname);
+    const active = this.props.config.identify(this.routerStore.location.pathname);
     return <a onClick={this.jumpTo}
               className={style("w3-bar-item", "w3-button",{
                 ["w3-indigo"]: active,
@@ -99,7 +98,7 @@ export class Navbar extends React.Component<any, any> {
           </div>
           <div className={style("w3-bar-block", "w3-blue", "w3-hide-large", "w3-hide-medium")}
                style={{display: this.collapsed ? "block" : "none"}}>
-            {routes.map(x => <NavbarLinkItem config={x} visibleOnBigScreen={false}/> )}
+            {routes.map((x,i) => <NavbarLinkItem key={i} config={x} visibleOnBigScreen={false}/> )}
             <UserIndicator notLoggedInStyle={style("w3-bar-item", "w3-button")}
                            loggedInStyle={style("w3-dropdown-hover")}/>
           </div>

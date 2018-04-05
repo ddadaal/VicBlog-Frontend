@@ -1,5 +1,6 @@
-import { BaseService } from "./BaseService";
+import { HttpService } from "./HttpService";
 import { HttpMethod } from "./utils";
+import { Inject, Injectable } from "react.di";
 
 export interface LoginResult {
   token: string,
@@ -10,17 +11,18 @@ export interface LoginResult {
 function encryptPassword(password: string) {
   return password;
 }
+@Injectable
+export class UserService {
 
-export class UserService extends BaseService {
-  constructor() {
-    super("Account");
+  constructor(@Inject private http: HttpService) {
+
   }
 
   async login(username: string, password: string) {
     password = encryptPassword(password);
 
-    return await this.fetch({
-      route: "Login",
+    return await this.http.fetch({
+      path: "/Account/Login",
       queryParams: {username, password}
     });
   }
@@ -28,9 +30,9 @@ export class UserService extends BaseService {
   async register(username: string, password: string) {
     password = encryptPassword(password);
 
-    return await this.fetch({
-      route: "Register",
-      payload: {username, password},
+    return await this.http.fetch({
+      path: "/Account/Register",
+      body: {username, password},
       method: HttpMethod.POST
     });
   }

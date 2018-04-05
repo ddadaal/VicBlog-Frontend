@@ -29,7 +29,9 @@ export class FormInput extends React.Component<FormInputProps, any> {
           { this.props.invalid ? <LocaleMessage id={this.props.invalidPromptId}/> : null }
         </b>
       </label>
-      <Localize placeholder={this.props.placeholderTextId}>
+      <Localize replacements={{
+        placeholder: this.props.placeholderTextId
+      }} >
         {(props) => <input className={this.props.className} type={this.props.type}
                value={this.props.value} onChange={this.handleChange} {...props}/>}
       </Localize>

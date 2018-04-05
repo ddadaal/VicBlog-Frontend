@@ -1,39 +1,24 @@
+import createBrowserHistory from "history/createBrowserHistory";
+import { initProviders } from "../providers";
+import { Module } from "react.di";
 import React from "react";
-import { Navbar } from '../components/Navbar';
+import { Root } from "./root";
+import { switches } from "../routes/routes";
+import { Router } from "react-router";
 
-import './global.style.css';
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { observer } from "mobx-react";
-import ScrollUpButton from "react-scroll-up-button"
-import { AsyncComponent } from "../routes/AsyncComponent";
-
-export interface BlogAppProps {
-
-}
-
-
-async function renderDevTool() {
-  if (process.env.NODE_ENV !== 'production') {
-    const DevTools = (await import('mobx-react-devtools')).default;
-    return (<DevTools />);
-  } else {
-    return null;
-  }
-}
-
-@observer
-export class BlogApp extends React.Component<BlogAppProps, {}> {
-
-
-  render() {
-    return <div>
-      <ScrollUpButton/>
-      <Header/>
-      <Navbar/>
-      {this.props.children}
-      <Footer/>
-      <AsyncComponent render={renderDevTool}/>
-    </div>;
-  }
+export async function App() {
+  const history = createBrowserHistory();
+  const providers = await initProviders(history);
+  return Module({
+    providers: providers
+  })(
+    class App extends React.Component<{}, {}> {
+      render() {
+        return <Root>
+          <Router history={history}>
+          {switches}
+          </Router>
+        </Root>
+      }
+    });
 }

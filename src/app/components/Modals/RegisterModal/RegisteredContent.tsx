@@ -3,22 +3,21 @@ import style from "../../style";
 import { ModalBottom } from "../Modal";
 import { Checkbox } from "../../Common/Checkbox";
 import { action, observable } from "mobx";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { LocaleMessage } from "../../../internationalization/components";
-import { STORE_UI } from "../../../constants/stores";
 import { UiStore } from "../../../stores";
 import { LoginResult } from "../../../api/UserService";
+import { Inject } from "react.di";
 
 interface RegisteredContentProps {
   loginResult: LoginResult;
   login: (remember: boolean) => void;
-  [STORE_UI]?: UiStore
 }
 
-@inject(STORE_UI)
 @observer
 export class RegisteredContent extends React.Component<RegisteredContentProps, any> {
   @observable rememberMe: boolean = false;
+  @Inject uiStore: UiStore;
 
   @action rememberMeClicked = () => {
     this.rememberMe = !this.rememberMe;
@@ -30,7 +29,7 @@ export class RegisteredContent extends React.Component<RegisteredContentProps, a
   };
 
   closeModals = () => {
-    const ui = this.props[STORE_UI];
+    const ui = this.uiStore;
     ui.toggleRegisterModalShown();
     ui.toggleLoginModalShown();
   };

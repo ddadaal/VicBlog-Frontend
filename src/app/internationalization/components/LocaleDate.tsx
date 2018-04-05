@@ -1,23 +1,24 @@
-import { inject, observer } from "mobx-react";
-import React from "react";
+import { observer } from "mobx-react";
+import React from "react"
 import * as moment from 'moment';
 import { MomentInput } from 'moment';
-import { LocaleStoreProps } from "..";
-import { STORE_LOCALE } from "../../constants/stores";
+import { LocaleStore } from "../../stores/LocaleStore";
+import { Inject } from "react.di";
 
 
-interface LocaleDateProps extends LocaleStoreProps {
-  formatId: string,
-  input: MomentInput,
-  isUtc?: boolean
+interface LocaleDateProps {
+  formatId: string;
+  input: MomentInput;
+  isUtc?: boolean;
 }
 
-@inject(STORE_LOCALE)
 @observer
 export class LocaleDate extends React.Component<LocaleDateProps, any> {
+
+  @Inject localeStore: LocaleStore;
+
   render() {
-    const locale = this.props[STORE_LOCALE];
-    const format = locale.get(this.props.formatId) as string;
+    const format = this.localeStore.get(this.props.formatId) as string;
 
     const needConvert = this.props.isUtc === undefined || this.props.isUtc;
 

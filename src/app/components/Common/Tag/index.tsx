@@ -1,8 +1,16 @@
 import style from "../../style";
 import React, { CSSProperties } from "react";
 
-export function Tag(props: { text: string, colorStyle?: string, style?: CSSProperties }) {
-  return <span className={style("w3-tag", props.colorStyle || "w3-blue")} style={props.style}>
+interface TagProps {
+  text: string;
+  colorStyle?: string;
+  style?: CSSProperties;
+  className?: string;
+  onClick?: () => void;
+}
+
+export function Tag(props: TagProps) {
+  return <span onClick={props.onClick} className={style("w3-tag", props.colorStyle, props.className)} style={props.style}>
       {props.text}
       </span>;
 }

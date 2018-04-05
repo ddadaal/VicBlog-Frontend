@@ -1,0 +1,7 @@
+.tag:hover {
+    cursor: pointer;
+}
+
+.tag {
+    margin-right: 4px;
+}

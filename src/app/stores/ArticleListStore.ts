@@ -9,6 +9,7 @@ import { STORE_ARTICLE_LIST } from "../constants/stores";
 import { ArticleListService } from "../api/ArticleListService";
 import { RouterStore } from "./RouterStore";
 import { parseQueryString } from "../api/utils";
+import { ArticleTag } from "../models/ArticleTag";
 
 export enum ArticleListFetchErrorType {
   NetworkError, Unknown, ServerError
@@ -42,9 +43,10 @@ const defaultPageSize = 10;
 const service = new ArticleListService();
 
 export class ArticleListStore {
-  lastUpdated: Date;
+  @observable lastUpdated: Date;
 
   constructor() {
+    this.fetchTags();
     this.fetchPage();
   }
 
@@ -59,6 +61,19 @@ export class ArticleListStore {
   @observable currentPageNumber: number = 1;
 
   @observable order: ArticleListOrder = ArticleListOrder.LastEditTimeLatestFirst;
+
+  @observable tags: string[] = [];
+
+  @computed get articleTags() : ArticleTag[] {
+    return this.tags.map(x => new ArticleTag(x, this.filter.tags.indexOf(x) >=0));
+  }
+
+  @action async fetchTags() {
+    const response = await service.fetchTags();
+    runInAction(() => {
+      this.tags = response;
+    });
+  }
 
   expired: boolean = false;
 

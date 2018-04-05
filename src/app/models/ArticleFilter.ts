@@ -1,37 +1,19 @@
+import { computed, observable, toJS } from "mobx";
+
 export class ArticleFilter {
-  tags?: string[] | string | undefined;
+  @observable tags: string[] = [];
 
-  titleText?: string;
+  @observable titleText: string = "";
 
-  createTimeBegin?: Date;
+  get queryParams() {
+    const obj = {
+      tags: this.tags.length >0 ? toJS(this.tags) : null,
+      titleText: this.titleText || null
+    };
 
-  createTimeEnd?: Date;
-
-  editTimeBegin?: Date;
-
-  editTimeEnd?: Date;
-
-  minLike?: number;
-
-  maxLike?: number;
-
-  get tagsAsArray(): string[] {
-    if (typeof this.tags == "undefined") {
-      return [];
-    }
-    if (Array.isArray(this.tags)) {
-      return this.tags;
-    } else {
-      return [this.tags];
-    }
-
-  }
-
-
-
-  constructor(obj: Partial<ArticleFilter> = {}) {
-    Object.assign(this, obj);
-
+    return Object.keys(obj)
+      .filter(key => obj[key])
+      .reduce((prev, curr) => ({...prev, [curr]: obj[curr]}), {});
   }
 
 }

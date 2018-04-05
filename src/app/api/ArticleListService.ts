@@ -10,9 +10,11 @@ export class ArticleListService extends BaseService {
   }
 
   async fetchArticleList(pageSize: number, pageNumber: number, filter: ArticleFilter, order: ArticleListOrder): Promise<ArticleList> {
+
     const { response, error, ok } = await this.fetch({
-      queryParams: {...filter, order: order, pageNumber: pageNumber, pageSize: pageSize},
+      queryParams: {...(filter.queryParams), order: order, pageNumber: pageNumber, pageSize: pageSize},
     });
+
 
     if (ok) {
       return ArticleList.fromJson(response);
@@ -22,6 +24,18 @@ export class ArticleListService extends BaseService {
       throw { type: ArticleListFetchErrorType.ServerError};
     } else {
       throw {type: ArticleListFetchErrorType.Unknown};
+    }
+  }
+
+  async fetchTags() {
+    const { response, error, ok} = await this.fetch({
+      route: "Tags"
+    });
+
+    if (ok) {
+      return response as string[];
+    } else {
+      throw "error";
     }
   }
 

@@ -1,10 +1,10 @@
 import React from "react";
 import style from '../style';
-import { observer } from "mobx-react";
-import { RouterStore } from "../../stores";
 import FaGithub from 'react-icons/lib/fa/github';
 import * as localStyle from './style.css';
 import { LocaleDate, LocaleMessage, Localize } from "../../internationalization/components";
+import { Link } from 'react-router-dom';
+import { RouterStore } from "../../stores";
 import { Inject } from "react.di";
 
 declare var FRONT_END_BUILD: string;
@@ -40,7 +40,7 @@ function VersionInfoBlock(props: { githubUrl: string, versionId: string, buildTi
   </p>;
 }
 
-@observer
+
 export class Footer extends React.Component<FooterProps, any> {
 
   @Inject routerStore: RouterStore;
@@ -50,7 +50,7 @@ export class Footer extends React.Component<FooterProps, any> {
       <div style={{textAlign: 'center'}} className={style("w3-container")}>
         <p>
           <LocaleMessage id={"footer.codeProudlyByVicCrubs"} replacements={{
-            viccrubs: <a onClick={this.routerStore.jumpToAboutMe} className={localStyle.link}>VicCrubs</a>
+            viccrubs: <a className={localStyle.link} onClick={this.routerStore.jumpToAboutMe}>VicCrubs</a>
           }}/>
         </p>
         <VersionInfoBlock githubUrl={frontendGithub} versionId={"footer.frontend.version"}

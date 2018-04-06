@@ -14,6 +14,8 @@
     margin: auto;
 }
 
+
+
 @media (max-width: 992px) {
     .left { order: 3}
     .right { order: 2}

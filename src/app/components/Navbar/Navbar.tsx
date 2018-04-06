@@ -10,6 +10,7 @@ import { Sticky } from "../Common/Sticky";
 import { NavbarModals } from "./NavbarModals";
 import { Inject } from "react.di";
 import { RouterStore } from "../../stores";
+import { Link } from 'react-router-dom';
 
 interface NavbarRoutesConfig {
   path: string;
@@ -42,12 +43,10 @@ interface NavbarLinkItemProps {
 }
 
 
-
-@observer
 class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
 
   @Inject routerStore: RouterStore;
-  
+
   jumpTo = () => {
     const jumpToUrl = this.props.config.path;
     this.routerStore.jumpTo(jumpToUrl);
@@ -61,7 +60,7 @@ class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
                 ["w3-hide-small"]: this.props.visibleOnBigScreen
               })}>
       <LocaleMessage id={this.props.config.textId}/>
-    </a>
+    </a>;
   }
 }
 

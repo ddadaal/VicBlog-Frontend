@@ -6,18 +6,18 @@ import { LocaleMessage } from "../../../internationalization/components";
 import * as localStyle from './style.css';
 import { Spin } from "../../Common/Spin";
 import { Tooltip } from "../../Common/Tooltip";
+import { RefreshButton } from "../../Common/RefreshButton";
+import { FetchStatus } from "../../../stores/common";
 
 interface Props {
   totalContent: number;
-
   refresh(): void;
-
   refreshing: boolean;
 }
 
 export class Header extends React.Component<Props> {
   render() {
-    return <h3 className={localStyle.parent}>
+    return <>
       <FaCommentO size={28}/>
       <span>
         <b>
@@ -31,16 +31,10 @@ export class Header extends React.Component<Props> {
         }}/>
         </small>
       </span>
-      <span>
-      <small className={localStyle.refreshButton}>
-        {this.props.refreshing
-          ? <Spin/>
-          : <Tooltip afterTooltip={<span onClick={this.props.refresh}><FaRefresh/></span>}>
-            <LocaleMessage id={"article.comment.refresh"}/>
-          </Tooltip>
-        }
-      </small>
-      </span>
-    </h3>
+      <RefreshButton refresh={this.props.refresh}
+                     refreshing={this.props.refreshing}
+                     floatRight={true}
+      />
+    </>
   }
 }

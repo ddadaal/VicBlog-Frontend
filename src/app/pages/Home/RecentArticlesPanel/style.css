@@ -1,0 +1,11 @@
+.link:hover {
+    cursor: pointer;
+}
+
+.link {
+    float: right;
+}
+
+.row>* {
+    margin-right: 4px;
+}

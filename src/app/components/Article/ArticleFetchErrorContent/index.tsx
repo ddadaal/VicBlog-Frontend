@@ -3,8 +3,7 @@ import React from "react";
 import { ArticleFetchError, ArticleFetchErrorType } from "../../../api/ArticleService";
 import { LocaleMessage } from "../../../internationalization/components";
 import style from '../../style';
-import { Inject } from "react.di";
-import { RouterStore } from "../../../stores";
+import { Link } from 'react-router-dom';
 
 interface ArticleFetchErrorContentProps {
   id: ArticleId;
@@ -13,12 +12,6 @@ interface ArticleFetchErrorContentProps {
 }
 
 export class ArticleFetchErrorContent extends React.Component<ArticleFetchErrorContentProps, {}> {
-
-  @Inject routerStore: RouterStore;
-
-  goToList = () => {
-    this.routerStore.jumpTo("/articles");
-  };
 
   refresh = () => {
     this.props.refetch();
@@ -30,9 +23,11 @@ export class ArticleFetchErrorContent extends React.Component<ArticleFetchErrorC
       case ArticleFetchErrorType.NotFound:
         content = <div>
           <p><LocaleMessage id={"article.error.articleNotFound"} replacements={{ articleId: this.props.id+""}}/></p>
-          <button className={style("w3-btn","w3-blue")} onClick={this.goToList}>
+          <Link to={"/articles"}>
+            <button className={style("w3-btn","w3-blue")}>
             <LocaleMessage id={"article.error.backToList"}/>
           </button>
+          </Link>
         </div>;
         break;
       case ArticleFetchErrorType.ServerError:

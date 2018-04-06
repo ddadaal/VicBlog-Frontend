@@ -10,6 +10,7 @@ import { UserStore } from "../../../stores";
 import { observer } from "mobx-react";
 import { FetchStatus } from "../../../stores/common";
 import { action } from "mobx";
+import { ContentPanel } from "../../Common/ContentPanel";
 
 interface CommentPanelProps {
   articleId: ArticleId;
@@ -31,9 +32,9 @@ export class CommentPanel extends React.Component<CommentPanelProps> {
     await this.commentStore.removeComment(id, this.userStore.token);
   };
 
-  refresh = () => {
+  refresh = async () => {
     this.commentStore.expire();
-    this.commentStore.fetchPage();
+    await this.commentStore.fetchPage();
   };
 
   @action fetchPage = (pageNumber: number) => {
@@ -43,12 +44,10 @@ export class CommentPanel extends React.Component<CommentPanelProps> {
 
 
   render() {
-    return <div className={style("w3-container")}>
-      <Header
-        refresh={this.refresh}
-        totalContent={this.commentStore.pagingInfo.totalCount}
-        refreshing={this.commentStore.fetchStatus === FetchStatus.Fetching}
-      />
+    return <ContentPanel className={style("w3-container")}
+                         title={<Header totalContent={this.commentStore.pagingInfo.totalCount}
+                                        refresh={this.refresh}
+                                        refreshing={this.commentStore.fetchStatus === FetchStatus.Fetching}/>}>
       <CommentListContent
         submit={this.submitComment}
         remove={this.removeComment}
@@ -59,6 +58,6 @@ export class CommentPanel extends React.Component<CommentPanelProps> {
         pagingInfo={this.commentStore.pagingInfo}
         currentPageNumber={this.commentStore.currentPageNumber}
       />
-    </div>
+    </ContentPanel>;
   }
 }

@@ -1,6 +1,17 @@
 {
   "homepage": {
-    "documentTitle" :"主页 - VicBlog"
+    "documentTitle" :"主页 - VicBlog",
+    "recentArticles": {
+      "title": "最近的文章",
+      "error": "出现了错误，请刷新",
+      "retry": "重试",
+      "fetching": "加载中",
+      "seeMore": "查看更多"
+    }
+  },
+  "contentPanel": {
+    "refresh": "刷新"
+
   },
   "header": {
     "home": "主页",

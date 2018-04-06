@@ -1,6 +1,16 @@
 {
   "homepage": {
-    "documentTitle" :"Home - VicBlog"
+    "documentTitle" :"Home - VicBlog",
+    "recentArticles": {
+      "title": "Recent Articles",
+      "refresh": "Refresh",
+      "retry": "Retry",
+      "fetching": "Fetching",
+      "seeMore": "See more"
+    }
+  },
+  "contentPanel": {
+
   },
   "header": {
     "home": "Home",

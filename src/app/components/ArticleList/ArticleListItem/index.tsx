@@ -7,6 +7,7 @@ import * as localStyle from './style.css';
 import * as rowStyle from '../../style/InterColumnMargin/style.css';
 import { LocaleDate, LocaleMessage } from "../../../internationalization/components";
 import { Inject } from "react.di";
+import { Link } from 'react-router-dom';
 
 interface ArticleListItemProps {
   brief: ArticleBrief;
@@ -23,14 +24,9 @@ function PHeader(props: {id: string}) {
 export class ArticleListItem extends React.Component<ArticleListItemProps, any> {
 
   
-  @Inject routerStore: RouterStore;
-  
   @Inject articleListStore: ArticleListStore;
-  
-  jumpTo = () => {
-    const router = this.routerStore;
-    router.jumpTo(`/articles/${this.props.brief.articleId}`);
-  };
+
+  @Inject routerStore: RouterStore;
 
   render() {
 
@@ -39,10 +35,16 @@ export class ArticleListItem extends React.Component<ArticleListItemProps, any> 
     const articleTags = articleListStore.articleTags;
 
     return <div>
-      <h2><a style={{ cursor: "pointer" }} onClick={this.jumpTo}>{brief.title}</a></h2>
+      <h2>
+        <a onClick={() => this.routerStore.jumpTo(`/articles/${brief.articleId}`)}
+           style={{ cursor: "pointer" }}>
+          {brief.title}
+        </a>
+      </h2>
       <p className={rowStyle.parent}>
         {brief.tags.map(x => {
-          return <Tag colorStyle={articleTags.find(tag => tag.text === x).color} key={x} text={x}/>
+          const tag = articleTags.find(tag => tag.text === x);
+          return <Tag colorStyle={tag ? tag.color : "w3-light-grey"} key={x} text={x}/>
         })}
       </p>
       <p>

@@ -1,35 +1,41 @@
-import React from "react";
-import { observer } from "mobx-react";
-import { observable, runInAction } from "mobx";
+import React from 'react';
+import { AboutLayout } from "./AboutLayout";
+import { Switch } from "react-router";
+import { AsyncPageConfig, PageConfig, RedirectPageConfig } from "../../routes/RouteConfig";
 
-enum LoadStatus {
-  NotLoaded,
-  Loading,
-  Loaded
+interface Props {
+
 }
 
-@observer
-export class AboutPage extends React.Component<any, any> {
+const rootRedirectConfig = new RedirectPageConfig({
+  path: "/about",
+  to: "/about/project"
+});
 
-  @observable status: LoadStatus = LoadStatus.NotLoaded;
-  @observable content: JSX.Element = null;
-
-  constructor(props) {
-    super(props);
+const aboutMePageConfig: PageConfig = new AsyncPageConfig({
+  path: "/about/me",
+  render: async () => {
+    const AboutMePage= (await import("./AboutMePage")).AboutMePage;
+    return <AboutMePage/>;
   }
+});
 
-  async load() {
-    this.status = LoadStatus.Loading;
-    const AboutProject = (await import("./AboutProjectPage")).AboutProject;
-    runInAction("About PageConfig loaded",() => {
-      this.status = LoadStatus.Loaded;
-      this.content = <AboutProject/>;
-    });
+const aboutProjectPageConfig = new AsyncPageConfig({
+  path: "/about/project",
+  render: async () => {
+    const AboutProject = (await import("./AboutProjectPage")).AboutProjectPage;
+    return <AboutProject/>;
   }
+});
 
-
+export class AboutPage extends React.Component<Props, {}> {
   render() {
-    return <div/>;
+    return <AboutLayout>
+      <Switch>
+        {rootRedirectConfig.construct()}
+        {aboutMePageConfig.construct()}
+        {aboutProjectPageConfig.construct()}
+      </Switch>
+    </AboutLayout>
   }
 }
-

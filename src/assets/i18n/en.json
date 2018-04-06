@@ -9,6 +9,10 @@
       "seeMore": "See more"
     }
   },
+  "about": {
+    "aboutMe": "About me",
+    "aboutProject": "About the website"
+  },
   "contentPanel": {
 
   },

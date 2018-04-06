@@ -1,8 +1,9 @@
 import React from "react";
 import style from "../../components/style";
+import { AboutLayout } from "./AboutLayout";
 
-export class AboutProject extends React.Component<any, any> {
+export class AboutProjectPage extends React.Component<any, any> {
   render() {
-    return <div className={style("w3-container")}><p>Async render</p></div>;
+    return "project";
   }
 }

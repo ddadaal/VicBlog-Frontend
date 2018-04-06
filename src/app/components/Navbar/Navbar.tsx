@@ -43,6 +43,7 @@ interface NavbarLinkItemProps {
 }
 
 
+@observer
 class NavbarLinkItem extends React.Component<NavbarLinkItemProps, any> {
 
   @Inject routerStore: RouterStore;

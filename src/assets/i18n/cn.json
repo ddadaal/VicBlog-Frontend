@@ -9,6 +9,10 @@
       "seeMore": "查看更多"
     }
   },
+  "about": {
+    "aboutMe": "关于我",
+    "aboutProject": "关于网站"
+  },
   "contentPanel": {
     "refresh": "刷新"
 

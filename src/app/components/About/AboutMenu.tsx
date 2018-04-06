@@ -19,12 +19,12 @@ interface Route {
 
 const routes = [
   {
-    textId: "about.aboutProject",
+    textId: "about.aboutProject.menu",
     path: "/about/project",
     identify: (pathname: string) => pathname === "/about/project"
   },
   {
-    textId: "about.aboutMe",
+    textId: "about.aboutMe.menu",
     path: "/about/me",
     identify: (pathname: string) => pathname === "/about/me"
   }

@@ -10,8 +10,14 @@
     }
   },
   "about": {
-    "aboutMe": "关于我",
-    "aboutProject": "关于网站"
+    "aboutMe": {
+      "menu": "关于我",
+      "document": "关于我 - VicBlog"
+    },
+    "aboutProject": {
+      "menu": "关于网站",
+      "document": "关于网站 - VicBlog"
+    }
   },
   "contentPanel": {
     "refresh": "刷新"

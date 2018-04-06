@@ -10,8 +10,14 @@
     }
   },
   "about": {
-    "aboutMe": "About me",
-    "aboutProject": "About the website"
+    "aboutMe": {
+      "menu": "About me",
+      "document": "About me - VicBlog"
+    },
+    "aboutProject": {
+      "menu": "About project",
+      "document": "About project - VicBlog"
+    }
   },
   "contentPanel": {
 

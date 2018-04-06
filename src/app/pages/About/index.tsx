@@ -7,9 +7,10 @@ interface Props {
 
 }
 
-const rootRedirectConfig = new RedirectPageConfig({
-  path: "/about",
-  to: "/about/project"
+const redirectConfig = new RedirectPageConfig({
+  path: "",
+  to: "/about/project",
+  exact: false
 });
 
 const aboutMePageConfig: PageConfig = new AsyncPageConfig({
@@ -32,9 +33,10 @@ export class AboutPage extends React.Component<Props, {}> {
   render() {
     return <AboutLayout>
       <Switch>
-        {rootRedirectConfig.construct()}
+
         {aboutMePageConfig.construct()}
         {aboutProjectPageConfig.construct()}
+        {redirectConfig.construct()}
       </Switch>
     </AboutLayout>
   }

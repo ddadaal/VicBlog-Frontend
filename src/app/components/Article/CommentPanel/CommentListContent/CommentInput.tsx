@@ -3,7 +3,7 @@ import { Inject } from "react.di";
 import { UserStore } from "../../../../stores";
 import { LocaleMessage, Localize } from "../../../../internationalization/components";
 import style from '../../../style';
-import { action, observable, runInAction } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import * as localStyle from './style.css';
 
@@ -17,8 +17,15 @@ export class CommentInput extends React.Component<Props, {}> {
 
   @Inject userStore: UserStore;
 
-  @observable content: string;
+  @observable content: string = "";
   @observable submitting: boolean;
+
+  @computed get submittable() {
+    if (this.submitting) { return false; }
+    if (!this.props.submit) { return false; }
+    return this.content.length != 0;
+
+  }
 
   @action onContentChanged = (e) => {
     this.content = e.target.value;
@@ -52,7 +59,7 @@ export class CommentInput extends React.Component<Props, {}> {
           />
           <p>
             <button className={style("w3-btn", "w3-blue")}
-                  onClick={this.onSubmit} disabled={this.submitting || !this.props.submit}
+                  onClick={this.onSubmit} disabled={!this.submittable}
           >
               {this.props.submit ? props.submit : props.loginRequired }
           </button>

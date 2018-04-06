@@ -1,5 +1,6 @@
 import { ArticleId } from "./Article";
 import { PagingInfo } from "./PagingInfo";
+import { ClassType } from "react";
 
 export class Comment {
   id: number;
@@ -18,8 +19,8 @@ export class CommentList {
   pagingInfo: PagingInfo;
   list: Comment[];
 
-  constructor(json = {pageInfo: new PagingInfo(), list: []}) {
-    this.pagingInfo = new PagingInfo(json.pageInfo);
+  constructor(json = {pagingInfo: new PagingInfo(), list: []}) {
+    this.pagingInfo = new PagingInfo(json.pagingInfo);
     this.list = json.list;
 
   }

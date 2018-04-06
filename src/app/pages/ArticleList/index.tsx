@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArticleListPageContent } from "../../components/ArticleList";
-import { PageIndicator } from "../../components/ArticleList/PageIndicator";
+import { ArticleListPageIndicator } from "../../components/ArticleList/ArticleListPageIndicator";
 import { OrderIndicator } from "../../components/ArticleListFilter/OrderIndicator";
 import style from "../../components/style";
 import { TitleSearchBar } from "../../components/ArticleListFilter/TitleSearchBar";
@@ -23,7 +23,7 @@ export class ArticleListPage extends React.Component<Props, {}> {
         <ArticleListPageContent/>
       </div>
       <div className={style(localStyle.pageIndicator)}>
-        <PageIndicator/>
+        <ArticleListPageIndicator/>
       </div>
     </div>
   }

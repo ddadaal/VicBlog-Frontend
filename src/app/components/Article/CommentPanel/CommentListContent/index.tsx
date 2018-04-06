@@ -1,36 +1,29 @@
 import React from 'react';
-import { CommentStore } from "../CommentStore";
 import { CommentListLoading } from "./CommentListLoading";
 import { CommentListFetchingError } from "./CommentListFetchingError";
 import { CommentList } from "./CommentList";
-import { UserStore } from "../../../../stores";
 import { FetchStatus } from "../../../../stores/common";
 import { observer } from "mobx-react";
-import { action, observable, runInAction } from "mobx";
+import { Comment } from "../../../../models/Comment";
+import { PagingInfo } from "../../../../models/PagingInfo";
 
 interface Props {
-  store: CommentStore;
-  userStore: UserStore;
+  submit(content: string): Promise<void>;
+  remove(id: number) :Promise<void>;
+  refresh(): void;
+  fetchStatus: FetchStatus;
+  list: Comment[];
+  fetchPage(pageNumber: number): void;
+  currentPageNumber: number;
+  pagingInfo: PagingInfo;
 }
 
-@observer
 export class CommentListContent extends React.Component<Props, {}> {
 
-  submitComment = async (content: string) => {
-    await this.props.store.submitComment(content, this.props.userStore.token);
-  };
 
-  refresh = () => {
-    this.props.store.expire();
-    this.props.store.fetchPage();
-  };
-
-  removeComment = async (id: number) => {
-    await this.props.store.removeComment(id, this.props.userStore.token);
-  };
 
   render() {
-    switch (this.props.store.fetchStatus) {
+    switch (this.props.fetchStatus) {
       case FetchStatus.NotStarted:
       case FetchStatus.Fetching:
         return <CommentListLoading/>;
@@ -38,10 +31,7 @@ export class CommentListContent extends React.Component<Props, {}> {
         return <CommentListFetchingError/>;
     }
     return <CommentList
-      list={this.props.store.listOfCurrentPage}
-      submit={this.submitComment}
-      remove={this.removeComment}
-      refresh={this.refresh}
+      {...this.props}
     />
   }
 }

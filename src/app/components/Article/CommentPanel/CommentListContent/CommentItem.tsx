@@ -35,7 +35,7 @@ export class CommentItem extends React.Component<Props, {}> {
         <strong>{comment.username}</strong>
         &emsp;
         <LocaleDate formatId={"article.comment.dateFormat"} input={comment.submitTime}/>
-        {this.removing ? <Spin/> :
+        {this.removing ? <Spin className={localStyle.removeCommentSign}/> :
           this.props.onRemove
             ?
             <Tooltip onClick={this.remove} className={localStyle.removeCommentSign}

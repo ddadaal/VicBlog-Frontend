@@ -17,7 +17,7 @@ export class CommentStore {
 
   @observable fetchStatus = FetchStatus.NotStarted;
 
-  @observable pageInfo: PagingInfo = new PagingInfo();
+  @observable pagingInfo: PagingInfo = new PagingInfo();
 
   @observable fetchedLists: Map<number, Comment[]> = new Map<number, Comment[]>();
 
@@ -44,7 +44,7 @@ export class CommentStore {
         const response = await this.commentService.fetchComments(this.articleId, defaultPageSize, this.currentPageNumber);
         runInAction(() => {
           this.lastUpdated = new Date();
-          this.pageInfo = response.pagingInfo;
+          this.pagingInfo = response.pagingInfo;
           this.fetchedLists.set(this.currentPageNumber, response.list);
         });
       } catch (e) {

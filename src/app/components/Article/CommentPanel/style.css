@@ -1,0 +1,11 @@
+.parent > * {
+    margin-right: 4px;
+}
+
+.refreshButton {
+    float: right;
+}
+
+.refreshButton:hover {
+    cursor: pointer;
+}

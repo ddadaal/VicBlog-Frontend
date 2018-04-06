@@ -152,7 +152,9 @@
       "inputPlaceholder": "Input your comment here",
       "submit": "Submit",
       "removeComment": "Remove",
-      "empty": "No comments yet :("
+      "empty": "No comments yet.",
+      "commentCount": "{count} Comments",
+      "refresh": "Refresh"
     }
   },
 

@@ -152,7 +152,9 @@
       "inputPlaceholder": "请输入评论",
       "submit": "提交",
       "removeComment": "删除评论",
-      "empty": "还没有评论 :("
+      "empty": "还没有评论",
+      "commentCount": "{count} 条评论",
+      "refresh": "刷新"
     }
 
   },

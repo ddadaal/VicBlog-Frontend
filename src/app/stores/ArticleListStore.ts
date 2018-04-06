@@ -15,7 +15,7 @@ import { FetchStatus } from "./common";
 
 const updateThresholdMinutes = 60;
 
-const defaultPageSize = 10;
+const defaultPageSize = 5;
 
 @Injectable
 export class ArticleListStore {
@@ -33,7 +33,7 @@ export class ArticleListStore {
 
   @observable fetchStatus: FetchStatus = FetchStatus.NotStarted;
 
-  @observable pageInfo: PagingInfo = new PagingInfo();
+  @observable pagingInfo: PagingInfo = new PagingInfo();
 
   @observable currentPageNumber: number = 1;
 
@@ -73,7 +73,7 @@ export class ArticleListStore {
         const response = await this.articleListService.fetchArticleList(defaultPageSize, this.currentPageNumber, this.filter, this.order);
         runInAction(() => {
           this.lastUpdated = new Date();
-          this.pageInfo = response.pagingInfo;
+          this.pagingInfo = response.pagingInfo;
           this.fetchedLists.set(this.currentPageNumber, response.list);
         });
       } catch (e) {

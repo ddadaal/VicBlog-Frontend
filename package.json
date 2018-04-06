@@ -59,6 +59,7 @@
     "mobx-react-router": "^4.0.2",
     "mobx-utils": "^4.0.0",
     "react": "^16.3.1",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.3.1",
     "react-icons": "^2.2.7",
     "react-markdown": "^3.3.0",

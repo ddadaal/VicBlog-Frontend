@@ -1,4 +1,7 @@
 {
+  "homepage": {
+    "documentTitle" :"Home - VicBlog"
+  },
   "header": {
     "home": "Home",
     "about": "About",
@@ -83,6 +86,7 @@
     }
   },
   "articleList": {
+    "documentTitle": "Articles - VicBlog",
     "loading": "Loading...",
     "tags": "Tags",
     "createTime": "Create time",
@@ -116,6 +120,7 @@
     }
   },
   "article": {
+    "documentTitle": "{title} - VicBlog",
     "loading": "Loading...",
     "dateFormat": "YYYY/M/D HH:mm:ss",
     "tags": "Tags",
@@ -126,6 +131,13 @@
     "author": "Author",
     "backToTop": "Back to top",
     "toc": "Table of Contents",
+    "error": {
+      "backToList": "Back to article list",
+      "refresh": "Refresh",
+      "articleNotFound": "Article {articleId} doesn't exist. How about another article?",
+      "serverError": "Server has a trouble. It's our problem and apologize for that.",
+      "other": "Something bad happened. Try again later."
+    },
     "like": {
       "notLogin": {
         "buttonText": "Like",
@@ -155,6 +167,10 @@
       "empty": "No comments yet.",
       "commentCount": "{count} Comments",
       "refresh": "Refresh"
+    },
+    "share": {
+      "clickToCopy": "Click to copy the link to clipboard",
+      "copied": "Copied!"
     }
   },
 

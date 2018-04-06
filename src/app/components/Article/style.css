@@ -4,6 +4,16 @@
     width: 16.66%;
 }
 
+.overview-sticky {
+    position: fixed;
+    top: 50px;
+    width: 16.66%;
+}
+
+.right {
+    margin-bottom: 8px;
+}
+
 @media (max-width: 992px) {
     .sticky {
         position: initial;

@@ -10,7 +10,7 @@ interface ArticleFetchingContentProps {
 
 export class ArticleFetchingContent extends React.Component<ArticleFetchingContentProps, {}> {
   render() {
-    return <div className={style("w3-container")}>
+    return <div className={style("w3-container")} style={{textAlign: "center"}}>
       <h3>
       <Spin/>
       <LocaleMessage id={"article.loading"} replacements={{

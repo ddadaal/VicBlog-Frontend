@@ -1,0 +1,7 @@
+.parent > * {
+    margin-left: 4px;
+}
+
+.parent {
+    text-align: center;
+}

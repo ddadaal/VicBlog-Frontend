@@ -41,6 +41,7 @@ class UiController {
       document.title = value;
     }
   }
+
 }
 
 export const ui = new UiController();

@@ -1,4 +1,7 @@
 {
+  "homepage": {
+    "documentTitle" :"主页 - VicBlog"
+  },
   "header": {
     "home": "主页",
     "about": "关于",
@@ -83,6 +86,7 @@
     }
   },
   "articleList": {
+    "documentTitle": "文章列表 - VicBlog",
     "loading": "加载中",
     "tags": "标签",
     "createTime": "创建日期",
@@ -116,6 +120,7 @@
     }
   },
   "article": {
+    "documentTitle": "{title} - VicBlog",
     "loading": "加载中",
     "dateFormat": "YYYY/M/D HH:mm:ss",
     "tags": "标签",
@@ -126,6 +131,13 @@
     "author": "作者",
     "backToTop": "回到顶部",
     "toc": "目录",
+    "error": {
+      "backToList": "回到文章列表",
+      "refresh": "刷新",
+      "articleNotFound": "文章 {articleId} 不存在。何不换篇文章？",
+      "serverError": "服务器出错了。这是我们的问题，很抱歉。",
+      "other": "奇怪的问题发生了。请重试。"
+    },
     "like": {
       "notLogin": {
         "buttonText": "喜欢",
@@ -155,6 +167,10 @@
       "empty": "还没有评论",
       "commentCount": "{count} 条评论",
       "refresh": "刷新"
+    },
+    "share": {
+      "clickToCopy": "点击复制本页链接到剪切板",
+      "copied": "已复制！"
     }
 
   },

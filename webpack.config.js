@@ -9,11 +9,12 @@ const outPath = path.join(__dirname, './dist');
 const moment = require("moment");
 const blogConfig = require("./blog.config");
 
+
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 const buildTime = moment();
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 const basePlugins = [
@@ -38,7 +39,7 @@ const basePlugins = [
     // both options are optional
     filename: "[name].css",
     chunkFilename: "[id].css"
-  })
+  }),
 
 ];
 
@@ -53,7 +54,10 @@ const prodPlugins = [
   new webpack.DefinePlugin({
     APIROOTURL: JSON.stringify(blogConfig.liveBackend),
   }),
-
+  new CopyWebpackPlugin([
+    'assets/serviceWorker.js',
+    'assets/manifest.json'
+  ]),
   new UglifyJSPlugin(),
 
 ];

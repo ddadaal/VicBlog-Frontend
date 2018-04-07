@@ -1,0 +1,15 @@
+{
+  "short_name": "VicBlog",
+  "name": "VicBlog",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    }
+  ],
+  "start_url": "index.html?launcher=true",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "#4695F1"
+}

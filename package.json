@@ -9,7 +9,8 @@
     "start": "webpack-dev-server -d --hot --inline",
     "build": "npm run cleandist&&webpack -p --progress --colors",
     "cleandist": "ts-node ./deploy/cleandist.ts",
-    "localdeploy": "npm run build;./deploy/localdeploy.ps1"
+    "localdeploy": "npm run build;./deploy/localdeploy.ps1",
+    "serveProd": "npm run build&&ts-node ./deploy/serve.ts"
   },
   "license": "Apache 2.0",
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/webpack-env": "^1.13.5",
     "babel-loader": "^7.1.4",
     "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -50,7 +52,8 @@
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.1",
-    "webpack-hot-middleware": "^2.21.2"
+    "webpack-hot-middleware": "^2.21.2",
+    "webpack-manifest-plugin": "^2.0.0-rc.2"
   },
   "dependencies": {
     "classnames": "^2.2.5",

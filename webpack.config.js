@@ -56,7 +56,8 @@ const prodPlugins = [
   }),
   new CopyWebpackPlugin([
     'assets/serviceWorker.js',
-    'assets/manifest.json'
+    'assets/manifest.json',
+    'assets/biglogo.png'
   ]),
   new UglifyJSPlugin(),
 

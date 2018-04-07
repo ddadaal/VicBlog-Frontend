@@ -3,13 +3,13 @@
   "name": "VicBlog",
   "icons": [
     {
-      "src": "/logo.png",
+      "src": "/biglogo.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "512*512"
     }
   ],
-  "start_url": "index.html?launcher=true",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "white",
+  "background_color": "#4695F1",
   "theme_color": "#4695F1"
 }

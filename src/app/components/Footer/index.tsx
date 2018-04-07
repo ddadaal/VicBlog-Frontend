@@ -15,20 +15,24 @@ const azure = "https://azure.microsoft.com/en-us/";
 const react = "https://reactjs.org/";
 const frontendGithub = "https://github.com/viccrubs/VicBlog-Frontend";
 const backendGithub = "https://github.com/viccrubs/VicBlog-Backend";
+const aspnetcore = "https://docs.microsoft.com/en-us/aspnet/core/";
 
 interface FooterProps {
 
 }
 
-function VersionInfoBlock(props: { githubUrl: string, versionId: string, buildTimeId: string }) {
+function GitHubIcon(props: {url: string}) {
+  return <Localize replacements={{
+    title: "footer.goToGithubRepo"
+  }} >
+    {p => <a {...p} target="_blank" href={props.url} style={{marginRight: "5px"}} >
+      <FaGithub size={20}/>
+    </a>}
+  </Localize>;
+}
+
+function VersionInfoBlock(props: { versionId: string, buildTimeId: string }) {
   return <p>
-    <Localize replacements={{
-      title: "footer.goToGithubRepo"
-    }} >
-      {p => <a {...p} target="_blank" href={props.githubUrl} style={{marginRight: "5px"}} >
-        <FaGithub size={20}/>
-      </a>}
-    </Localize>
     <LocaleMessage id={props.versionId} replacements={{
       version: FRONT_END_BUILD
     }}/>
@@ -38,7 +42,6 @@ function VersionInfoBlock(props: { githubUrl: string, versionId: string, buildTi
     }}/>
   </p>;
 }
-
 
 export class Footer extends React.Component<FooterProps, any> {
 
@@ -52,9 +55,10 @@ export class Footer extends React.Component<FooterProps, any> {
             viccrubs: <a className={localStyle.link} onClick={() => this.routerStore.jumpTo("/about/me")}>VicCrubs</a>
           }}/>
         </p>
-        <VersionInfoBlock githubUrl={frontendGithub} versionId={"footer.frontend.version"}
+        <VersionInfoBlock versionId={"footer.frontend.version"}
                           buildTimeId={"footer.frontend.buildTime"}/>
         <p>
+          <GitHubIcon url={frontendGithub}/>
           <LocaleMessage id={"footer.frontend.by"} replacements={{
             react: <a href={react}>React</a>,
             w3css: <a href={w3cssurl}>W3.CSS</a>
@@ -62,6 +66,16 @@ export class Footer extends React.Component<FooterProps, any> {
           <LocaleMessage id={"footer.comma"}/>
           <LocaleMessage id={"footer.frontend.deployedOn"} replacements={{
             deployment: <a href={githubPages}>GitHub Pages</a>
+          }}/>
+        </p>
+        <p>
+          <GitHubIcon url={backendGithub}/>
+          <LocaleMessage id={"footer.backend.by"} replacements={{
+            aspnetcore: <a href={aspnetcore}>ASP.NET Core</a>,
+          }}/>
+          <LocaleMessage id={"footer.comma"}/>
+          <LocaleMessage id={"footer.backend.deployedOn"} replacements={{
+            deployment: <a href={azure}>Microsoft Azure</a>
           }}/>
         </p>
       </div>

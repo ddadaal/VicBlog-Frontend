@@ -1,8 +1,15 @@
 # VicBlog-Frontend
 
-**VicBlog-Frontend 2 is now working in progress.**
-
 [<img src="https://viccrubs.visualstudio.com/_apis/public/build/definitions/9a321bef-923d-452d-852b-559124fbdcd4/4/badge"/>](https://viccrubs.visualstudio.com/VicBlog-Frontend/_build/index?definitionId=4)
+
+
+**New VicBlog is now ONLINE!**
+
+Check it out!
+
+[Website](https://viccrubs.tk)
+[Backend Swagger](https://vicblogapi.azurewebsites.net/)
+
 
 ## Features
 

@@ -3,10 +3,10 @@
     "documentTitle" :"Home - VicBlog",
     "recentArticles": {
       "title": "Recent Articles",
-      "refresh": "Refresh",
       "retry": "Retry",
       "fetching": "Fetching",
-      "seeMore": "See more"
+      "seeMore": "See more",
+      "error": "Error occurred. Please refresh."
     }
   },
   "about": {
@@ -38,7 +38,7 @@
   "profile": {
     "selfIntro": {
       "title": "About me",
-      "description":"I am a what"
+      "description":"Software engineering undergraduate. Loves computer games."
     },
     "contact": {
       "title": "Contact me"

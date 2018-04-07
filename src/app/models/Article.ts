@@ -16,8 +16,8 @@ export class ArticleList {
 export class ArticleBrief {
   articleId: ArticleId;
   author: string;
-  createTime: Date;
-  lastEditedTime: Date;
+  createTime: string;
+  lastEditedTime: string;
   tags: string[];
   title: string;
   likeCount: number;
@@ -26,23 +26,19 @@ export class ArticleBrief {
 
   constructor(json) {
     Object.assign(this, json);
-    this.createTime = new Date(json.createTime);
-    this.lastEditedTime = new Date(json.lastEditedTime);
   }
 }
 
 export class Article {
   articleId: ArticleId;
   author: string;
-  createTime: Date;
-  lastEditedTime: Date;
+  createTime: string;
+  lastEditedTime: string;
   tags: string[];
   title: string;
   content: string;
 
   constructor(json) {
     Object.assign(this, json);
-    this.createTime = new Date(json.createTime);
-    this.lastEditedTime = new Date(json.lastEditedTime);
   }
 }

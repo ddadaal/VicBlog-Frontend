@@ -26,10 +26,10 @@ export class ArticleMetaRow extends React.Component<ArticleMetaProps, any> {
     const {article} = this.props;
     return <div>
       <Item icon={<FaClockO size={20}/>} tooltipTextId={"article.createTime"}>
-        <LocaleDate formatId={"article.dateFormat"} input={article.createTime}/>
+        <LocaleDate formatId={"article.dateFormat"} input={article.createTime} isUtc={true}/>
       </Item>
       <Item icon={<FaPencilSquare size={20}/>} tooltipTextId={"article.lastEditedTime"}>
-        <LocaleDate formatId={"article.dateFormat"} input={article.lastEditedTime}/>
+        <LocaleDate formatId={"article.dateFormat"} input={article.lastEditedTime} isUtc={true}/>
       </Item>
       <Item icon={<FaUser size={20}/>} tooltipTextId={"article.author"}>
         <span>{article.author}</span>

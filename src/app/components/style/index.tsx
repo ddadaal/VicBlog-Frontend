@@ -1,6 +1,6 @@
 import * as style from 'w3-css/w3.css';
 
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 
 interface ClassDictionary {
   [id: string]: boolean | undefined | null;
